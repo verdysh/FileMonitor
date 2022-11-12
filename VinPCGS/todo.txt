@@ -1,0 +1,5 @@
+﻿- Settings controls:
+1. Create a zip file
+2. Create a scheduled task
+3. Choose whether or not to name the file paths
+

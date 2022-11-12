@@ -5,8 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VinPCGS"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="VinPCGS" Height="450" Width="500">
     <Grid>
+        <TabControl>
+            <TabItem Header="Main">
+                <Grid Background="#FFE5E5E5">
+                    <Label Content="Recently changed files:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="RecentlyChangedFiles" Text="" HorizontalAlignment="Center" Height="355" Margin="0,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="474"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="File Paths">
+                <Grid Background="#FFE5E5E5">
+                    <StackPanel x:Name="" Orientation="Horizontal" VerticalAlignment="Top" Height="20">
+                        <StackPanel.Resources>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Margin" Value="10,0,10,0"/>
+                            </Style>
+                        </StackPanel.Resources>
+                        <Button x:Name="AddNewFile" Content=" New "/>
+                        <Button x:Name="EditFiles" Content=" Edit "/>
+                        <Button x:Name="DeleteFiles" Content=" Delete "/>
+                    </StackPanel>
+                    <TextBlock x:Name="FilesDisplayed" Text="" HorizontalAlignment="Center" Margin="0,25,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="474" Height="371"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Settings">
+                <Grid Background="#FFE5E5E5">
+                </Grid>
+            </TabItem>
+            <TabItem Header="About">
+                <Grid Background="#FFE5E5E5">
+                </Grid>
+            </TabItem>
+        </TabControl>
 
     </Grid>
 </Window>
