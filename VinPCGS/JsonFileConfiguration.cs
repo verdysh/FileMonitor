@@ -6,8 +6,7 @@ using System.Text.Json;
 namespace VinPCGS
 {
     /// <summary>
-    /// Defines all methods for reading from and writing to the inventory.json file. This file is stored in the 
-    /// user's home directory.
+    /// Defines all methods for reading from and writing to the storedPath.json file.
     /// </summary>
     internal class JsonFileConfiguration
     {
@@ -27,7 +26,7 @@ namespace VinPCGS
         }
 
         /// <summary>
-        /// Create the inventory.json file. 
+        /// Create the storedPath.json file with an empty string List.
         /// </summary>
         private void CreateNewFile()
         {
@@ -37,9 +36,9 @@ namespace VinPCGS
         }
 
         /// <summary>
-        /// Read all JSON text into a string. Deserialize the string, then return the List as specified by the user
+        /// Read all JSON text into a string. Deserialize the string, then return the List
         /// </summary>
-        /// <returns> List of Inventory objects from inventory.json </returns>
+        /// <returns> A string list of all stored file paths </returns>
         public List<string> GetDeserializedList()
         {
             string jsonFileData = File.ReadAllText(storedPaths);
@@ -48,10 +47,9 @@ namespace VinPCGS
         }
 
         /// <summary>
-        /// Write a new Inventory object to inventory.json. First call GetJsonAsString() to retrieve the JSON file data. 
-        /// Deserialize the string into a List of Inventory objects, append the new Inventory object to the list. Then, 
-        /// re-serialize the List and save over the inventory.json file. 
+        ///  Deserialize the JSON file as a string List, add a new file path, re-serialize the list, then save over the file. 
         /// </summary>
+        /// <remarks> This method creates the program folder and the JSON file if they do not exist. </remarks>
         public void WriteToFile(string newPath)
         {
             if (!File.Exists(storedPaths) || !Directory.Exists(programFolder))
