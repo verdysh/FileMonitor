@@ -8,7 +8,7 @@ namespace VinPCGS
     /// <summary>
     /// Defines all methods for reading from and writing to the storedPath.json file.
     /// </summary>
-    internal class JsonFileConfiguration
+    internal class JsonFile
     {
         private static readonly string programFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\backups";
         private static readonly string storedPaths = $"{programFolder}\\storedPaths.json";

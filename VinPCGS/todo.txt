@@ -1,4 +1,8 @@
-﻿- Settings controls:
+﻿- Fixes:
+Show list of file paths in TextBlock
+Show file paths that have changed in TextBlock
+
+- Settings controls:
 1. Create a zip file
 2. Create a scheduled task
 3. Choose whether or not to name the file paths
