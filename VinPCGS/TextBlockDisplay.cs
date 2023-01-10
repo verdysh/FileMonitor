@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VinPCGS
 {
-    class TextBlockDisplayControls
+    class TextBlockDisplay
     {
         /// <summary>
         /// Display all currently stored file paths
