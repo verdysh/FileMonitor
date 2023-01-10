@@ -6,9 +6,9 @@ using System.Text.Json;
 namespace VinPCGS
 {
     /// <summary>
-    /// Defines all methods for reading from and writing to the storedPath.json file.
+    /// Defines all methods for reading from and writing to the storedPath.json file. This file is stored in %USERPROFILE%\backups
     /// </summary>
-    internal class JsonFile
+    internal static class JsonFile
     {
         private static readonly string programFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\backups";
         private static readonly string storedPaths = $"{programFolder}\\storedPaths.json";
@@ -17,8 +17,9 @@ namespace VinPCGS
         /// Instantiate an object of type JsonSerializerOptions. Set WriteIndented property to true 
         /// in order to format any serialized / deserialized JSON data with white spaces.
         /// </summary>
+        /// <remarks> Purpose is to make the JSON file human readable </remarks>
         /// <returns> JsonSerializerOptions object to format a JSON file with white spaces. </returns>
-        private JsonSerializerOptions GetWhiteSpaceFormatting()
+        private static JsonSerializerOptions GetWhiteSpaceFormatting()
         {
             JsonSerializerOptions jsonSettings = new JsonSerializerOptions();
             jsonSettings.WriteIndented = true;
@@ -28,10 +29,10 @@ namespace VinPCGS
         /// <summary>
         /// Create the storedPath.json file with an empty string List.
         /// </summary>
-        private void CreateNewFile()
+        private static void CreateNewFile()
         {
             List<string> emptyFile = new List<string>();
-            string jsonData = JsonSerializer.Serialize(emptyFile, this.GetWhiteSpaceFormatting());
+            string jsonData = JsonSerializer.Serialize(emptyFile, GetWhiteSpaceFormatting());
             File.WriteAllText(storedPaths, jsonData);
         }
 
@@ -39,7 +40,7 @@ namespace VinPCGS
         /// Read all JSON text into a string. Deserialize the string, then return the List
         /// </summary>
         /// <returns> A string list of all stored file paths </returns>
-        public List<string> GetDeserializedList()
+        public static List<string> GetDeserializedList()
         {
             string jsonFileData = File.ReadAllText(storedPaths);
             List<string> jsonList = JsonSerializer.Deserialize<List<string>>(jsonFileData);
@@ -50,7 +51,7 @@ namespace VinPCGS
         ///  Deserialize the JSON file as a string List, add a new file path, re-serialize the list, then save over the file. 
         /// </summary>
         /// <remarks> This method creates the program folder and the JSON file if they do not exist. </remarks>
-        public void WriteToFile(string newPath)
+        public static void WriteToFile(string newPath)
         {
             if (!File.Exists(storedPaths) || !Directory.Exists(programFolder))
             {
@@ -61,7 +62,7 @@ namespace VinPCGS
             List<string> jsonList = GetDeserializedList();   
             jsonList.Add(newPath);
 
-            string serializedList = JsonSerializer.Serialize(jsonList, this.GetWhiteSpaceFormatting());
+            string serializedList = JsonSerializer.Serialize(jsonList, GetWhiteSpaceFormatting());
             File.WriteAllText(storedPaths, serializedList);
         }
     }

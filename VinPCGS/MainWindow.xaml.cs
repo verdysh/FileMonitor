@@ -17,8 +17,7 @@ namespace VinPCGS
             string newFile = FileDialogWindow.GetPath();
             if(newFile != "")
             {
-                JsonFile jsonFile = new JsonFile();
-                jsonFile.WriteToFile(newFile);
+                JsonFile.WriteToFile(newFile);
             }
         }
 
