@@ -14,12 +14,11 @@ namespace VinPCGS
 
         private void AddNewFile_Click(object sender, RoutedEventArgs e)
         {
-            FileDialogWindow window = new FileDialogWindow();
-            string newFile = window.GetPath();
+            string newFile = FileDialogWindow.GetPath();
             if(newFile != "")
             {
-                JsonFile jsonConfig = new JsonFile();
-                jsonConfig.WriteToFile(newFile);
+                JsonFile jsonFile = new JsonFile();
+                jsonFile.WriteToFile(newFile);
             }
         }
 
