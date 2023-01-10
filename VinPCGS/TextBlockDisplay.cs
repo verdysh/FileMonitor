@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace VinPCGS
@@ -23,8 +18,12 @@ namespace VinPCGS
             get { return files; }
             set
             {
-                files = value;
-                OnPropertyChanged();
+                if (value != files)
+                {
+                    files = value;
+                    OnPropertyChanged();
+                }
+                else return;
             }
         }
 
