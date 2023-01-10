@@ -6,12 +6,11 @@ using System.Text.Json;
 namespace VinPCGS
 {
     /// <summary>
-    /// Defines all methods for reading from and writing to the storedPath.json file. This file is stored in %USERPROFILE%\backups
+    /// Defines all methods for reading from and writing to the storedPath.json file. This file is stored at %USERPROFILE%\storedPaths.json
     /// </summary>
     internal static class JsonFile
     {
-        private static readonly string programFolder = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\backups";
-        private static readonly string storedPaths = $"{programFolder}\\storedPaths.json";
+        private static readonly string storedPaths = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\storedPaths.json";
 
         /// <summary>
         /// Instantiate an object of type JsonSerializerOptions. Set WriteIndented property to true 
@@ -53,9 +52,8 @@ namespace VinPCGS
         /// <remarks> This method creates the program folder and the JSON file if they do not exist. </remarks>
         public static void WriteToFile(string newPath)
         {
-            if (!File.Exists(storedPaths) || !Directory.Exists(programFolder))
+            if (!File.Exists(storedPaths))
             {
-                Directory.CreateDirectory(programFolder);
                 CreateNewFile();
             }
 
