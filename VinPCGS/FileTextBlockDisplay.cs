@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace VinPCGS
 {
-    class TextBlockDisplay : INotifyPropertyChanged
+    class FileTextBlockDisplay : INotifyPropertyChanged
     {
         // Private field to store all file paths
         private List<string> files; 
