@@ -1,6 +1,10 @@
-﻿- Fixes:
+- Fixes:
 Show list of file paths in TextBlock
 Show file paths that have changed in TextBlock
+
+- Features:
+Allow user to add dir. Display warning: adding a dir will add all files and subfiles from that dir
+Display "all files" in a TreeView
 
 - Settings controls:
 1. Create a zip file
