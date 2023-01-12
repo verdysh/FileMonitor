@@ -1,4 +1,5 @@
 - Fixes:
+Paths are not displayed correctly. (likely need to override the ToString method)
 Show list of file paths in TextBlock
 Show file paths that have changed in TextBlock
 
