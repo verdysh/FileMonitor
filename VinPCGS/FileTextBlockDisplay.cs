@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
 
 namespace VinPCGS
 {
@@ -43,15 +42,17 @@ namespace VinPCGS
         /// <summary>
         /// Display all currently stored file paths
         /// </summary>
-        public void ShowAllFiles()
+        /// <param name="mw"> MainWindow object. Used to update the XAML TextBlocks </param>
+        public void ShowAllFiles(MainWindow mw)
         {
-
+            mw.FilesDisplayed.Text = JsonFile.GetDeserializedList().ToString();
+            mw.RecentlyChangedFiles.Text = JsonFile.GetDeserializedList().ToString();
         }
 
         /// <summary>
         /// Display file paths only if the files have changed since the last backup
         /// </summary>
-        public void ShowRecentlyChangedFiles()
+        public void ShowRecentlyChangedFiles(MainWindow mw)
         {
 
         }
