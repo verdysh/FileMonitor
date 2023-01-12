@@ -27,8 +27,8 @@ namespace VinPCGS
             if(newFile != "")
             {
                 JsonFile.WriteToFile(newFile);
-                textBlockDisplay.Files = JsonFile.GetDeserializedList();
                 textBlockDisplay.PropertyChanged += TextBlockDisplay_PropertyChanged;
+                textBlockDisplay.Files = JsonFile.GetDeserializedList();
             }
         }
 
