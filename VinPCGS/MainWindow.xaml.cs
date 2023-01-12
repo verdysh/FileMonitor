@@ -24,7 +24,17 @@ namespace VinPCGS
             {
                 JsonFile.WriteToFile(newFile);
                 textBlockDisplay.Files = JsonFile.GetDeserializedList();
+                textBlockDisplay.PropertyChanged += TextBlockDisplay_PropertyChanged;
             }
+        }
+
+        /// <summary>
+        /// Update XAML TextBlocks when the PropertyChanged event is fired
+        /// </summary>
+        private void TextBlockDisplay_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            textBlockDisplay.ShowAllFiles();
+            textBlockDisplay.ShowRecentlyChangedFiles();
         }
 
         private void EditFiles_Click(object sender, RoutedEventArgs e)
