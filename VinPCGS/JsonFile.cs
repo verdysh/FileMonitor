@@ -10,7 +10,7 @@ namespace VinPCGS
     /// </summary>
     internal static class JsonFile
     {
-        private static readonly string storedPaths = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\storedPaths.json";
+        public static readonly string storedPaths = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\storedPaths.json";
 
         /// <summary>
         /// Instantiate an object of type JsonSerializerOptions. Set WriteIndented property to true 

@@ -7,6 +7,11 @@ namespace VinPCGS
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// This object fires an event when the list of files have changed
+        /// </summary>
+        FileTextBlockDisplay textBlockDisplay = new FileTextBlockDisplay();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -18,6 +23,7 @@ namespace VinPCGS
             if(newFile != "")
             {
                 JsonFile.WriteToFile(newFile);
+                textBlockDisplay.Files = JsonFile.GetDeserializedList();
             }
         }
 
