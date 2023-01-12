@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace VinPCGS
@@ -6,14 +7,14 @@ namespace VinPCGS
     class TextBlockDisplay : INotifyPropertyChanged
     {
         // Private field to store all file paths
-        private string files; 
+        private List<string> files; 
 
         // Declare PropertyChanged event
         public event PropertyChangedEventHandler PropertyChanged;
 
         // Public property to expose the private field
         // Call OnPropertyChanged() whenever the files have changed.
-        public string Files
+        public List<string> Files
         {
             get { return files; }
             set
