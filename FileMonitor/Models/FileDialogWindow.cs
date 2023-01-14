@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 
-namespace FileMonitor
+namespace FileMonitor.Models
 {
     internal static class FileDialogWindow
     {

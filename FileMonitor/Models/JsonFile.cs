@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 
-namespace FileMonitor
+namespace FileMonitor.Models
 {
     /// <summary>
     /// Defines all methods for reading from and writing to the storedPath.json file. This file is stored at %USERPROFILE%\storedPaths.json
@@ -57,7 +57,7 @@ namespace FileMonitor
                 CreateNewFile();
             }
 
-            List<string> jsonList = GetDeserializedList();   
+            List<string> jsonList = GetDeserializedList();
             jsonList.Add(newPath);
 
             string serializedList = JsonSerializer.Serialize(jsonList, GetWhiteSpaceFormatting());

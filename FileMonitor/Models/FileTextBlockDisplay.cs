@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace FileMonitor
+namespace FileMonitor.Models
 {
     class FileTextBlockDisplay : INotifyPropertyChanged
     {
