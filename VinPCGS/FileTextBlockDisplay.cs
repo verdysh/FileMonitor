@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace VinPCGS
@@ -45,8 +46,13 @@ namespace VinPCGS
         /// <param name="mw"> MainWindow object. Used to update the XAML TextBlocks </param>
         public void ShowAllFiles(MainWindow mw)
         {
-            mw.FilesDisplayed.Text = JsonFile.GetDeserializedList().ToString();
-            mw.RecentlyChangedFiles.Text = JsonFile.GetDeserializedList().ToString();
+            List<string> files = JsonFile.GetDeserializedList();
+            string result = "";
+            for (int i = 0; i < files.Count; i++)
+            {
+                result += files[i] + "\n";
+            }
+            mw.FilesDisplayed.Text = result;
         }
 
         /// <summary>
@@ -54,7 +60,7 @@ namespace VinPCGS
         /// </summary>
         public void ShowRecentlyChangedFiles(MainWindow mw)
         {
-
+            mw.RecentlyChangedFiles.Text = JsonFile.GetDeserializedList().ToString();
         }
     }
 }
