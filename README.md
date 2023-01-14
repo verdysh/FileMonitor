@@ -1,3 +1,7 @@
-# Vintage PC Game Saves
+# File Monitor
 
-Store your vintage PC game save files to a chosen backup location. 
+Keep track of files and directories. 
+
+Get a notification when a file has changed.
+
+Backup the updated files to a chosen location.
