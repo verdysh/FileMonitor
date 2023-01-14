@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace VinPCGS
+namespace FileMonitor
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

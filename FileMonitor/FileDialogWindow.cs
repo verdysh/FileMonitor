@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 
-namespace VinPCGS
+namespace FileMonitor
 {
     internal static class FileDialogWindow
     {

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace VinPCGS
+namespace FileMonitor
 {
     class FileTextBlockDisplay : INotifyPropertyChanged
     {

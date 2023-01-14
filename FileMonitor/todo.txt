@@ -1,0 +1,13 @@
+Fixes:
+- Show file paths that have changed in TextBlock
+- Add helper class / helper methods to format how the text is displayed (ex. show the date modified)
+
+Features:
+- Allow user to add dir. Display warning: adding a dir will add all files and subfiles from that dir. If you want to add only specific files, you must add each file individually
+- Display "all files" in a TreeView
+- Offer setting for constant watch? Use the FileSystemWatcher class for this
+
+- Settings controls:
+1. Create a zip file?
+2. Create a scheduled task in Windows?
+3. Choose whether or not to name the file paths

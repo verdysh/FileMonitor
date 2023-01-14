@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 
-namespace VinPCGS
+namespace FileMonitor
 {
     /// <summary>
     /// Defines all methods for reading from and writing to the storedPath.json file. This file is stored at %USERPROFILE%\storedPaths.json
