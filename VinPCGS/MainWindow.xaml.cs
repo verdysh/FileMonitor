@@ -15,6 +15,7 @@ namespace VinPCGS
         public MainWindow()
         {
             InitializeComponent();
+            textBlockDisplay.ShowAllFiles(this);
         }
 
         /// <summary>
