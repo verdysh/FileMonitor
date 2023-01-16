@@ -1,5 +1,9 @@
 ﻿using System.Windows;
 using FileMonitor.Models;
+using System.Data.SQLite;
+using FileMonitor.Database;
+using System;
+using System.IO;
 
 namespace FileMonitor
 {
@@ -12,10 +16,16 @@ namespace FileMonitor
         /// This object fires an event when the list of files have changed
         /// </summary>
         FileTextBlockDisplay textBlockDisplay = new FileTextBlockDisplay();
+        string programDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\fileMonitor";
 
         public MainWindow()
         {
             InitializeComponent();
+            if (!File.Exists($"{programDir}\\FMDB.sqllite"))
+            {
+                DatabaseBuilder builder = new DatabaseBuilder($"{programDir}\\FMDB.sqllite");
+                builder.Create();
+            }
             textBlockDisplay.ShowAllFiles(this);
         }
 
