@@ -10,7 +10,7 @@ namespace FileMonitor.Models
     /// </summary>
     internal static class JsonFile
     {
-        public static readonly string storedPaths = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\storedPaths.json";
+        public static readonly string storedPaths = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\fileMonitor\\storedPaths.json";
 
         /// <summary>
         /// Instantiate an object of type JsonSerializerOptions. Set WriteIndented property to true 
@@ -42,8 +42,12 @@ namespace FileMonitor.Models
         public static List<string> GetDeserializedList()
         {
             string jsonFileData = File.ReadAllText(storedPaths);
-            List<string> jsonList = JsonSerializer.Deserialize<List<string>>(jsonFileData);
-            return jsonList;
+            if (jsonFileData == "") return new List<string>() { "" };
+            else 
+            {
+                List<string> jsonList = JsonSerializer.Deserialize<List<string>>(jsonFileData);
+                return jsonList;
+            }
         }
 
         /// <summary>
@@ -52,11 +56,6 @@ namespace FileMonitor.Models
         /// <remarks> This method creates the program folder and the JSON file if they do not exist. </remarks>
         public static void WriteToFile(string newPath)
         {
-            if (!File.Exists(storedPaths))
-            {
-                CreateNewFile();
-            }
-
             List<string> jsonList = GetDeserializedList();
             jsonList.Add(newPath);
 

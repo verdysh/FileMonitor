@@ -20,9 +20,16 @@ namespace FileMonitor
 
         public MainWindow()
         {
+            if (!File.Exists(JsonFile.storedPaths))
+            {
+                File.Create(JsonFile.storedPaths);
+            }
+
             InitializeComponent();
+
             if (!File.Exists($"{programDir}\\FMDB.sqllite"))
             {
+                Directory.CreateDirectory(programDir);
                 DatabaseBuilder builder = new DatabaseBuilder($"{programDir}\\FMDB.sqllite");
                 builder.Create();
             }
