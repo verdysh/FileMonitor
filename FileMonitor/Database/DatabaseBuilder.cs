@@ -1,5 +1,4 @@
 ﻿using System.Data.SQLite;
-using System.Collections.Generic;
 
 namespace FileMonitor.Database
 {
@@ -10,18 +9,27 @@ namespace FileMonitor.Database
         {
             this.path = path;
         }
-        SQLCommands s = new SQLCommands();
 
         public void Create()
         {
+            string[] SQLCommands = new string[]
+            {
+                "CREATE TABLE source_file (id INT, path VARCHAR(260))",
+                "CREATE TABLE backup_file (id INT, path VARCHAR(260))",
+                "CREATE TABLE source_backup_file_rel (source_file_id INT, backup_file_id INT)",
+                "CREATE TABLE source_hash (id INT, hashcode VARCHAR(160))",
+                "CREATE TABLE backup_hash (id INT, hashcode VARCHAR(160))",
+                "CREATE TABLE source_backup_hash_rel (source_hash_id INT, backup_hash_id INT)",
+                "CREATE TABLE source_file_hash_rel (source_file_id INT, source_hash_id VARCHAR(160))",
+                "CREATE TABLE backup_file_hash_rel (backup_file_id INT, backup_hash_id VARCHAR(160))"
+            };
             SQLiteConnection.CreateFile(path);
             SQLiteConnection SQLconnection = new SQLiteConnection("Data Source=FMDB.sqllite;Version=3");
             SQLconnection.Open();
 
-            foreach (KeyValuePair<string, string> entry in s.TablesColumnsCreate)
+            for (int i = 0; i < SQLCommands.Length; i++)
             {
-                string sql = $"{s.create} {entry.Key} {entry.Value}";
-                SQLiteCommand command = new SQLiteCommand(sql, SQLconnection);
+                SQLiteCommand command = new SQLiteCommand(SQLCommands[i], SQLconnection);
                 command.ExecuteNonQuery();
             }
         }
