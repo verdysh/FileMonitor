@@ -16,6 +16,7 @@ namespace FileMonitor
         /// This object fires an event when the list of files have changed
         /// </summary>
         FileTextBlockDisplay textBlockDisplay = new FileTextBlockDisplay();
+        SQLStatements sqlStatements = new SQLStatements();
         string programDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\fileMonitor";
 
         public MainWindow()
@@ -31,7 +32,7 @@ namespace FileMonitor
             {
                 Directory.CreateDirectory(programDir);
                 DatabaseBuilder builder = new DatabaseBuilder($"{programDir}\\FMDB.sqllite");
-                builder.Create();
+                builder.Create(sqlStatements.tablesColumnsCreate);
             }
             textBlockDisplay.ShowAllFiles(this);
         }
