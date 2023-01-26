@@ -2,6 +2,9 @@
 
 namespace FileMonitor.Database
 {
+    /// <summary>
+    /// Class dedicated to creating the initial database
+    /// </summary>
     internal class DatabaseBuilder
     {
         private string path;
