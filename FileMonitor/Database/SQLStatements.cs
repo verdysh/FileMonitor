@@ -1,5 +1,8 @@
 ﻿namespace FileMonitor.Database
 {
+    /// <summary>
+    /// A data class to store all SQL statements in one location
+    /// </summary>
     internal class SQLStatements
     {
         public readonly string[] tablesColumnsCreate = new string[]
