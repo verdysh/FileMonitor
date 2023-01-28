@@ -32,7 +32,7 @@ namespace FileMonitor
             {
                 Directory.CreateDirectory(programDir);
                 DatabaseBuilder builder = new DatabaseBuilder($"{programDir}\\FMDB.sqllite");
-                builder.Create(sqlStatements.tablesColumnsCreate);
+                builder.Create();
             }
             textBlockDisplay.ShowAllFiles(this);
         }
