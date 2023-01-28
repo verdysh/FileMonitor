@@ -36,6 +36,7 @@ namespace FileMonitor.Database
                 SQLiteCommand command = new SQLiteCommand(commands[i], SQLconnection);
                 command.ExecuteNonQuery();
             }
+            SQLconnection.Close();
         }
     }
 }
