@@ -1,9 +1,9 @@
 ﻿using System.Windows;
 using FileMonitor.Models;
-using System.Data.SQLite;
 using FileMonitor.Database;
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 namespace FileMonitor
 {
@@ -12,11 +12,8 @@ namespace FileMonitor
     /// </summary>
     public partial class MainWindow : Window
     {
-        /// <summary>
-        /// This object fires an event when the list of files have changed
-        /// </summary>
-        FileTextBlockDisplay textBlockDisplay = new FileTextBlockDisplay();
-        SQLStatements sqlStatements = new SQLStatements();
+        FileTextBlockDisplay textBlockDisplay = new FileTextBlockDisplay(); // fires an event when the list of files have changed
+        DatabaseInserter inserter = new DatabaseInserter();
         string programDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\fileMonitor";
 
         public MainWindow()
@@ -38,14 +35,21 @@ namespace FileMonitor
         }
 
         /// <summary>
-        /// Update JSON file, and update the Files property in textBlockDisplay in order to trigger
-        /// the PropertyChanged event
+        /// Add new filepath to database. Notify the PropertyChanged event.
         /// </summary>
         private void AddNewFile_Click(object sender, RoutedEventArgs e)
         {
             string newFile = FileDialogWindow.GetPath();
             if(newFile != "")
             {
+                IDQuery idQuery = new IDQuery();
+                List<string> ids = idQuery.GetSingleColumnIDs("source_file");
+
+                int id = Int32.Parse(ids[ids.Count - 1]);
+                id++;
+
+                inserter.Insert("source_file", $"({id} {newFile})");
+
                 JsonFile.WriteToFile(newFile);
                 textBlockDisplay.PropertyChanged += TextBlockDisplay_PropertyChanged;
                 textBlockDisplay.Files = JsonFile.GetDeserializedList();
