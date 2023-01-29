@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Data.SQLite;
 
 namespace FileMonitor.Database
@@ -29,7 +28,7 @@ namespace FileMonitor.Database
                 { "backup_file_hash_rel", $"INSERT INTO backup_file_hash_rel (backup_file_id, backup_hash_id) values {data}"},
             };
 
-            SQLiteConnection connection = new SQLiteConnection("Data Source=FMDB.sqllite;Version=3");
+            SQLiteConnection connection = new SQLiteConnection("Data Source=FMDB.sqlite;Version=3");
             connection.Open();
 
             string command = commands[key];

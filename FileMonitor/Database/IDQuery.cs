@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
+﻿using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace FileMonitor.Database
 {
@@ -28,6 +24,17 @@ namespace FileMonitor.Database
             while (reader.Read()) result.Add(reader["id"].ToString());
             connection.Close();
             return result;
+        }
+        public void TestQuery()
+        {
+            //string query = $"SELECT id FROM {table}";
+
+            //SQLiteConnection connection = new SQLiteConnection("Data Source=MyDatabase.sqlite;Version=3;");
+            //connection.Open();
+
+            //SQLiteCommand command = new SQLiteCommand(query, connection);
+            //SQLiteDataReader reader = command.ExecuteReader();
+            //Debug.WriteLine()
         }
     }
 }

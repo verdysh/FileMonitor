@@ -14,7 +14,7 @@ namespace FileMonitor
     {
         FileTextBlockDisplay textBlockDisplay = new FileTextBlockDisplay(); // fires an event when the list of files have changed
         DatabaseInserter inserter = new DatabaseInserter();
-        string programDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\fileMonitor";
+        string programDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\FileMonitor";
 
         public MainWindow()
         {
@@ -25,10 +25,10 @@ namespace FileMonitor
 
             InitializeComponent();
 
-            if (!File.Exists($"{programDir}\\FMDB.sqllite"))
+            if (!File.Exists($"{programDir}\\FMDB.sqlite"))
             {
                 Directory.CreateDirectory(programDir);
-                DatabaseBuilder builder = new DatabaseBuilder($"{programDir}\\FMDB.sqllite");
+                DatabaseBuilder builder = new DatabaseBuilder($"{programDir}\\FMDB.sqlite");
                 builder.Create();
             }
             textBlockDisplay.ShowAllFiles(this);
