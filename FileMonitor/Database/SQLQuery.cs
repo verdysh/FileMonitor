@@ -27,7 +27,7 @@ namespace FileMonitor.Database
             List<string> result = new List<string>();
             string query = $"SELECT id FROM {table}";
 
-            SQLiteConnection connection = new SQLiteConnection("Data Source=MyDatabase.sqlite;Version=3;");
+            SQLiteConnection connection = new SQLiteConnection($"Data Source={path};Version=3;");
             connection.Open();
 
             SQLiteCommand command = new SQLiteCommand(query, connection);
@@ -40,7 +40,7 @@ namespace FileMonitor.Database
         {
             //string query = $"SELECT id FROM {table}";
 
-            //SQLiteConnection connection = new SQLiteConnection("Data Source=MyDatabase.sqlite;Version=3;");
+            //SQLiteConnection connection = new SQLiteConnection($"Data Source={path};Version=3;");
             //connection.Open();
 
             //SQLiteCommand command = new SQLiteCommand(query, connection);

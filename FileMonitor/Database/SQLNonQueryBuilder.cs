@@ -33,7 +33,7 @@ namespace FileMonitor.Database
         public void Create()
         {
             SQLiteConnection.CreateFile(path);
-            SQLiteConnection SQLconnection = new SQLiteConnection("Data Source=FMDB.sqlite;Version=3");
+            SQLiteConnection SQLconnection = new SQLiteConnection($"Data Source={path};Version=3;");
             SQLconnection.Open();
 
             for (int i = 0; i < commands.Length; i++)
