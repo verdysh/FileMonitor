@@ -42,8 +42,8 @@ namespace FileMonitor
             string newFile = FileDialogWindow.GetPath();
             if(newFile != "")
             {
-                IDQuery idQuery = new IDQuery();
-                List<string> ids = idQuery.GetSingleColumnIDs("source_file");
+                Query query = new Query();
+                List<string> ids = query.GetSingleColumnIDs("source_file");
 
                 int id = Int32.Parse(ids[ids.Count - 1]);
                 id++;
