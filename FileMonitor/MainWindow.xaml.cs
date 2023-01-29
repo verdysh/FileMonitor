@@ -45,13 +45,12 @@ namespace FileMonitor
             string newFile = FileDialogWindow.GetPath();
             if(newFile != "")
             {
-                SQLQuery query = new SQLQuery(databasePath);
-                List<string> ids = query.GetSingleColumnIDs("source_file");
-
-                int id = Int32.Parse(ids[ids.Count - 1]);
-                id++;
-
-                nonQuery.Insert("source_file", $"({id} {newFile})");
+                SQLQuery query = new SQLQuery(databasePath, "source_file");
+                query.GetNextAvailableID("id");
+                //List<string> ids = query.GetSingleColumnIDs();
+                //int id = Int32.Parse(ids[ids.Count - 1]);
+                //id++;
+                //nonQuery.Insert("source_file", $"({id} {newFile})");
 
                 JsonFile.WriteToFile(newFile);
                 textBlockDisplay.PropertyChanged += TextBlockDisplay_PropertyChanged;
