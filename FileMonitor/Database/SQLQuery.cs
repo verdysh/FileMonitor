@@ -6,6 +6,17 @@ namespace FileMonitor.Database
 {
     internal class SQLQuery
     {
+        private string path;
+
+        /// <summary>
+        /// Defines the class constructor
+        /// </summary>
+        /// <param name="path"> Path to database file </param>
+        public SQLQuery(string path)
+        {
+            this.path = path;
+        }
+
         /// <summary>
         /// Get IDs from database where only one column contains IDs
         /// </summary>

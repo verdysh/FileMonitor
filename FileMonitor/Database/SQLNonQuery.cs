@@ -5,6 +5,17 @@ namespace FileMonitor.Database
 {
     internal class SQLNonQuery
     {
+        private string path;
+
+        /// <summary>
+        /// Defines the class constructor
+        /// </summary>
+        /// <param name="path"> Path to database file </param>
+        public SQLNonQuery(string path)
+        {
+            this.path = path;
+        }
+
         /// <summary>
         /// A method to insert data into the database tables
         /// </summary>

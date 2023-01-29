@@ -12,10 +12,12 @@ namespace FileMonitor
     /// </summary>
     public partial class MainWindow : Window
     {
-        FileTextBlockDisplay textBlockDisplay = new FileTextBlockDisplay(); // fires an event when the list of files have changed
-        SQLNonQuery nonQuery = new SQLNonQuery();
         static string programDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\FileMonitor";
         static string databasePath = $"{programDir}\\FMDB.sqlite";
+
+        FileTextBlockDisplay textBlockDisplay = new FileTextBlockDisplay(); // fires an event when the list of files have changed
+        SQLNonQuery nonQuery = new SQLNonQuery(databasePath);
+
 
         public MainWindow()
         {
@@ -43,7 +45,7 @@ namespace FileMonitor
             string newFile = FileDialogWindow.GetPath();
             if(newFile != "")
             {
-                SQLQuery query = new SQLQuery();
+                SQLQuery query = new SQLQuery(databasePath);
                 List<string> ids = query.GetSingleColumnIDs("source_file");
 
                 int id = Int32.Parse(ids[ids.Count - 1]);

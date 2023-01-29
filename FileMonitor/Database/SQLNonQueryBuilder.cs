@@ -8,6 +8,11 @@ namespace FileMonitor.Database
     internal class SQLNonQueryBuilder
     {
         private string path;
+
+        /// <summary>
+        /// Defines the class constructor
+        /// </summary>
+        /// <param name="path"> Path to database file </param>
         public SQLNonQueryBuilder(string path) 
         {
             this.path = path;
