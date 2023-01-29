@@ -5,10 +5,10 @@ namespace FileMonitor.Database
     /// <summary>
     /// Class dedicated to creating the initial database
     /// </summary>
-    internal class DatabaseBuilder
+    internal class SQLNonQueryBuilder
     {
         private string path;
-        public DatabaseBuilder(string path) 
+        public SQLNonQueryBuilder(string path) 
         {
             this.path = path;
         }

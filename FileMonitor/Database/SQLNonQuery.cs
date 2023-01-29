@@ -3,7 +3,7 @@ using System.Data.SQLite;
 
 namespace FileMonitor.Database
 {
-    internal class DatabaseInserter
+    internal class SQLNonQuery
     {
         /// <summary>
         /// A method to insert data into the database tables

@@ -13,8 +13,9 @@ namespace FileMonitor
     public partial class MainWindow : Window
     {
         FileTextBlockDisplay textBlockDisplay = new FileTextBlockDisplay(); // fires an event when the list of files have changed
-        DatabaseInserter inserter = new DatabaseInserter();
-        string programDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\FileMonitor";
+        SQLNonQuery nonQuery = new SQLNonQuery();
+        static string programDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\FileMonitor";
+        static string databasePath = $"{programDir}\\FMDB.sqlite";
 
         public MainWindow()
         {
@@ -28,7 +29,7 @@ namespace FileMonitor
             if (!File.Exists($"{programDir}\\FMDB.sqlite"))
             {
                 Directory.CreateDirectory(programDir);
-                DatabaseBuilder builder = new DatabaseBuilder($"{programDir}\\FMDB.sqlite");
+                SQLNonQueryBuilder builder = new SQLNonQueryBuilder(databasePath);
                 builder.Create();
             }
             textBlockDisplay.ShowAllFiles(this);
@@ -42,13 +43,13 @@ namespace FileMonitor
             string newFile = FileDialogWindow.GetPath();
             if(newFile != "")
             {
-                Query query = new Query();
+                SQLQuery query = new SQLQuery();
                 List<string> ids = query.GetSingleColumnIDs("source_file");
 
                 int id = Int32.Parse(ids[ids.Count - 1]);
                 id++;
 
-                inserter.Insert("source_file", $"({id} {newFile})");
+                nonQuery.Insert("source_file", $"({id} {newFile})");
 
                 JsonFile.WriteToFile(newFile);
                 textBlockDisplay.PropertyChanged += TextBlockDisplay_PropertyChanged;

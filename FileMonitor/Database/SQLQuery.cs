@@ -4,7 +4,7 @@ using System.Data.SQLite;
 
 namespace FileMonitor.Database
 {
-    internal class Query
+    internal class SQLQuery
     {
         /// <summary>
         /// Get IDs from database where only one column contains IDs
