@@ -16,8 +16,6 @@ namespace FileMonitor
         static string databasePath = $"{programDir}\\FMDB.sqlite";
 
         FileTextBlockDisplay textBlockDisplay = new FileTextBlockDisplay(); // fires an event when the list of files have changed
-        SQLNonQuery nonQuery = new SQLNonQuery(databasePath);
-
 
         public MainWindow()
         {
@@ -43,15 +41,19 @@ namespace FileMonitor
         private void AddNewFile_Click(object sender, RoutedEventArgs e)
         {
             string newFile = FileDialogWindow.GetPath();
+            newFile = $"\'{newFile}\'"; // Surround with single quotes for SQL command
+
             if(newFile != "")
             {
+                // Create query and non-query objects
                 SQLQuery query = new SQLQuery(databasePath, "source_file");
-                int id = query.GetNextAvailableID("id");
-                //List<string> ids = query.GetSingleColumnIDs();
-                //int id = Int32.Parse(ids[ids.Count - 1]);
-                //id++;
-                //nonQuery.Insert("source_file", $"({id} {newFile})");
+                SQLNonQuery nonQuery = new SQLNonQuery(databasePath);
 
+                // Execute SQL commands
+                int id = query.GetNextAvailableID("id");
+                nonQuery.Insert("source_file", $"({id}, {newFile})");
+
+                // Deprecated. Must remove once SQL tests pass
                 JsonFile.WriteToFile(newFile);
                 textBlockDisplay.PropertyChanged += TextBlockDisplay_PropertyChanged;
                 textBlockDisplay.Files = JsonFile.GetDeserializedList();
