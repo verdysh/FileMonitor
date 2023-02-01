@@ -1,5 +1,5 @@
 Fixes:
-- IDQuery object throws error: System.Data.SQLite.SQLiteException: 'SQL logic error no such table: source_file' when calling method GetSingleColumnIDs()
+- Update textblocks from database / remove JSON file references 
 - Show file paths that have changed in TextBlock
 - Add helper class / helper methods to format how the text is displayed (ex. show the date modified)
 
