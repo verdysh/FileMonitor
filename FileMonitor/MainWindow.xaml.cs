@@ -53,9 +53,12 @@ namespace FileMonitor
                 int id = query.GetNextAvailableID("id");
                 nonQuery.Insert("source_file", $"({id}, {newFile})");
 
+                // Update UI
+                textBlockDisplay.PropertyChanged += TextBlockDisplay_PropertyChanged;
+
+
                 // Deprecated. Must remove once SQL tests pass
                 JsonFile.WriteToFile(newFile);
-                textBlockDisplay.PropertyChanged += TextBlockDisplay_PropertyChanged;
                 textBlockDisplay.Files = JsonFile.GetDeserializedList();
             }
         }
