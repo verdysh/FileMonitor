@@ -29,7 +29,7 @@ namespace FileMonitor.Database
             else
             {
                 object lastId = list[list.Count - 1];
-                return -1;
+                return 1 + (int)lastId; // cast to integer
             }
         }
 
