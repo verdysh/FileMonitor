@@ -46,7 +46,7 @@ namespace FileMonitor
             if(newFile != "")
             {
                 SQLQuery query = new SQLQuery(databasePath, "source_file");
-                query.GetNextAvailableID("id");
+                int id = query.GetNextAvailableID("id");
                 //List<string> ids = query.GetSingleColumnIDs();
                 //int id = Int32.Parse(ids[ids.Count - 1]);
                 //id++;
