@@ -26,7 +26,7 @@ namespace FileMonitor.Database
         /// <returns> An integer of the next available column ID </returns>
         public int GetNextAvailableID(string column)
         {
-            List<object> list = GetColumnIDs(column);
+            List<object> list = GetColumnValues(column);
 
             if (list.Count == 0) return 0;
             else
@@ -36,7 +36,20 @@ namespace FileMonitor.Database
             }
         }
 
-        private List<object> GetColumnIDs(string column)
+        public List<string> GetPaths(string column)
+        {
+            //todo
+            List<object> data = new List<object>();
+            List<string> paths = new List<string>();
+            return paths;
+        }
+
+        /// <summary>
+        /// Get a list of values from the specified column
+        /// </summary>
+        /// <param name="column"> Database table name to get data from </param>
+        /// <returns> A list of objects from all entries within the table </returns>
+        private List<object> GetColumnValues(string column)
         {
             List<object> result = new List<object>();
             string query = $"SELECT {column} FROM {table}";

@@ -53,9 +53,8 @@ namespace FileMonitor
                 int id = query.GetNextAvailableID("id");
                 nonQuery.Insert("source_file", $"({id}, {newFile})");
 
-                // Update UI
+                // Update UI by firing the PropertyChanged event
                 textBlockDisplay.PropertyChanged += TextBlockDisplay_PropertyChanged;
-
 
                 // Deprecated. Must remove once SQL tests pass
                 JsonFile.WriteToFile(newFile);
