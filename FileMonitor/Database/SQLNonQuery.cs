@@ -20,11 +20,14 @@ namespace FileMonitor.Database
         /// A method to insert data into the database tables
         /// </summary>
         /// <remarks> 
-        /// This method creates a dictionary called 'commands' where all the insert SQL 
-        /// statements are stored
+        /// This method creates a dictionary called 'commands' where all the 'insert' SQL 
+        /// statements are stored. 
         /// </remarks>
-        /// <param name="key"> A dictionary key that points to the database table </param>
-        /// <param name="data"> data to insert into the table </param>
+        /// <param name="key"> Name of the the database table, points to the SQL command </param>
+        /// <param name="data"> 
+        /// Data to insert into the table. 
+        /// Example: (12, 'C:\\Program Files\\File.txt')
+        /// </param>
         public void Insert(string key, string data)
         {
             Dictionary<string, string> commands = new Dictionary<string, string>() 
