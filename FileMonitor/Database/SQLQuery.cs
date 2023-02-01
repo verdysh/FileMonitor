@@ -50,16 +50,5 @@ namespace FileMonitor.Database
             connection.Close();
             return result;
         }
-        public void TestQuery()
-        {
-            //string query = $"SELECT id FROM {table}";
-
-            //SQLiteConnection connection = new SQLiteConnection($"Data Source={path};Version=3;");
-            //connection.Open();
-
-            //SQLiteCommand command = new SQLiteCommand(query, connection);
-            //SQLiteDataReader reader = command.ExecuteReader();
-            //Debug.WriteLine()
-        }
     }
 }
