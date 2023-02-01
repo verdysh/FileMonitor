@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Diagnostics;
 
 namespace FileMonitor.Database
 {
@@ -14,13 +12,18 @@ namespace FileMonitor.Database
         /// <summary>
         /// Defines the class constructor
         /// </summary>
-        /// <param name="path"> Path to database file </param>
+        /// <param name="path"> Path to the program database file </param>
         public SQLQuery(string path, string table)
         {
             this.path = path;
             this.table = table;
         }
 
+        /// <summary>
+        /// Query the table for a single ID column, and retrieve the next available ID
+        /// </summary>
+        /// <param name="column"> Column to retrieve data from </param>
+        /// <returns> An integer of the next available column ID </returns>
         public int GetNextAvailableID(string column)
         {
             List<object> list = GetColumnIDs(column);
@@ -35,7 +38,6 @@ namespace FileMonitor.Database
 
         private List<object> GetColumnIDs(string column)
         {
-            // init
             List<object> result = new List<object>();
             string query = $"SELECT {column} FROM {table}";
 

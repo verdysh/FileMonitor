@@ -10,24 +10,25 @@ namespace FileMonitor.Database
         /// <summary>
         /// Defines the class constructor
         /// </summary>
-        /// <param name="path"> Path to database file </param>
+        /// <param name="path"> Path to the program database file </param>
         public SQLNonQuery(string path)
         {
             this.path = path;
         }
 
         /// <summary>
-        /// A method to insert data into the database tables
+        /// A method to insert data into the database tables. This method creates a dictionary called 
+        /// 'commands' where all the 'insert' SQL statements are stored. 
         /// </summary>
-        /// <remarks> 
-        /// This method creates a dictionary called 'commands' where all the 'insert' SQL 
-        /// statements are stored. 
-        /// </remarks>
         /// <param name="key"> Name of the the database table, points to the SQL command </param>
         /// <param name="data"> 
         /// Data to insert into the table. 
-        /// Example: (12, 'C:\\Program Files\\File.txt')
+        /// Example data value: "(12, 'C:\\Program Files\\File.txt')"
         /// </param>
+        /// <remarks>
+        /// Example of a complete statement: 
+        /// "INSERT INTO source_file (id, path) values (12, 'C:\\Program Files\\File.txt')"
+        /// </remarks>
         public void Insert(string key, string data)
         {
             Dictionary<string, string> commands = new Dictionary<string, string>() 

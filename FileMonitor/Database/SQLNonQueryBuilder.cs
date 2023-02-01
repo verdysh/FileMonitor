@@ -12,12 +12,15 @@ namespace FileMonitor.Database
         /// <summary>
         /// Defines the class constructor
         /// </summary>
-        /// <param name="path"> Path to database file </param>
+        /// <param name="path"> Path to the program database file </param>
         public SQLNonQueryBuilder(string path) 
         {
             this.path = path;
         }
 
+        /// <summary>
+        /// An array containing all the commands for creating the database tables
+        /// </summary>
         private readonly string[] commands = new string[]
         {
             "CREATE TABLE source_file (id INT, path VARCHAR(260))",
@@ -30,6 +33,9 @@ namespace FileMonitor.Database
             "CREATE TABLE backup_file_hash_rel (backup_file_id INT, backup_hash_id VARCHAR(160))"
         };
 
+        /// <summary>
+        /// A method to create a SQLite connection and execute all 'CREATE TABLE' commands
+        /// </summary>
         public void Create()
         {
             SQLiteConnection.CreateFile(path);
