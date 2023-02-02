@@ -41,10 +41,10 @@ namespace FileMonitor
         private void AddNewFile_Click(object sender, RoutedEventArgs e)
         {
             string newFile = FileDialogWindow.GetPath();
-            newFile = $"\'{newFile}\'"; // Surround with single quotes for SQL command
 
             if(newFile != "")
             {
+                newFile = $"\'{newFile}\'"; // Surround with single quotes for SQL command
                 // Create query and non-query objects
                 SQLQuery query = new SQLQuery(databasePath, "source_file");
                 SQLNonQuery nonQuery = new SQLNonQuery(databasePath);
