@@ -32,13 +32,5 @@ namespace FileMonitor.Models
         {
             FilesChangedEventHandler?.Invoke(this, e);
         }
-
-        /// <summary>
-        /// Display file paths only if the files have changed since the last backup
-        /// </summary>
-        public void ShowChangedSinceBackup(MainWindow mw)
-        {
-            mw.RecentlyChangedFiles.Text = JsonFile.GetDeserializedList().ToString();
-        }
     }
 }
