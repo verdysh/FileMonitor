@@ -17,6 +17,7 @@ namespace FileMonitor
 
         public MainWindow()
         {
+            // Remove logic once SQL tests pass
             if (!File.Exists(JsonFile.storedPaths))
             {
                 File.Create(JsonFile.storedPaths);
@@ -34,7 +35,7 @@ namespace FileMonitor
         }
 
         /// <summary>
-        /// Display all monitored files in the UI
+        /// A method to display all monitored files in the UI
         /// </summary>
         /// <param name="files"> A list of files to display </param>
         private void ShowAllFiles(List<string> files)
@@ -48,7 +49,8 @@ namespace FileMonitor
         }
 
         /// <summary>
-        /// Display files in the UI only if they have changed since the last backup 
+        /// A method to display the monitored files in the UI, limited to only the files that have changed since
+        /// the last backup.
         /// </summary>
         /// <param name="files"> A list of files to display </param>
         private void ShowChangedFilesSinceBackup(List<string> files)
@@ -57,15 +59,20 @@ namespace FileMonitor
         }
 
         /// <summary>
-        /// Add new filepath to database. Notify the PropertyChanged event.
+        /// A method to execute when the AddNewFile button is clicked
         /// </summary>
+        /// <remarks>
+        /// This method writes the new file to the SQLite database, and subscribes to the FilesChangedEventHandler.
+        /// This event handler will receive a method in its invocation list to update the program UI
+        /// </remarks>
         private void AddNewFile_Click(object sender, RoutedEventArgs e)
         {
             string newFile = FileDialogWindow.GetPath();
 
             if(newFile != "")
             {
-                newFile = $"\'{newFile}\'"; // Surround with single quotes for SQL command
+                // Surround with single quotes for SQL command
+                newFile = $"\'{newFile}\'"; 
                 // Create query and non-query objects
                 SQLQuery query = new SQLQuery(databasePath, "source_file");
                 SQLNonQuery nonQuery = new SQLNonQuery(databasePath);
@@ -74,20 +81,23 @@ namespace FileMonitor
                 int id = query.GetNextAvailableID("id");
                 nonQuery.Insert("source_file", $"({id}, {newFile})");
 
-                MonitoredFiles monitoredFiles = new MonitoredFiles(); // fires an event when the list of files have changed
+                // fires an event when the list of files have changed
+                MonitoredFiles monitoredFiles = new MonitoredFiles(); 
+
                 // Update UI by firing the PropertyChanged event
                 monitoredFiles.FilesChangedEventHandler += MonitoredFiles_PropertyChanged;
 
-                // Deprecated. Must remove once SQL tests pass
+                // Remove ;ogic once SQL tests pass
                 JsonFile.WriteToFile(newFile);
-                monitoredFiles.Files = JsonFile.GetDeserializedList();
+                monitoredFiles.AllFiles = JsonFile.GetDeserializedList();
             }
         }
 
         /// <summary>
         /// Update XAML TextBlocks when the PropertyChanged event is fired
         /// </summary>
-        /// <remarks> Pass this MainWindow instance by reference to both method calls </remarks>
+        /// <param name="sender"> object sender arg </param>
+        /// <param name="e"> e.NewFiles contains the updated file list </param>
         private void MonitoredFiles_PropertyChanged(object? sender, FilesChangedEventArgs e)
         {
             if(e.OldFiles != e.NewFiles)

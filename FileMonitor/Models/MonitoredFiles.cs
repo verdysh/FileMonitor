@@ -3,17 +3,20 @@ using System.Collections.Generic;
 
 namespace FileMonitor.Models
 {
+    /// <summary>
+    /// Defines a class for accessing a list of files that are monitored by the program.
+    /// </summary>
     class MonitoredFiles
     {
         private List<string>? allFiles;
         private List<string>? filesChangedSinceBackup;
-        public event EventHandler<FilesChangedEventArgs> FilesChangedEventHandler;
+        public event EventHandler<FilesChangedEventArgs>? FilesChangedEventHandler;
 
         /// <summary>
-        /// Public property to expose the private field
-        /// Call OnPropertyChanged() whenever the files have changed.
+        /// Defines a public property for getting and setting all files monitored by the program
         /// </summary>
-        public List<string> Files
+        /// <remarks> Call OnPropertyChanged() whenever the files have changed.</remarks>
+        public List<string> AllFiles
         {
             get { return allFiles; }
             set
