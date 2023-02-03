@@ -5,7 +5,7 @@ namespace FileMonitor.Database
     /// <summary>
     /// Class dedicated to creating the initial database
     /// </summary>
-    internal class SQLNonQueryBuilder
+    internal class DatabaseTables
     {
         private string path;
 
@@ -13,7 +13,7 @@ namespace FileMonitor.Database
         /// Defines the class constructor
         /// </summary>
         /// <param name="path"> Path to the program database file </param>
-        public SQLNonQueryBuilder(string path) 
+        public DatabaseTables(string path) 
         {
             this.path = path;
         }

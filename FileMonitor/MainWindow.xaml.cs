@@ -29,8 +29,8 @@ namespace FileMonitor
             if (!File.Exists(databasePath))
             {
                 Directory.CreateDirectory(programDir);
-                SQLNonQueryBuilder builder = new SQLNonQueryBuilder(databasePath);
-                builder.Create();
+                DatabaseTables databaseTables = new DatabaseTables(databasePath);
+                databaseTables.Create();
             }
             monitoredFiles.ShowAll(this);
         }
