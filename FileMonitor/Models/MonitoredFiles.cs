@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace FileMonitor.Models
 {
@@ -34,21 +31,6 @@ namespace FileMonitor.Models
         protected virtual void OnFilesChanged(FilesChangedEventArgs e)
         {
             FilesChangedEventHandler?.Invoke(this, e);
-        }
-
-        /// <summary>
-        /// Display all currently stored file paths
-        /// </summary>
-        /// <param name="mw"> MainWindow object. Used to update the XAML TextBlocks </param>
-        public void ShowAll(MainWindow mw)
-        {
-            List<string> files = JsonFile.GetDeserializedList();
-            string result = "";
-            for (int i = 0; i < files.Count; i++)
-            {
-                result += files[i] + "\n";
-            }
-            mw.FilesDisplayed.Text = result;
         }
 
         /// <summary>

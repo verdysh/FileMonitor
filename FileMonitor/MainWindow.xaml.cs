@@ -15,8 +15,6 @@ namespace FileMonitor
         static string programDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\FileMonitor";
         static string databasePath = $"{programDir}\\FMDB.sqlite";
 
-        MonitoredFiles monitoredFiles = new MonitoredFiles(); // fires an event when the list of files have changed
-
         public MainWindow()
         {
             if (!File.Exists(JsonFile.storedPaths))
@@ -32,7 +30,30 @@ namespace FileMonitor
                 DatabaseTables databaseTables = new DatabaseTables(databasePath);
                 databaseTables.Create();
             }
-            monitoredFiles.ShowAll(this);
+            ShowAllFiles(JsonFile.GetDeserializedList());
+        }
+
+        /// <summary>
+        /// Display all monitored files in the UI
+        /// </summary>
+        /// <param name="files"> A list of files to display </param>
+        private void ShowAllFiles(List<string> files)
+        {
+            string result = "";
+            for (int i = 0; i < files.Count; i++)
+            {
+                result += files[i] + "\n";
+            }
+            this.FilesDisplayed.Text = result;
+        }
+
+        /// <summary>
+        /// Display files in the UI only if they have changed since the last backup 
+        /// </summary>
+        /// <param name="files"> A list of files to display </param>
+        private void ShowChangedFilesSinceBackup(List<string> files)
+        {
+
         }
 
         /// <summary>
@@ -53,6 +74,7 @@ namespace FileMonitor
                 int id = query.GetNextAvailableID("id");
                 nonQuery.Insert("source_file", $"({id}, {newFile})");
 
+                MonitoredFiles monitoredFiles = new MonitoredFiles(); // fires an event when the list of files have changed
                 // Update UI by firing the PropertyChanged event
                 monitoredFiles.FilesChangedEventHandler += MonitoredFiles_PropertyChanged;
 
@@ -68,8 +90,10 @@ namespace FileMonitor
         /// <remarks> Pass this MainWindow instance by reference to both method calls </remarks>
         private void MonitoredFiles_PropertyChanged(object? sender, FilesChangedEventArgs e)
         {
-            monitoredFiles.ShowAll(this); 
-            monitoredFiles.ShowChangedSinceBackup(this);
+            if(e.OldFiles != e.NewFiles)
+            {
+                ShowAllFiles(e.NewFiles);
+            }
         }
 
         private void EditFiles_Click(object sender, RoutedEventArgs e)
