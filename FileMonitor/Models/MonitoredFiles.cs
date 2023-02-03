@@ -1,21 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace FileMonitor.Models
 {
-    class MonitoredFiles : INotifyPropertyChanged
+    class MonitoredFiles
     {
-        /// <summary>
-        /// Private field to store all file paths
-        /// </summary>
-        private List<string> files;
-
-        /// <summary>
-        /// Declare PropertyChanged event
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        private List<string>? allFiles;
+        private List<string>? filesChangedSinceBackup;
+        public event EventHandler<FilesChangedEventArgs> FilesChangedEventHandler;
 
         /// <summary>
         /// Public property to expose the private field
@@ -23,21 +18,22 @@ namespace FileMonitor.Models
         /// </summary>
         public List<string> Files
         {
-            get { return files; }
+            get { return allFiles; }
             set
             {
-                if (value != files)
+                if (value != allFiles)
                 {
-                    files = value;
-                    OnPropertyChanged();
+                    List<string> oldFiles = allFiles;
+                    OnFilesChanged(new FilesChangedEventArgs(oldFiles, value));
+                    allFiles = value;
                 }
                 else return;
             }
         }
 
-        protected void OnPropertyChanged([CallerMemberName] string files = null)
+        protected virtual void OnFilesChanged(FilesChangedEventArgs e)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(files));
+            FilesChangedEventHandler?.Invoke(this, e);
         }
 
         /// <summary>
