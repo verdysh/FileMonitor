@@ -26,7 +26,7 @@ namespace FileMonitor
 
             InitializeComponent();
 
-            if (!File.Exists($"{programDir}\\FMDB.sqlite"))
+            if (!File.Exists(databasePath))
             {
                 Directory.CreateDirectory(programDir);
                 SQLNonQueryBuilder builder = new SQLNonQueryBuilder(databasePath);
