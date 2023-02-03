@@ -15,7 +15,7 @@ namespace FileMonitor
         static string programDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\FileMonitor";
         static string databasePath = $"{programDir}\\FMDB.sqlite";
 
-        FileTextBlockDisplay textBlockDisplay = new FileTextBlockDisplay(); // fires an event when the list of files have changed
+        MonitoredFiles monitoredFiles = new MonitoredFiles(); // fires an event when the list of files have changed
 
         public MainWindow()
         {
@@ -32,7 +32,7 @@ namespace FileMonitor
                 SQLNonQueryBuilder builder = new SQLNonQueryBuilder(databasePath);
                 builder.Create();
             }
-            textBlockDisplay.ShowAllFiles(this);
+            monitoredFiles.ShowAll(this);
         }
 
         /// <summary>
@@ -54,11 +54,11 @@ namespace FileMonitor
                 nonQuery.Insert("source_file", $"({id}, {newFile})");
 
                 // Update UI by firing the PropertyChanged event
-                textBlockDisplay.PropertyChanged += TextBlockDisplay_PropertyChanged;
+                monitoredFiles.PropertyChanged += TextBlockDisplay_PropertyChanged;
 
                 // Deprecated. Must remove once SQL tests pass
                 JsonFile.WriteToFile(newFile);
-                textBlockDisplay.Files = JsonFile.GetDeserializedList();
+                monitoredFiles.Files = JsonFile.GetDeserializedList();
             }
         }
 
@@ -68,8 +68,8 @@ namespace FileMonitor
         /// <remarks> Pass this MainWindow instance by reference to both method calls </remarks>
         private void TextBlockDisplay_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            textBlockDisplay.ShowAllFiles(this); 
-            textBlockDisplay.ShowRecentlyChangedFiles(this);
+            monitoredFiles.ShowAll(this); 
+            monitoredFiles.ShowChangedSinceBackup(this);
         }
 
         private void EditFiles_Click(object sender, RoutedEventArgs e)

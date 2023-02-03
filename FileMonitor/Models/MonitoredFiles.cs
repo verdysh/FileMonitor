@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace FileMonitor.Models
 {
-    class FileTextBlockDisplay : INotifyPropertyChanged
+    class MonitoredFiles : INotifyPropertyChanged
     {
         /// <summary>
         /// Private field to store all file paths
@@ -44,7 +44,7 @@ namespace FileMonitor.Models
         /// Display all currently stored file paths
         /// </summary>
         /// <param name="mw"> MainWindow object. Used to update the XAML TextBlocks </param>
-        public void ShowAllFiles(MainWindow mw)
+        public void ShowAll(MainWindow mw)
         {
             List<string> files = JsonFile.GetDeserializedList();
             string result = "";
@@ -58,7 +58,7 @@ namespace FileMonitor.Models
         /// <summary>
         /// Display file paths only if the files have changed since the last backup
         /// </summary>
-        public void ShowRecentlyChangedFiles(MainWindow mw)
+        public void ShowChangedSinceBackup(MainWindow mw)
         {
             mw.RecentlyChangedFiles.Text = JsonFile.GetDeserializedList().ToString();
         }
