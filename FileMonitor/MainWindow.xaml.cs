@@ -54,7 +54,7 @@ namespace FileMonitor
                 nonQuery.Insert("source_file", $"({id}, {newFile})");
 
                 // Update UI by firing the PropertyChanged event
-                monitoredFiles.PropertyChanged += TextBlockDisplay_PropertyChanged;
+                monitoredFiles.PropertyChanged += MonitoredFiles_PropertyChanged;
 
                 // Deprecated. Must remove once SQL tests pass
                 JsonFile.WriteToFile(newFile);
@@ -66,7 +66,7 @@ namespace FileMonitor
         /// Update XAML TextBlocks when the PropertyChanged event is fired
         /// </summary>
         /// <remarks> Pass this MainWindow instance by reference to both method calls </remarks>
-        private void TextBlockDisplay_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void MonitoredFiles_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             monitoredFiles.ShowAll(this); 
             monitoredFiles.ShowChangedSinceBackup(this);
