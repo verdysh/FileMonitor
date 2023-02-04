@@ -38,16 +38,16 @@ namespace FileMonitor.Database
         }
 
         /// <summary>
-        /// Get a list of monitored file paths from this instance
+        /// Get a list of monitored file paths from this object instance
         /// </summary>
-        /// <returns></returns>
+        /// <returns> A list of file paths from the Table property of this instance </returns>
         public List<string>? GetPaths()
         {
             List<object> data = GetColumnValues("path");
             List<string> paths = new List<string>();
             foreach (object entry in data)
             {
-                paths.Add((string)entry);
+                paths.Add((string)entry); // Cast object to string
             }
             return paths;
         }
@@ -69,7 +69,7 @@ namespace FileMonitor.Database
             // execute command
             SQLiteCommand command = new SQLiteCommand(query, connection);
             SQLiteDataReader reader = command.ExecuteReader();
-            while (reader.Read()) result.Add(reader["id"]);
+            while (reader.Read()) result.Add(reader[column]);
             connection.Close();
             return result;
         }
