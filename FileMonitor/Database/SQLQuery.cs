@@ -13,6 +13,7 @@ namespace FileMonitor.Database
         /// Defines the class constructor
         /// </summary>
         /// <param name="path"> Path to the program database file </param>
+        /// <param name="table"> Table to query from this object instance </param>
         public SQLQuery(string path, string table)
         {
             this.path = path;
@@ -20,7 +21,7 @@ namespace FileMonitor.Database
         }
 
         /// <summary>
-        /// Query the table for a single ID column, and retrieve the next available ID
+        /// Query the table for a single ID column and retrieve the next available ID
         /// </summary>
         /// <param name="column"> Column to retrieve data from </param>
         /// <returns> An integer of the next available column ID </returns>
@@ -36,11 +37,18 @@ namespace FileMonitor.Database
             }
         }
 
-        public List<string> GetPaths(string column)
+        /// <summary>
+        /// Get a list of monitored file paths from this instance
+        /// </summary>
+        /// <returns></returns>
+        public List<string>? GetPaths()
         {
-            //todo
-            List<object> data = new List<object>();
+            List<object> data = GetColumnValues("path");
             List<string> paths = new List<string>();
+            foreach (object entry in data)
+            {
+                paths.Add((string)entry);
+            }
             return paths;
         }
 
