@@ -12,8 +12,8 @@ namespace FileMonitor
     /// </summary>
     public partial class MainWindow : Window
     {
-        static string programDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\FileMonitor";
-        static string databasePath = $"{programDir}\\FMDB.sqlite";
+        public static readonly string programDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\FileMonitor";
+        public static readonly string databasePath = $"{programDir}\\FMDB.sqlite";
 
         public MainWindow()
         {
