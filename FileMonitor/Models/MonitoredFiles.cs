@@ -1,66 +1,39 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
+﻿using System;
+using System.Collections.Generic;
 
 namespace FileMonitor.Models
 {
-    class MonitoredFiles : INotifyPropertyChanged
+    /// <summary>
+    /// Defines a class for accessing a list of files that are monitored by the program.
+    /// </summary>
+    class MonitoredFiles
     {
-        /// <summary>
-        /// Private field to store all file paths
-        /// </summary>
-        private List<string> files;
+        private List<string>? allFiles;
+        private List<string>? filesChangedSinceBackup;
+        public event EventHandler<FilesChangedEventArgs>? FilesChangedEventHandler;
 
         /// <summary>
-        /// Declare PropertyChanged event
+        /// Defines a public property for getting and setting all files monitored by the program
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Public property to expose the private field
-        /// Call OnPropertyChanged() whenever the files have changed.
-        /// </summary>
-        public List<string> Files
+        /// <remarks> Call OnPropertyChanged() whenever the files have changed.</remarks>
+        public List<string> AllFiles
         {
-            get { return files; }
+            get { return allFiles; }
             set
             {
-                if (value != files)
+                if (value != allFiles)
                 {
-                    files = value;
-                    OnPropertyChanged();
+                    List<string> oldFiles = allFiles;
+                    OnFilesChanged(new FilesChangedEventArgs(oldFiles, value));
+                    allFiles = value;
                 }
                 else return;
             }
         }
 
-        protected void OnPropertyChanged([CallerMemberName] string files = null)
+        protected virtual void OnFilesChanged(FilesChangedEventArgs e)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(files));
-        }
-
-        /// <summary>
-        /// Display all currently stored file paths
-        /// </summary>
-        /// <param name="mw"> MainWindow object. Used to update the XAML TextBlocks </param>
-        public void ShowAll(MainWindow mw)
-        {
-            List<string> files = JsonFile.GetDeserializedList();
-            string result = "";
-            for (int i = 0; i < files.Count; i++)
-            {
-                result += files[i] + "\n";
-            }
-            mw.FilesDisplayed.Text = result;
-        }
-
-        /// <summary>
-        /// Display file paths only if the files have changed since the last backup
-        /// </summary>
-        public void ShowChangedSinceBackup(MainWindow mw)
-        {
-            mw.RecentlyChangedFiles.Text = JsonFile.GetDeserializedList().ToString();
+            FilesChangedEventHandler?.Invoke(this, e);
         }
     }
 }
