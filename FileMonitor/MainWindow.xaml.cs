@@ -28,10 +28,11 @@ namespace FileMonitor
             if (!File.Exists(databasePath))
             {
                 Directory.CreateDirectory(programDir);
-                DatabaseTables databaseTables = new DatabaseTables(databasePath);
-                databaseTables.Create();
+                DatabaseBuilder database = new DatabaseBuilder(databasePath);
+                database.Build();
             }
-            List<string> allFiles = JsonFile.GetDeserializedList();
+            SQLQuery query = new SQLQuery(databasePath, "source_file");
+            List<string> allFiles = query.GetPaths();
             ShowFiles(allFiles);
         }
 
