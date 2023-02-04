@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FileMonitor.Database.Tables
+namespace FileMonitor.Database
 {
     internal class BackupHash
     {
@@ -8,7 +8,7 @@ namespace FileMonitor.Database.Tables
         private List<int> hashCodes;
 
         public List<int> IDs { get => iDs; }
-        public List<int> HashCodes { get => hashCodes; } 
+        public List<int> HashCodes { get => hashCodes; }
         public BackupHash() { }
     }
 }

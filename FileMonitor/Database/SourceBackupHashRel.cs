@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FileMonitor.Database.Tables
+namespace FileMonitor.Database
 {
     internal class SourceBackupHashRel
     {
