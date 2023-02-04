@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FileMonitor.Database;
+using System;
 using System.Collections.Generic;
 
 namespace FileMonitor.Models
@@ -11,6 +12,18 @@ namespace FileMonitor.Models
         private List<string>? allFiles;
         private List<string>? filesChangedSinceBackup;
         public event EventHandler<FilesChangedEventArgs>? FilesChangedEventHandler;
+
+        /// <summary>
+        /// Defines the class constructor
+        /// </summary>
+        /// <remarks>
+        /// The constructor queries the database to get a list of all monitored files
+        /// </remarks>
+        public MonitoredFiles() 
+        {
+            SQLQuery query = new SQLQuery(MainWindow.databasePath, "source_file");
+            allFiles = query.GetPaths();
+        }
 
         /// <summary>
         /// Defines a public property for getting and setting all files monitored by the program
