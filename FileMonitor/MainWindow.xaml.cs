@@ -31,14 +31,15 @@ namespace FileMonitor
                 DatabaseTables databaseTables = new DatabaseTables(databasePath);
                 databaseTables.Create();
             }
-            ShowAllFiles(JsonFile.GetDeserializedList());
+            List<string> allFiles = JsonFile.GetDeserializedList();
+            ShowFiles(allFiles);
         }
 
         /// <summary>
         /// A method to display all monitored files in the UI
         /// </summary>
         /// <param name="files"> A list of files to display </param>
-        private void ShowAllFiles(List<string> files)
+        private void ShowFiles(List<string> files)
         {
             string result = "";
             for (int i = 0; i < files.Count; i++)
@@ -46,16 +47,6 @@ namespace FileMonitor
                 result += files[i] + "\n";
             }
             this.FilesDisplayed.Text = result;
-        }
-
-        /// <summary>
-        /// A method to display the monitored files in the UI, limited to only the files that have changed since
-        /// the last backup.
-        /// </summary>
-        /// <param name="files"> A list of files to display </param>
-        private void ShowChangedFilesSinceBackup(List<string> files)
-        {
-
         }
 
         /// <summary>
@@ -102,7 +93,7 @@ namespace FileMonitor
         {
             if(e.OldFiles != e.NewFiles)
             {
-                ShowAllFiles(e.NewFiles);
+                ShowFiles(e.NewFiles);
             }
         }
 
