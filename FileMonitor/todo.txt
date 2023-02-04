@@ -1,6 +1,6 @@
 Fixes:
 - rename FileTextBlockDisplay -- will separate into two classes, AllFiles and RecentlyChangedFiles. NOTE: must edit event handler to reflect the new class name
-- Remove the FileTextBlockDisplay object from the beginning of the program execution
+- Add logic to database table classes. 
 - Update textblocks from database / remove JSON file references 
 - Show file paths that have changed in TextBlock
 - Add helper class / helper methods to format how the text is displayed (ex. show the date modified)
