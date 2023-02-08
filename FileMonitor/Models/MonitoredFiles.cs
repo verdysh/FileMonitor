@@ -21,8 +21,8 @@ namespace FileMonitor.Models
         /// </remarks>
         public MonitoredFiles() 
         {
-            SQLQuery query = new SQLQuery(MainWindow.databasePath, "source_file");
-            _allFiles = query.GetPaths();
+            //SQLQuery query = new SQLQuery(MainWindow.databasePath, "source_file");
+            //_allFiles = query.GetPaths();
         }
 
         /// <summary>

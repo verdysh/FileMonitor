@@ -63,15 +63,15 @@ namespace FileMonitor
 
             if(newFile != "")
             {
-                // Surround with single quotes for SQL command
-                newFile = $"\'{newFile}\'"; 
-                // Create query and non-query objects
-                SQLQuery query = new SQLQuery(databasePath, "source_file");
-                SQLNonQuery nonQuery = new SQLNonQuery(databasePath);
+                //// Surround with single quotes for SQL command
+                //newFile = $"\'{newFile}\'"; 
+                //// Create query and non-query objects
+                //SQLQuery query = new SQLQuery(databasePath, "source_file");
+                //SQLNonQuery nonQuery = new SQLNonQuery(databasePath);
 
-                // Execute SQL commands
-                int id = query.GetNextAvailableID("id");
-                nonQuery.Insert("source_file", $"({id}, {newFile})");
+                //// Execute SQL commands
+                //int id = query.GetNextAvailableID("id");
+                //nonQuery.Insert("source_file", $"({id}, {newFile})");
 
                 // fires an event when the list of files have changed
                 MonitoredFiles monitoredFiles = new MonitoredFiles(); 
