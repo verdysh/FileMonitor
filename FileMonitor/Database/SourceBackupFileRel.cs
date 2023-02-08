@@ -4,11 +4,11 @@ namespace FileMonitor.Database
 {
     internal class SourceBackupFileRel
     {
-        private List<int> sourceIDs;
-        private List<int> backupIDs;
+        private List<int> _sourceIDs;
+        private List<int> _backupIDs;
 
-        public List<int> SourceIDs { get => sourceIDs; }
-        public List<int> BackupIDs { get => backupIDs; }
+        public List<int> SourceIDs { get => _sourceIDs; }
+        public List<int> BackupIDs { get => _backupIDs; }
 
         public SourceBackupFileRel() { }
     }

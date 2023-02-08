@@ -9,8 +9,8 @@ namespace FileMonitor.Models
     /// </summary>
     class MonitoredFiles
     {
-        private List<string>? allFiles;
-        private List<string>? filesChangedSinceBackup;
+        private List<string>? _allFiles;
+        private List<string>? _filesChangedSinceBackup;
         public event EventHandler<FilesChangedEventArgs>? FilesChangedEventHandler;
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace FileMonitor.Models
         public MonitoredFiles() 
         {
             SQLQuery query = new SQLQuery(MainWindow.databasePath, "source_file");
-            allFiles = query.GetPaths();
+            _allFiles = query.GetPaths();
         }
 
         /// <summary>
@@ -31,14 +31,14 @@ namespace FileMonitor.Models
         /// <remarks> Call OnPropertyChanged() whenever the files have changed.</remarks>
         public List<string> AllFiles
         {
-            get { return allFiles; }
+            get { return _allFiles; }
             set
             {
-                if (value != allFiles)
+                if (value != _allFiles)
                 {
-                    List<string> oldFiles = allFiles;
+                    List<string> oldFiles = _allFiles;
                     OnFilesChanged(new FilesChangedEventArgs(oldFiles, value));
-                    allFiles = value;
+                    _allFiles = value;
                 }
                 else return;
             }

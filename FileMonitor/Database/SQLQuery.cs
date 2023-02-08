@@ -5,9 +5,9 @@ namespace FileMonitor.Database
 {
     internal class SQLQuery
     {
-        private readonly string path;
-        private readonly string table;
-        public string Table { get => table; } // return this.table
+        private readonly string _path;
+        private readonly string _table;
+        public string Table { get => _table; } // return this.table
 
         /// <summary>
         /// Defines the class constructor
@@ -16,8 +16,8 @@ namespace FileMonitor.Database
         /// <param name="table"> Table to query from this object instance </param>
         public SQLQuery(string path, string table)
         {
-            this.path = path;
-            this.table = table;
+            this._path = path;
+            this._table = table;
         }
 
         /// <summary>
@@ -60,10 +60,10 @@ namespace FileMonitor.Database
         private List<object> GetColumnValues(string column)
         {
             List<object> result = new List<object>();
-            string query = $"SELECT {column} FROM {table}";
+            string query = $"SELECT {column} FROM {_table}";
 
             // start connection
-            SQLiteConnection connection = new SQLiteConnection($"Data Source={path};Version=3;");
+            SQLiteConnection connection = new SQLiteConnection($"Data Source={_path};Version=3;");
             connection.Open();
 
             // execute command

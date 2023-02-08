@@ -4,11 +4,11 @@ namespace FileMonitor.Database
 {
     internal class SourceFile
     {
-        private List<int> iDs;
-        private List<string> paths;
+        private List<int> _iDs;
+        private List<string> _paths;
 
-        public List<int> IDs { get => iDs; }
-        public List<string> Paths { get => paths; }
+        public List<int> IDs { get => _iDs; }
+        public List<string> Paths { get => _paths; }
 
         public SourceFile() { }
     }

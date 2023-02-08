@@ -4,11 +4,11 @@ namespace FileMonitor.Database
 {
     internal class SourceFileHashRel
     {
-        private List<int> sourceFileIDs;
-        private List<int> sourceHashIDs;
+        private List<int> _sourceFileIDs;
+        private List<int> _sourceHashIDs;
 
-        public List<int> SourceFileIDs { get => sourceFileIDs; }
-        public List<int> SourceHashIDs { get => sourceHashIDs; }
+        public List<int> SourceFileIDs { get => _sourceFileIDs; }
+        public List<int> SourceHashIDs { get => _sourceHashIDs; }
 
         public SourceFileHashRel() { }
     }

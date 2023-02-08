@@ -7,7 +7,7 @@ namespace FileMonitor.Database
     /// </summary>
     internal class DatabaseBuilder
     {
-        private string path;
+        private string _path;
 
         /// <summary>
         /// Defines the class constructor
@@ -15,7 +15,7 @@ namespace FileMonitor.Database
         /// <param name="path"> Path to the program database file </param>
         public DatabaseBuilder(string path) 
         {
-            this.path = path;
+            this._path = path;
         }
 
         /// <summary>
@@ -38,8 +38,8 @@ namespace FileMonitor.Database
         /// </summary>
         public void Build()
         {
-            SQLiteConnection.CreateFile(path);
-            SQLiteConnection SQLconnection = new SQLiteConnection($"Data Source={path};Version=3;");
+            SQLiteConnection.CreateFile(_path);
+            SQLiteConnection SQLconnection = new SQLiteConnection($"Data Source={_path};Version=3;");
             SQLconnection.Open();
 
             for (int i = 0; i < commands.Length; i++)
