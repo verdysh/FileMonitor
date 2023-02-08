@@ -31,8 +31,8 @@ namespace FileMonitor
                 DatabaseBuilder database = new DatabaseBuilder(databasePath);
                 database.Build();
             }
-            SQLQuery query = new SQLQuery(databasePath, "source_file");
-            List<string> allFiles = query.GetPaths();
+            MonitoredFiles monitoredFiles = new MonitoredFiles();
+            List<string> allFiles = monitoredFiles.AllFiles;
             ShowFiles(allFiles);
         }
 
