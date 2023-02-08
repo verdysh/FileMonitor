@@ -10,34 +10,33 @@ namespace FileMonitor.Database
     internal class BackupFile
     {
         // Table name
-        private const string _table = "backup_file";
+        private const string _tableName = "backup_file";
 
         // Column names
-        private const string _path = "path";
-        private const string _id = "id";
+        private const string _pathColumn = "path";
+        private const string _idColumn = "id";
 
         // Private collection of column values
         private List<int> _iDs;
         private List<string> _paths;
 
         /// <summary>
-        /// A property to read from or write to the 
+        /// Defines the class constructor
         /// </summary>
-        public List<int> IDs { get => _iDs; }
-        public List<string> Paths { get => _paths; }
-
+        /// <param name="connection"> A SQLiteConnection object </param>
         public BackupFile(SQLiteConnection connection) 
         {
             _paths = GetPaths(connection);
         }
 
         /// <summary>
-        /// Get a list of monitored file paths from this object instance
+        /// A method to access all files stored in the backup_file table
         /// </summary>
-        /// <returns> A list of file paths from the Table property of this instance </returns>
+        /// <param name="connection"> A SQLiteConnection object to access the database </param>
+        /// <returns> A string list containing all file paths from the backup_file table </returns>
         public List<string>? GetPaths(SQLiteConnection connection)
         {
-            List<object> data = GetColumnValues(connection, "path");
+            List<object> data = GetColumnValues(connection, _pathColumn);
             List<string> paths = new List<string>();
             foreach (object entry in data)
             {
@@ -52,7 +51,7 @@ namespace FileMonitor.Database
             // start connection
             connection.Open();
             List<object> result = new List<object>();
-            string query = $"SELECT {column} FROM {_table}";
+            string query = $"SELECT {column} FROM {_tableName}";
 
             // execute command
             SQLiteCommand command = new SQLiteCommand(query, connection);
@@ -65,7 +64,7 @@ namespace FileMonitor.Database
         // Query the table for a single ID column and retrieve the next available ID
         private int GetNextAvailableID(SQLiteConnection connection)
         {
-            List<object> list = GetColumnValues(connection, _id);
+            List<object> list = GetColumnValues(connection, _idColumn);
             if (list.Count == 0) return 0;
             else
             {

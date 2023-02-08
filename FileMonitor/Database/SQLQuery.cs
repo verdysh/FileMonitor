@@ -25,9 +25,10 @@ namespace FileMonitor.Database
         }
 
         /// <summary>
-        /// Get a list of monitored file paths from this object instance
+        /// A method to access all files stored in the this table
         /// </summary>
-        /// <returns> A list of file paths from the Table property of this instance </returns>
+        /// <param name="connection"> A SQLiteConnection object to access the database </param>
+        /// <returns> A string list containing all file paths from the this table </returns>
         public List<string>? GetPaths(SQLiteConnection connection)
         {
             List<object> data = GetColumnValues(connection, "path");
