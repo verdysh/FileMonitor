@@ -3,18 +3,16 @@ using System.Data.SQLite;
 
 namespace FileMonitor.Database
 {
-    internal class SQLQuery
+    abstract class SQLQuery
     {
-
-        private string table = "foo";
         /// <summary>
         /// Query the table for a single ID column and retrieve the next available ID
         /// </summary>
         /// <param name="column"> Column to retrieve data from </param>
         /// <returns> An integer of the next available column ID </returns>
-        private int GetNextAvailableID(SQLiteConnection connection, string column)
+        protected int GetNextAvailableID(SQLiteConnection connection, string table, string column)
         {
-            List<object> list = GetColumnValues(connection, column);
+            List<object> list = GetColumnValues(connection, table, column);
 
             if (list.Count == 0) return 0;
             else
@@ -25,27 +23,11 @@ namespace FileMonitor.Database
         }
 
         /// <summary>
-        /// A method to access all files stored in the this table
-        /// </summary>
-        /// <param name="connection"> A SQLiteConnection object to access the database </param>
-        /// <returns> A string list containing all file paths from the this table </returns>
-        public List<string>? GetPaths(SQLiteConnection connection)
-        {
-            List<object> data = GetColumnValues(connection, "path");
-            List<string> paths = new List<string>();
-            foreach (object entry in data)
-            {
-                paths.Add((string)entry); // Cast object to string
-            }
-            return paths;
-        }
-
-        /// <summary>
         /// Get a list of values from the specified column
         /// </summary>
         /// <param name="column"> Database table name to get data from </param>
         /// <returns> A list of objects from all entries within the table </returns>
-        private List<object> GetColumnValues(SQLiteConnection connection, string column)
+        protected List<object> GetColumnValues(SQLiteConnection connection, string table, string column)
         {
             // start connection
             connection.Open();
