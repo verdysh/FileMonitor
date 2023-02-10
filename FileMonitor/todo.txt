@@ -1,4 +1,5 @@
 Fixes:
+- Refactor: implement public properties for each database class, and private methods to handle the internals 
 - rename FileTextBlockDisplay -- will separate into two classes, AllFiles and RecentlyChangedFiles. NOTE: must edit event handler to reflect the new class name
 - Add logic to database table classes. 
 - Update textblocks from database / remove JSON file references 
