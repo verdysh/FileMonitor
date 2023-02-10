@@ -3,7 +3,7 @@ using System.Data.SQLite;
 
 namespace FileMonitor.Database
 {
-    abstract class SQLQuery
+    internal abstract class SQLQuery
     {
         /// <summary>
         /// Query the table for a single ID column and retrieve the next available ID
