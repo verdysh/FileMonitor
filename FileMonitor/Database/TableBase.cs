@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Data.SQLite;
 
 namespace FileMonitor.Database
@@ -21,14 +22,12 @@ namespace FileMonitor.Database
         /// <summary>
         /// Query the table for a single ID column and retrieve the next available ID
         /// </summary>
-        protected int GetNextAvailableID(string table, string column)
+        protected int GetNextAvailableID(List<int> iDs, string table, string column)
         {
-            List<object> list = GetColumnValues(table, column);
-
-            if (list.Count == 0) return 0;
+            if (iDs.Count == 0) return 0;
             else
             {
-                object lastId = list[list.Count - 1];
+                object lastId = iDs[iDs.Count - 1];
                 return 1 + (int)lastId; // cast to integer
             }
         }
@@ -36,7 +35,7 @@ namespace FileMonitor.Database
         /// <summary>
         /// Get a list of object values from the specified database column
         /// </summary>
-        protected List<object> GetColumnValues(string table, string column)
+        protected List<object> GetColumnValuesAsObjects(string table, string column)
         {
             // start connection
             using (SQLiteConnection connection = GetConnection())
@@ -51,6 +50,22 @@ namespace FileMonitor.Database
                 connection.Dispose();
                 return result;
             }
+        }
+
+        /// <summary>
+        /// Cast a list of objects to the specified type. 
+        /// </summary>
+        /// <remarks> 
+        /// Pass in a list of objects from the database. This method converts the list to the specified type.
+        /// </remarks>
+        protected List<T>? CastObjectValues<T>(List<object> values)
+        {
+            List<T> paths = new List<T>();
+            foreach (object entry in values)
+            {
+                paths.Add((T)entry); // Cast object to <T>
+            }
+            return paths;
         }
     }
 }

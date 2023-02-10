@@ -16,30 +16,18 @@ namespace FileMonitor.Database
         private const string idColumn = "id";
 
         // Column values
-        private List<int> iDs;
-        private List<string> paths;
+        private List<int>? iDs;
+        private List<string>? paths;
 
-        public List<int> IDs { get { return iDs; } }
-        public List<string> Paths { get { return paths; } }
+        public List<int>? IDs { get { return iDs; } }
+        public List<string>? Paths { get { return paths; } }
 
         public BackupFile() 
         {
-            paths = GetPaths();
-        }
-
-        /// <summary>
-        /// A method to access all file paths stored in the backup_file table
-        /// </summary>
-        /// <returns> A string list containing all file paths </returns>
-        private List<string>? GetPaths()
-        {
-            List<object> data = GetColumnValues(tableName, pathColumn);
-            List<string> paths = new List<string>();
-            foreach (object entry in data)
-            {
-                paths.Add((string)entry); // Cast object to string
-            }
-            return paths;
+            List<object> pathValues = GetColumnValuesAsObjects(tableName, pathColumn);
+            List<object> idValues = GetColumnValuesAsObjects(tableName, idColumn);
+            paths = CastObjectValues<string>(pathValues);
+            iDs = CastObjectValues<int>(idValues);
         }
     }
 }

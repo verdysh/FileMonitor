@@ -21,22 +21,22 @@ namespace FileMonitor.Database
 
         public SourceFile()
         {
-            paths = GetPaths();
+            //paths = GetPaths();
         }
 
-        /// <summary>
-        /// A method to access all files paths stored in the source_file table
-        /// </summary>
-        /// <returns> A string list containing all file paths </returns>
-        private List<string>? GetPaths()
-        {
-            List<object> data = GetColumnValues(tableName, pathColumn);
-            List<string> paths = new List<string>();
-            foreach (object entry in data)
-            {
-                paths.Add((string)entry); // Cast object to string
-            }
-            return paths;
-        }
+        ///// <summary>
+        ///// A method to access all files paths stored in the source_file table
+        ///// </summary>
+        ///// <returns> A string list containing all file paths </returns>
+        //private List<string>? GetPaths()
+        //{
+        //    List<object> data = GetColumnValues(tableName, pathColumn);
+        //    List<string> paths = new List<string>();
+        //    foreach (object entry in data)
+        //    {
+        //        paths.Add((string)entry); // Cast object to string
+        //    }
+        //    return paths;
+        //}
     }
 }
