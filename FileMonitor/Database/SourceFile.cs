@@ -30,7 +30,7 @@ namespace FileMonitor.Database
         /// <returns> A string list containing all file paths </returns>
         public List<string>? GetPaths(SQLiteConnection connection)
         {
-            List<object> data = GetColumnValues(connection, tableName, pathColumn);
+            List<object> data = GetColumnValues(tableName, pathColumn);
             List<string> paths = new List<string>();
             foreach (object entry in data)
             {

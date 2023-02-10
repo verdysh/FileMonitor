@@ -28,7 +28,7 @@ namespace FileMonitor
             if (!File.Exists(databasePath))
             {
                 Directory.CreateDirectory(programDir);
-                DatabaseBuilder database = new DatabaseBuilder(databasePath);
+                DatabaseBuilder database = new DatabaseBuilder();
                 database.Build();
             }
             MonitoredFiles monitoredFiles = new MonitoredFiles();
