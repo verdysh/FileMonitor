@@ -19,16 +19,16 @@ namespace FileMonitor.Database
         private List<int> iDs;
         private List<string> paths;
 
-        public SourceFile(SQLiteConnection connection)
+        public SourceFile()
         {
-            paths = GetPaths(connection);
+            paths = GetPaths();
         }
 
         /// <summary>
         /// A method to access all files paths stored in the source_file table
         /// </summary>
         /// <returns> A string list containing all file paths </returns>
-        public List<string>? GetPaths(SQLiteConnection connection)
+        public List<string>? GetPaths()
         {
             List<object> data = GetColumnValues(tableName, pathColumn);
             List<string> paths = new List<string>();
