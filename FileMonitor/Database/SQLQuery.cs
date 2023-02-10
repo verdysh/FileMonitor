@@ -3,13 +3,14 @@ using System.Data.SQLite;
 
 namespace FileMonitor.Database
 {
+    /// <summary>
+    /// Defines an abstract class for all SQL table classes to inherit from 
+    /// </summary>
     internal abstract class SQLQuery
     {
         /// <summary>
         /// Query the table for a single ID column and retrieve the next available ID
         /// </summary>
-        /// <param name="column"> Column to retrieve data from </param>
-        /// <returns> An integer of the next available column ID </returns>
         protected int GetNextAvailableID(SQLiteConnection connection, string table, string column)
         {
             List<object> list = GetColumnValues(connection, table, column);
@@ -23,10 +24,8 @@ namespace FileMonitor.Database
         }
 
         /// <summary>
-        /// Get a list of values from the specified column
+        /// Get a list of object values from the specified database column
         /// </summary>
-        /// <param name="column"> Database table name to get data from </param>
-        /// <returns> A list of objects from all entries within the table </returns>
         protected List<object> GetColumnValues(SQLiteConnection connection, string table, string column)
         {
             // start connection

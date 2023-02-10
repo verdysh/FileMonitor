@@ -9,31 +9,28 @@ namespace FileMonitor.Database
     /// </summary>
     internal class BackupFile : SQLQuery
     {
-        // Table name
         private const string tableName = "backup_file";
 
         // Column names
         private const string pathColumn = "path";
         private const string idColumn = "id";
 
-        // Private collection of column values
+        // Column values
         private List<int> iDs;
         private List<string> paths;
 
-        /// <summary>
-        /// Defines the class constructor
-        /// </summary>
-        /// <param name="connection"> A SQLiteConnection object </param>
+        public List<int> IDs { get { return iDs; } }
+        public List<string> Paths { get { return paths; } }
+
         public BackupFile(SQLiteConnection connection) 
         {
             paths = GetPaths(connection);
         }
 
         /// <summary>
-        /// A method to access all files stored in the backup_file table
+        /// A method to access all file paths stored in the backup_file table
         /// </summary>
-        /// <param name="connection"> A SQLiteConnection object to access the database </param>
-        /// <returns> A string list containing all file paths from the backup_file table </returns>
+        /// <returns> A string list containing all file paths </returns>
         public List<string>? GetPaths(SQLiteConnection connection)
         {
             List<object> data = GetColumnValues(connection, tableName, pathColumn);
