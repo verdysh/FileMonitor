@@ -38,8 +38,8 @@ namespace FileMonitor.Database
         /// </summary>
         public void Build()
         {
-            SQLiteConnection.CreateFile(_path);
-            SQLiteConnection SQLconnection = new SQLiteConnection($"Data Source={_path};Version=3;");
+            SQLiteConnection.CreateFile(path);
+            SQLiteConnection SQLconnection = new SQLiteConnection($"Data Source={path};Version=3;");
             SQLconnection.Open();
 
             for (int i = 0; i < commands.Length; i++)

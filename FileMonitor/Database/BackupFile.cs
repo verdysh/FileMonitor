@@ -26,7 +26,7 @@ namespace FileMonitor.Database
         /// <param name="connection"> A SQLiteConnection object </param>
         public BackupFile(SQLiteConnection connection) 
         {
-            _paths = GetPaths(connection);
+            paths = GetPaths(connection);
         }
 
         /// <summary>
