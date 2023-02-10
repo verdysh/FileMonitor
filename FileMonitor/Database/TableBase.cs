@@ -6,8 +6,18 @@ namespace FileMonitor.Database
     /// <summary>
     /// Defines an abstract class for all SQL table classes to inherit from 
     /// </summary>
-    internal abstract class SQLQuery
+    internal abstract class TableBase
     {
+        /// <summary>
+        /// Return an opened database connection object
+        /// </summary>
+        protected SQLiteConnection GetConnection()
+        {
+            SQLiteConnection connection = new SQLiteConnection($"Data Source={MainWindow.databasePath};Version=3;");
+            connection.Open();
+            return connection;
+        }
+
         /// <summary>
         /// Query the table for a single ID column and retrieve the next available ID
         /// </summary>
@@ -29,17 +39,18 @@ namespace FileMonitor.Database
         protected List<object> GetColumnValues(string table, string column)
         {
             // start connection
-            SQLiteConnection connection = new SQLiteConnection($"Data Source={MainWindow.databasePath};Version=3;");
-            connection.Open();
-            List<object> result = new List<object>();
-            string query = $"SELECT {column} FROM {table}";
+            using (SQLiteConnection connection = GetConnection())
+            {
+                List<object> result = new List<object>();
+                string query = $"SELECT {column} FROM {table}";
 
-            // execute command
-            SQLiteCommand command = new SQLiteCommand(query, connection);
-            SQLiteDataReader reader = command.ExecuteReader();
-            while (reader.Read()) result.Add(reader[column]);
-            connection.Dispose();
-            return result;
+                // execute command
+                SQLiteCommand command = new SQLiteCommand(query, connection);
+                SQLiteDataReader reader = command.ExecuteReader();
+                while (reader.Read()) result.Add(reader[column]);
+                connection.Dispose();
+                return result;
+            }
         }
     }
 }

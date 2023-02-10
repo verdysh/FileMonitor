@@ -7,7 +7,7 @@ namespace FileMonitor.Database
     /// Defines a class for reading from and writing to the source_file table from the SQLite 
     /// database
     /// </summary>
-    internal class SourceFile : SQLQuery
+    internal class SourceFile : TableBase
     {
         private const string tableName = "source_file";
 
@@ -28,7 +28,7 @@ namespace FileMonitor.Database
         /// A method to access all files paths stored in the source_file table
         /// </summary>
         /// <returns> A string list containing all file paths </returns>
-        public List<string>? GetPaths()
+        private List<string>? GetPaths()
         {
             List<object> data = GetColumnValues(tableName, pathColumn);
             List<string> paths = new List<string>();

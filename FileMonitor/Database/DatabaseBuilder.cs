@@ -5,7 +5,7 @@ namespace FileMonitor.Database
     /// <summary>
     /// Class dedicated to creating the initial database
     /// </summary>
-    internal class DatabaseBuilder
+    internal class DatabaseBuilder : TableBase
     {
         /// <summary>
         /// An array containing all the commands for creating the database tables
@@ -23,20 +23,20 @@ namespace FileMonitor.Database
         };
 
         /// <summary>
-        /// A method to create a SQLite connection and execute all 'CREATE TABLE' commands
+        /// A method to execute all 'CREATE TABLE' commands
         /// </summary>
         public void Build()
         {
             SQLiteConnection.CreateFile(MainWindow.databasePath);
-            SQLiteConnection connection = new SQLiteConnection($"Data Source={MainWindow.databasePath};Version=3;");
-            connection.Open();
-
-            for (int i = 0; i < commands.Length; i++)
+            using(SQLiteConnection connection = GetConnection())
             {
-                SQLiteCommand command = new SQLiteCommand(commands[i], connection);
-                command.ExecuteNonQuery();
+                for (int i = 0; i < commands.Length; i++)
+                {
+                    SQLiteCommand command = new SQLiteCommand(commands[i], connection);
+                    command.ExecuteNonQuery();
+                }
+                connection.Dispose();
             }
-            connection.Dispose();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace FileMonitor.Database
     /// Defines a class for reading from and writing to the backup_file table from the SQLite 
     /// database
     /// </summary>
-    internal class BackupFile : SQLQuery
+    internal class BackupFile : TableBase
     {
         private const string tableName = "backup_file";
 
