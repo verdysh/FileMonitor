@@ -31,7 +31,7 @@ namespace FileMonitor.Database
         /// A method to access all file paths stored in the backup_file table
         /// </summary>
         /// <returns> A string list containing all file paths </returns>
-        public List<string>? GetPaths(SQLiteConnection connection)
+        private List<string>? GetPaths(SQLiteConnection connection)
         {
             List<object> data = GetColumnValues(connection, tableName, pathColumn);
             List<string> paths = new List<string>();
