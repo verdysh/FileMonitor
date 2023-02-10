@@ -6,15 +6,15 @@ namespace FileMonitor.Database
     internal class SourceFile : SQLQuery
     {
         // Table name
-        private const string _tableName = "source_file";
+        private const string tableName = "source_file";
 
         // Column names
-        private const string _pathColumn = "path";
-        private const string _idColumn = "id";
+        private const string pathColumn = "path";
+        private const string idColumn = "id";
 
         // Private collection of column values
-        private List<int> _iDs;
-        private List<string> _paths;
+        private List<int> iDs;
+        private List<string> paths;
 
         /// <summary>
         /// Defines the class constructor
@@ -22,7 +22,7 @@ namespace FileMonitor.Database
         /// <param name="connection"> A SQLiteConnection object </param>
         public SourceFile(SQLiteConnection connection)
         {
-            _paths = GetPaths(connection);
+            paths = GetPaths(connection);
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace FileMonitor.Database
         /// <returns> A string list containing all file paths from the source_file table </returns>
         public List<string>? GetPaths(SQLiteConnection connection)
         {
-            List<object> data = GetColumnValues(connection, _tableName, _pathColumn);
+            List<object> data = GetColumnValues(connection, tableName, pathColumn);
             List<string> paths = new List<string>();
             foreach (object entry in data)
             {

@@ -7,7 +7,7 @@ namespace FileMonitor.Database
     /// </summary>
     internal class DatabaseBuilder
     {
-        private string _path;
+        private string path;
 
         /// <summary>
         /// Defines the class constructor
@@ -15,7 +15,7 @@ namespace FileMonitor.Database
         /// <param name="path"> Path to the program database file </param>
         public DatabaseBuilder(string path) 
         {
-            this._path = path;
+            this.path = path;
         }
 
         /// <summary>

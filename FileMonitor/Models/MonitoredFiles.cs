@@ -9,8 +9,8 @@ namespace FileMonitor.Models
     /// </summary>
     class MonitoredFiles
     {
-        private List<string>? _allFiles;
-        private List<string>? _filesChangedSinceBackup;
+        private List<string>? allFiles;
+        private List<string>? filesChangedSinceBackup;
         public event EventHandler<FilesChangedEventArgs>? FilesChangedEventHandler;
 
         /// <summary>
@@ -31,14 +31,14 @@ namespace FileMonitor.Models
         /// <remarks> Call OnPropertyChanged() whenever the files have changed.</remarks>
         public List<string> AllFiles
         {
-            get { return _allFiles; }
+            get { return allFiles; }
             set
             {
-                if (value != _allFiles)
+                if (value != allFiles)
                 {
-                    List<string> oldFiles = _allFiles;
+                    List<string> oldFiles = allFiles;
                     OnFilesChanged(new FilesChangedEventArgs(oldFiles, value));
-                    _allFiles = value;
+                    allFiles = value;
                 }
                 else return;
             }

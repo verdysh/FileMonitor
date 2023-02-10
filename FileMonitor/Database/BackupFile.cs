@@ -10,15 +10,15 @@ namespace FileMonitor.Database
     internal class BackupFile : SQLQuery
     {
         // Table name
-        private const string _tableName = "backup_file";
+        private const string tableName = "backup_file";
 
         // Column names
-        private const string _pathColumn = "path";
-        private const string _idColumn = "id";
+        private const string pathColumn = "path";
+        private const string idColumn = "id";
 
         // Private collection of column values
-        private List<int> _iDs;
-        private List<string> _paths;
+        private List<int> iDs;
+        private List<string> paths;
 
         /// <summary>
         /// Defines the class constructor
@@ -36,7 +36,7 @@ namespace FileMonitor.Database
         /// <returns> A string list containing all file paths from the backup_file table </returns>
         public List<string>? GetPaths(SQLiteConnection connection)
         {
-            List<object> data = GetColumnValues(connection, _tableName, _pathColumn);
+            List<object> data = GetColumnValues(connection, tableName, pathColumn);
             List<string> paths = new List<string>();
             foreach (object entry in data)
             {

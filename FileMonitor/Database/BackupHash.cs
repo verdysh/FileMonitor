@@ -4,11 +4,11 @@ namespace FileMonitor.Database
 {
     internal class BackupHash
     {
-        private List<int> _iDs;
-        private List<int> _hashCodes;
+        private List<int> iDs;
+        private List<int> hashCodes;
 
-        public List<int> IDs { get => _iDs; }
-        public List<int> HashCodes { get => _hashCodes; }
+        public List<int> IDs { get => iDs; }
+        public List<int> HashCodes { get => hashCodes; }
         public BackupHash() { }
     }
 }

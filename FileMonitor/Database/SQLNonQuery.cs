@@ -5,7 +5,7 @@ namespace FileMonitor.Database
 {
     internal class SQLNonQuery
     {
-        private string _path;
+        private string path;
 
         /// <summary>
         /// Defines the class constructor
@@ -13,7 +13,7 @@ namespace FileMonitor.Database
         /// <param name="path"> Path to the program database file </param>
         public SQLNonQuery(string path)
         {
-            this._path = path;
+            this.path = path;
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace FileMonitor.Database
                 { "backup_file_hash_rel", $"INSERT INTO backup_file_hash_rel (backup_file_id, backup_hash_id) values {data}"},
             };
 
-            SQLiteConnection connection = new SQLiteConnection($"Data Source={_path};Version=3;");
+            SQLiteConnection connection = new SQLiteConnection($"Data Source={path};Version=3;");
             connection.Open();
 
             string command = commands[key];
