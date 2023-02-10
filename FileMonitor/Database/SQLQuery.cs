@@ -11,9 +11,9 @@ namespace FileMonitor.Database
         /// <summary>
         /// Query the table for a single ID column and retrieve the next available ID
         /// </summary>
-        protected int GetNextAvailableID(SQLiteConnection connection, string table, string column)
+        protected int GetNextAvailableID(string table, string column)
         {
-            List<object> list = GetColumnValues(connection, table, column);
+            List<object> list = GetColumnValues(table, column);
 
             if (list.Count == 0) return 0;
             else
@@ -26,9 +26,10 @@ namespace FileMonitor.Database
         /// <summary>
         /// Get a list of object values from the specified database column
         /// </summary>
-        protected List<object> GetColumnValues(SQLiteConnection connection, string table, string column)
+        protected List<object> GetColumnValues(string table, string column)
         {
             // start connection
+            SQLiteConnection connection = new SQLiteConnection($"Data Source={MainWindow.databasePath};Version=3;");
             connection.Open();
             List<object> result = new List<object>();
             string query = $"SELECT {column} FROM {table}";
@@ -37,7 +38,7 @@ namespace FileMonitor.Database
             SQLiteCommand command = new SQLiteCommand(query, connection);
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read()) result.Add(reader[column]);
-            connection.Close();
+            connection.Dispose();
             return result;
         }
     }

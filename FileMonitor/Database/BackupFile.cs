@@ -22,18 +22,18 @@ namespace FileMonitor.Database
         public List<int> IDs { get { return iDs; } }
         public List<string> Paths { get { return paths; } }
 
-        public BackupFile(SQLiteConnection connection) 
+        public BackupFile() 
         {
-            paths = GetPaths(connection);
+            paths = GetPaths();
         }
 
         /// <summary>
         /// A method to access all file paths stored in the backup_file table
         /// </summary>
         /// <returns> A string list containing all file paths </returns>
-        private List<string>? GetPaths(SQLiteConnection connection)
+        private List<string>? GetPaths()
         {
-            List<object> data = GetColumnValues(connection, tableName, pathColumn);
+            List<object> data = GetColumnValues(tableName, pathColumn);
             List<string> paths = new List<string>();
             foreach (object entry in data)
             {
