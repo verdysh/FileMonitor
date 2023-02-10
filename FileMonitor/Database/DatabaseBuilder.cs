@@ -39,15 +39,15 @@ namespace FileMonitor.Database
         public void Build()
         {
             SQLiteConnection.CreateFile(path);
-            SQLiteConnection SQLconnection = new SQLiteConnection($"Data Source={path};Version=3;");
-            SQLconnection.Open();
+            SQLiteConnection connection = new SQLiteConnection($"Data Source={path};Version=3;");
+            connection.Open();
 
             for (int i = 0; i < commands.Length; i++)
             {
-                SQLiteCommand command = new SQLiteCommand(commands[i], SQLconnection);
+                SQLiteCommand command = new SQLiteCommand(commands[i], connection);
                 command.ExecuteNonQuery();
             }
-            SQLconnection.Close();
+            connection.Dispose();
         }
     }
 }
