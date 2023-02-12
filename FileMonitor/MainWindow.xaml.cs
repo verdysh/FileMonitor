@@ -64,27 +64,24 @@ namespace FileMonitor
 
             if(newFile != "")
             {
-                //// Surround with single quotes for SQL command
-                //newFile = $"\'{newFile}\'"; 
-                //// Create query and non-query objects
-                //SQLQuery query = new SQLQuery(databasePath, "source_file");
-                //SQLNonQuery nonQuery = new SQLNonQuery(databasePath);
+                /*
 
-                //// Execute SQL commands
-                //int id = query.GetNextAvailableID("id");
-                //nonQuery.Insert("source_file", $"({id}, {newFile})");
+                // Surround with single quotes for SQL command
+                newFile = $"\'{newFile}\'";
 
-                // fires an event when the list of files have changed
-                MonitoredFiles monitoredFiles = new MonitoredFiles(); 
+                // Create query and non-query objects
+                SQLQuery query = new SQLQuery(databasePath, "source_file");
+                SQLNonQuery nonQuery = new SQLNonQuery(databasePath);
 
-                // Update UI by firing the PropertyChanged event
-                monitoredFiles.FilesChangedEventHandler += MonitoredFiles_PropertyChanged;
+                // Execute SQL commands
+                int id = query.GetNextAvailableID("id");
+                nonQuery.Insert("source_file", $"({id}, {newFile})");
 
-                // Remove ;ogic once SQL tests pass
-                JsonFile.WriteToFile(newFile);
-                monitoredFiles.AllFiles = JsonFile.GetDeserializedList();
+                */
 
-                DebugTests.ShowPaths();
+                SourceFile sourceFile = new SourceFile();
+                sourceFile.Paths.Add(newFile);
+                ShowFiles(sourceFile.Paths);
             }
         }
 

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Diagnostics;
 
 namespace FileMonitor.Database
 {
@@ -16,27 +18,26 @@ namespace FileMonitor.Database
         private const string idColumn = "id";
 
         // Column values
-        private List<int> iDs;
-        private List<string> paths;
+        private List<int>? iDs;
+        private List<string>? paths;
 
-        public SourceFile()
-        {
-            //paths = GetPaths();
+        public List<int> IDs { get => iDs; }
+        public List<string> Paths 
+        { 
+            get => paths; 
+            set 
+            {
+                foreach (var item in paths) Debug.WriteLine(item);
+                Debug.WriteLine(value);
+            }
         }
 
-        ///// <summary>
-        ///// A method to access all files paths stored in the source_file table
-        ///// </summary>
-        ///// <returns> A string list containing all file paths </returns>
-        //private List<string>? GetPaths()
-        //{
-        //    List<object> data = GetColumnValues(tableName, pathColumn);
-        //    List<string> paths = new List<string>();
-        //    foreach (object entry in data)
-        //    {
-        //        paths.Add((string)entry); // Cast object to string
-        //    }
-        //    return paths;
-        //}
+        public SourceFile() 
+        {
+            List<object> pathValues = GetColumnValuesAsObjects(tableName, pathColumn);
+            List<object> idValues = GetColumnValuesAsObjects(tableName, idColumn);
+            paths = CastObjectValues<string>(pathValues);
+            iDs = CastObjectValues<int>(idValues);
+        }
     }
 }
