@@ -4,6 +4,7 @@ using FileMonitor.Database;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using FileMonitor.Tests;
 
 namespace FileMonitor
 {
@@ -31,8 +32,8 @@ namespace FileMonitor
                 DatabaseBuilder database = new DatabaseBuilder();
                 database.Build();
             }
-            MonitoredFiles monitoredFiles = new MonitoredFiles();
-            List<string> allFiles = monitoredFiles.AllFiles;
+            SourceFile sourceFile = new SourceFile();
+            List<string> allFiles = sourceFile.Paths;
             ShowFiles(allFiles);
         }
 
@@ -82,6 +83,8 @@ namespace FileMonitor
                 // Remove ;ogic once SQL tests pass
                 JsonFile.WriteToFile(newFile);
                 monitoredFiles.AllFiles = JsonFile.GetDeserializedList();
+
+                DebugTests.ShowPaths();
             }
         }
 
