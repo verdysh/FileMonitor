@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SQLite;
 
@@ -53,19 +54,35 @@ namespace FileMonitor.Database
         }
 
         /// <summary>
-        /// Cast a list of objects to the specified type. 
+        /// Cast a list of objects to a generic List
         /// </summary>
         /// <remarks> 
         /// Pass in a list of objects from the database. This method converts the list to the specified type.
         /// </remarks>
-        protected List<T>? CastObjectValues<T>(List<object> values)
+        protected List<T>? CastToList<T>(List<object> values)
         {
-            List<T> paths = new List<T>();
+            List<T> valuesCast = new List<T>();
             foreach (object entry in values)
             {
-                paths.Add((T)entry); // Cast object to <T>
+                valuesCast.Add((T)entry); // Cast object to <T>
             }
-            return paths;
+            return valuesCast;
+        }
+
+        /// <summary>
+        /// Cast a list of objects to a generic ObservableCollection
+        /// </summary>
+        /// <remarks> 
+        /// Pass in a list of objects from the database. This method converts the list to the specified type.
+        /// </remarks>
+        protected ObservableCollection<T>? CastToObservableCollection<T>(List<object> values)
+        {
+            ObservableCollection<T> valuesCast = new ObservableCollection<T>();
+            foreach (object entry in values)
+            {
+                valuesCast.Add((T)entry); // Cast object to <T>
+            }
+            return valuesCast;
         }
     }
 }
