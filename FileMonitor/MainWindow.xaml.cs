@@ -5,6 +5,8 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using FileMonitor.Tests;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace FileMonitor
 {
@@ -13,6 +15,8 @@ namespace FileMonitor
     /// </summary>
     public partial class MainWindow : Window
     {
+        private SourceFileView fileViewModel = new SourceFileView();
+
         public static readonly string programDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\FileMonitor";
         public static readonly string databasePath = $"{programDir}\\FMDB.sqlite";
 
@@ -32,8 +36,7 @@ namespace FileMonitor
                 DatabaseBuilder database = new DatabaseBuilder();
                 database.Build();
             }
-            SourceFile sourceFile = new SourceFile();
-            List<string> allFiles = sourceFile.Paths;
+            ObservableCollection<string> allFiles = fileViewModel.AllFiles;
             ShowFiles(allFiles);
         }
 
@@ -41,7 +44,7 @@ namespace FileMonitor
         /// A method to display all monitored files in the UI
         /// </summary>
         /// <param name="files"> A list of files to display </param>
-        private void ShowFiles(List<string> files)
+        private void ShowFiles(ObservableCollection<string> files)
         {
             string result = "";
             for (int i = 0; i < files.Count; i++)
@@ -90,12 +93,9 @@ namespace FileMonitor
         /// </summary>
         /// <param name="sender"> object sender arg </param>
         /// <param name="e"> e.NewFiles contains the updated file list </param>
-        private void MonitoredFiles_PropertyChanged(object? sender, FilesChangedEventArgs e)
+        private void MonitoredFiles_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if(e.OldFiles != e.NewFiles)
-            {
-                ShowFiles(e.NewFiles);
-            }
+
         }
 
         private void EditFiles_Click(object sender, RoutedEventArgs e)
