@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.SQLite;
 using System.Diagnostics;
 
@@ -19,10 +20,10 @@ namespace FileMonitor.Database
 
         // Column values
         private List<int>? iDs;
-        private List<string>? paths;
+        private ObservableCollection<string>? paths;
 
         public List<int> IDs { get => iDs; }
-        public List<string> Paths 
+        public ObservableCollection<string> Paths 
         { 
             get => paths; 
             set 
@@ -36,8 +37,8 @@ namespace FileMonitor.Database
         {
             List<object> pathValues = GetColumnValuesAsObjects(tableName, pathColumn);
             List<object> idValues = GetColumnValuesAsObjects(tableName, idColumn);
-            paths = CastObjectValues<string>(pathValues);
-            iDs = CastObjectValues<int>(idValues);
+            paths = CastToObservableCollection<string>(pathValues);
+            iDs = CastToList<int>(idValues);
         }
     }
 }

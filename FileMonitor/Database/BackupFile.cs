@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.SQLite;
 
 namespace FileMonitor.Database
@@ -17,17 +18,17 @@ namespace FileMonitor.Database
 
         // Column values
         private List<int>? iDs;
-        private List<string>? paths;
+        private ObservableCollection<string>? paths;
 
         public List<int>? IDs { get { return iDs; } }
-        public List<string>? Paths { get { return paths; } }
+        public ObservableCollection<string>? Paths { get { return paths; } }
 
         public BackupFile() 
         {
             List<object> pathValues = GetColumnValuesAsObjects(tableName, pathColumn);
             List<object> idValues = GetColumnValuesAsObjects(tableName, idColumn);
-            paths = CastObjectValues<string>(pathValues);
-            iDs = CastObjectValues<int>(idValues);
+            paths = CastToObservableCollection<string>(pathValues);
+            iDs = CastToList<int>(idValues);
         }
     }
 }
