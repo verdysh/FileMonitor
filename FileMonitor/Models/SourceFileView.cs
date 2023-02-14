@@ -11,10 +11,22 @@ namespace FileMonitor.Models
     /// </summary>
     class SourceFileView : ModelBase
     {
-        private ObservableCollection<string> allFiles;
+        private ObservableCollection<string>? allFiles;
+        private SourceFile dataAccess;
 
-        public SourceFileView() 
+        public SourceFileView()
         {
+            this.dataAccess = new SourceFile();
+            allFiles = dataAccess.Paths;
+        }
+
+        public ObservableCollection<string> AllFiles
+        {
+            get { return allFiles; }
+            set 
+            { 
+                SetProperty(ref allFiles, value); 
+            }
         }
     }
 }
