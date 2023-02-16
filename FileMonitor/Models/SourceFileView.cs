@@ -12,12 +12,12 @@ namespace FileMonitor.Models
     class SourceFileView : ModelBase
     {
         private ObservableCollection<string>? allFiles;
-        private SourceFile dataAccess;
+        private SourceFile sourceFile;
 
         public SourceFileView()
         {
-            this.dataAccess = new SourceFile();
-            allFiles = dataAccess.Paths;
+            this.sourceFile = new SourceFile();
+            allFiles = sourceFile.Paths;
         }
 
         public ObservableCollection<string> AllFiles

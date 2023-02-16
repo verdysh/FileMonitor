@@ -15,7 +15,7 @@ namespace FileMonitor
     /// </summary>
     public partial class MainWindow : Window
     {
-        private SourceFileView fileViewModel = new SourceFileView();
+        private SourceFileView sourceFileView = new SourceFileView();
 
         public static readonly string programDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\FileMonitor";
         public static readonly string databasePath = $"{programDir}\\FMDB.sqlite";
@@ -36,7 +36,7 @@ namespace FileMonitor
                 DatabaseBuilder database = new DatabaseBuilder();
                 database.Build();
             }
-            ObservableCollection<string> allFiles = fileViewModel.AllFiles;
+            ObservableCollection<string> allFiles = sourceFileView.AllFiles;
             ShowFiles(allFiles);
         }
 
