@@ -36,30 +36,32 @@ namespace FileMonitor.Database
         /// <summary>
         /// Get a list of object values from the specified database column
         /// </summary>
-        protected List<object> GetColumnValuesAsObjects(string table, string column)
+        /// <remarks> 
+        /// Example query: "SELECT {column} FROM {table}" where "column" and 
+        /// "table" represent the method arguments.
+        /// </remarks>
+        protected List<object> SQLSelectFromColumn(string table, string column)
         {
-            // start connection
+            List<object> result = new List<object>();
+            string query = $"SELECT {column} FROM {table}";
             using (SQLiteConnection connection = GetConnection())
             {
-                List<object> result = new List<object>();
-                string query = $"SELECT {column} FROM {table}";
-
-                // execute command
-                SQLiteCommand command = new SQLiteCommand(query, connection);
-                SQLiteDataReader reader = command.ExecuteReader();
-                while (reader.Read()) result.Add(reader[column]);
-                connection.Dispose();
-                return result;
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read()) result.Add(reader[column]);
+                        return result;
+                    }
+                }
             }
         }
 
         /// <summary>
-        /// Cast a list of objects to a generic List
+        /// This method casts each object in a List to the specified type.
         /// </summary>
-        /// <remarks> 
-        /// Pass in a list of objects from the database. This method converts the list to the specified type.
-        /// </remarks>
-        protected List<T>? CastToList<T>(List<object> values)
+        /// <param name="values"> A List of objects from the database column </param>
+        protected List<T>? CastListFromObject<T>(List<object> values)
         {
             List<T> valuesCast = new List<T>();
             foreach (object entry in values)
@@ -70,19 +72,16 @@ namespace FileMonitor.Database
         }
 
         /// <summary>
-        /// Cast a list of objects to a generic ObservableCollection
+        /// Convert a List to an ObservableCollection
         /// </summary>
-        /// <remarks> 
-        /// Pass in a list of objects from the database. This method converts the list to the specified type.
-        /// </remarks>
-        protected ObservableCollection<T>? CastToObservableCollection<T>(List<object> values)
+        protected ObservableCollection<T>? ConvertToObservableCollection<T>(List<T> values)
         {
-            ObservableCollection<T> valuesCast = new ObservableCollection<T>();
-            foreach (object entry in values)
+            ObservableCollection<T> result = new ObservableCollection<T>();
+            foreach (T entry in values)
             {
-                valuesCast.Add((T)entry); // Cast object to <T>
+                result.Add(entry); // Cast object to <T>
             }
-            return valuesCast;
+            return result;
         }
     }
 }

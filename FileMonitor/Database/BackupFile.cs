@@ -20,15 +20,19 @@ namespace FileMonitor.Database
         private List<int>? iDs;
         private ObservableCollection<string>? paths;
 
-        public List<int>? IDs { get { return iDs; } }
         public ObservableCollection<string>? Paths { get { return paths; } }
 
         public BackupFile() 
         {
-            List<object> pathValues = GetColumnValuesAsObjects(tableName, pathColumn);
-            List<object> idValues = GetColumnValuesAsObjects(tableName, idColumn);
-            paths = CastToObservableCollection<string>(pathValues);
-            iDs = CastToList<int>(idValues);
+            List<object> pathValues = SQLSelectFromColumn(tableName, pathColumn);
+            List<object> idValues = SQLSelectFromColumn(tableName, idColumn);
+
+            // Cast from object list
+            this.iDs = CastListFromObject<int>(idValues);
+            List<string> temp = CastListFromObject<string>(pathValues);
+
+            // Get observable collection
+            paths = ConvertToObservableCollection<string>(temp);
         }
     }
 }
