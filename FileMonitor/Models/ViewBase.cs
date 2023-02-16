@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace FileMonitor.Models
 {
     /// <summary>
-    /// Provides a base class for all view model classes
+    /// Provides a base class for all "View" classes
     /// </summary>
-    internal abstract class ModelBase : INotifyPropertyChanged
+    internal abstract class ViewBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 

@@ -7,9 +7,9 @@ using System.ComponentModel;
 namespace FileMonitor.Models 
 {
     /// <summary>
-    /// Defines a view model class for accessing a list of files that are monitored by the program.
+    /// Defines a class for MainWindow.xaml.cs to access a list of files that are monitored by the program.
     /// </summary>
-    class SourceFileView : ModelBase
+    class SourceFileView : ViewBase
     {
         private ObservableCollection<string>? allFiles;
         private SourceFile sourceFile;
