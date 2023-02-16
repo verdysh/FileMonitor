@@ -1,11 +1,7 @@
 Fixes:
-- Bind XAML TextBlocks to the View Model class, and make sure that the View Model class updates both the UI and the database
-- Refactor: implement public properties for each database class, and private methods to handle the internals 
-- rename FileTextBlockDisplay -- will separate into two classes, AllFiles and RecentlyChangedFiles. NOTE: must edit event handler to reflect the new class name
-- Add logic to database table classes. 
-- Update textblocks from database / remove JSON file references 
-- Show file paths that have changed in TextBlock
-- Add helper class / helper methods to format how the text is displayed (ex. show the date modified)
+- Fix: error where adding a file overwrites the previous file
+- Update textblocks from database / Show file paths that have changed in TextBlock
+- Add helper class / helper methods to format how the text is displayed (ex. show the date modified)?
 
 Features:
 - Allow user to add dir. Display warning: adding a dir will add all files and subfiles from that dir. If you want to add only specific files, you must add each file individually
