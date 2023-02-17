@@ -36,7 +36,7 @@ namespace FileMonitor
                 DatabaseBuilder database = new DatabaseBuilder();
                 database.Build();
             }
-            ObservableCollection<string> allFiles = sourceFileView.AllFiles;
+            ReadOnlyObservableCollection<string> allFiles = sourceFileView.AllFiles;
             ShowFiles(allFiles);
         }
 
@@ -44,7 +44,7 @@ namespace FileMonitor
         /// A method to display all monitored files in the UI
         /// </summary>
         /// <param name="files"> A list of files to display </param>
-        private void ShowFiles(ObservableCollection<string> files)
+        private void ShowFiles(ReadOnlyObservableCollection<string> files)
         {
             string result = "";
             for (int i = 0; i < files.Count; i++)
@@ -67,7 +67,7 @@ namespace FileMonitor
 
             if(newFile != "")
             {
-                sourceFileView.AllFiles.Add(newFile);
+                //sourceFileView.AllFiles.Add(newFile);
             }
         }
 
