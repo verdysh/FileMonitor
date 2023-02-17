@@ -9,12 +9,12 @@ namespace FileMonitor.Models
     /// <summary>
     /// Defines a class for MainWindow.xaml.cs to access a list of files that are monitored by the program.
     /// </summary>
-    class SourceFileView : ViewBase
+    class MonitoredFiles : ViewBase
     {
         private ObservableCollection<string>? allFiles;
         private SourceFile sourceFile;
 
-        public SourceFileView()
+        public MonitoredFiles()
         {
             this.sourceFile = new SourceFile();
             allFiles = sourceFile.Paths;
