@@ -5,7 +5,7 @@ namespace FileMonitor.Database
     /// <summary>
     /// Class dedicated to creating the initial database
     /// </summary>
-    internal class DatabaseBuilder : TableBase
+    internal class DatabaseBuilder : BaseTable
     {
         /// <summary>
         /// An array containing all the commands for creating the database tables

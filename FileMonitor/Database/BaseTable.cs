@@ -8,7 +8,7 @@ namespace FileMonitor.Database
     /// <summary>
     /// Defines an abstract class for all SQL table classes to inherit from 
     /// </summary>
-    internal abstract class TableBase
+    internal abstract class BaseTable
     {
         /// <summary>
         /// Return an opened database connection object

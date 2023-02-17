@@ -10,7 +10,7 @@ namespace FileMonitor.Database
     /// Defines a class for reading from and writing to the source_file table from the SQLite 
     /// database
     /// </summary>
-    internal class SourceFile : TableBase
+    internal class SourceFile : BaseTable
     {
         private const string tableName = "source_file";
 
