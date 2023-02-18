@@ -21,15 +21,15 @@ namespace FileMonitor.Database
         }
 
         /// <summary>
-        /// Query the table for a single ID column and retrieve the next available ID
+        /// Check a list of IDs and retrieve the next available ID
         /// </summary>
-        protected int GetNextAvailableID(List<int> iDs, string table, string column)
+        protected int GetNextAvailableID(List<int> iDs)
         {
             if (iDs.Count == 0) return 0;
             else
             {
-                object lastId = iDs[iDs.Count - 1];
-                return 1 + (int)lastId; // cast to integer
+                int lastId = iDs[iDs.Count - 1];
+                return 1 + lastId;
             }
         }
 
