@@ -15,7 +15,7 @@ namespace FileMonitor
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MonitoredFiles sourceFileView = new MonitoredFiles();
+        private MonitoredFiles monitoredFiles = new MonitoredFiles();
 
         public static readonly string programDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\FileMonitor";
         public static readonly string databasePath = $"{programDir}\\FMDB.sqlite";
@@ -36,7 +36,7 @@ namespace FileMonitor
                 DatabaseBuilder database = new DatabaseBuilder();
                 database.Build();
             }
-            ReadOnlyObservableCollection<string> allFiles = sourceFileView.AllFiles;
+            ReadOnlyObservableCollection<string> allFiles = monitoredFiles.AllFiles;
             ShowFiles(allFiles);
         }
 
@@ -67,7 +67,7 @@ namespace FileMonitor
 
             if(newFile != "")
             {
-                //sourceFileView.AllFiles.Add(newFile);
+                monitoredFiles.AddFile(newFile);
             }
         }
 
