@@ -36,7 +36,7 @@ namespace FileMonitor
                 DatabaseBuilder database = new DatabaseBuilder();
                 database.Build();
             }
-            ReadOnlyObservableCollection<string> allFiles = monitoredFiles.AllFiles;
+            ReadOnlyObservableCollection<string> allFiles = monitoredFiles.AllFilePaths;
             ShowFiles(allFiles);
         }
 

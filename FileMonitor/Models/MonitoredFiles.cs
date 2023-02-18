@@ -12,26 +12,23 @@ namespace FileMonitor.Models
     /// </summary>
     class MonitoredFiles : ViewBase
     {
-        private ObservableCollection<string>? allFiles;
-        private ReadOnlyObservableCollection<string>? allFilesWrapper;
-        private ObservableCollection<string>? filesChangedSinceBackup;
+        private ReadOnlyObservableCollection<string>? readOnlyFilePaths;
+        private ObservableCollection<string>? pathsChangedSinceBackup;
         private SourceFile sourceFile;
 
         public MonitoredFiles()
         {
             this.sourceFile = new SourceFile();
-            allFiles = sourceFile.Paths;
-            allFilesWrapper = new ReadOnlyObservableCollection<string>(allFiles);
+            readOnlyFilePaths = sourceFile.FilePaths;
         }
 
-        public ReadOnlyObservableCollection<string>? AllFiles
+        public ReadOnlyObservableCollection<string>? AllFilePaths
         {
-            get { return allFilesWrapper; }
+            get { return readOnlyFilePaths; }
         }
 
         public void AddFile(string path)
         {
-            allFiles.Add(path);
             sourceFile.AddFile(path);
         }
     }

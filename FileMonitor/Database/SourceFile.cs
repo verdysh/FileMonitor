@@ -16,19 +16,20 @@ namespace FileMonitor.Database
         private const string tableName = "source_file";
 
         // Column names
-        private const string pathColumn = "path";
+        private const string filePathColumn = "path";
         private const string idColumn = "id";
 
         // Column values
         private List<int>? iDs;
-        private ObservableCollection<string>? paths;
+        private ObservableCollection<string>? filePaths;
+        private ReadOnlyObservableCollection<string>? readOnlyFilePaths;
 
-        public ObservableCollection<string> Paths { get => paths; }
+        public ReadOnlyObservableCollection<string> FilePaths { get => readOnlyFilePaths; }
 
         public SourceFile() 
         {
             // Query database
-            List<object> pathValues = SQLSelectFromColumn(tableName, pathColumn);
+            List<object> pathValues = SQLSelectFromColumn(tableName, filePathColumn);
             List<object> idValues = SQLSelectFromColumn(tableName, idColumn);
             
             // Cast from object list
@@ -36,7 +37,8 @@ namespace FileMonitor.Database
             List<string> temp = CastListFromObject<string>(pathValues);
 
             // Convert list to ObservableCollection
-            paths = new ObservableCollection<string>(temp);
+            filePaths = new ObservableCollection<string>(temp);
+            readOnlyFilePaths = new ReadOnlyObservableCollection<string>(filePaths);
         }
 
         /// <summary>
@@ -44,10 +46,10 @@ namespace FileMonitor.Database
         /// </summary>
         public void AddFile(string path)
         {
-            if (!paths.Contains(path))
+            if (!filePaths.Contains(path))
             {
                 int id = GetNextAvailableID(iDs);
-                string insertStatement = $"INSERT INTO source_file (id, path) values ({id}, {path})";
+                string insertStatement = $"INSERT INTO source_file (id, path) values ({id}, \'{path}\')";
 
                 using (SQLiteConnection connection = GetConnection())
                 {
