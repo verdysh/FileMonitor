@@ -3,9 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FileMonitor"
+        xmlns:local="clr-namespace:FileMonitor" 
+        xmlns:c="clr-namespace:FileMonitor.Models"
         mc:Ignorable="d"
         Title="FileMonitor" Height="450" Width="500">
+
+    <!-- Set data binding-->
+    <Window.Resources>
+        <c:MonitoredFiles x:Key="MonitoredFilesSource"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <Binding Source="{StaticResource MonitoredFilesSource}"/>
+    </Window.DataContext>
+    
     <Grid>
         <TabControl>
             <TabItem Header="Main">
@@ -26,7 +36,7 @@
                         <Button x:Name="EditFiles" Content=" Edit " Click="EditFiles_Click"/>
                         <Button x:Name="DeleteFiles" Content=" Delete " Click="DeleteFiles_Click"/>
                     </StackPanel>
-                    <TextBlock x:Name="FilesDisplayed" Text="" HorizontalAlignment="Left" Margin="10,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="474" Height="322" Grid.ColumnSpan="2"/>
+                    <TextBlock x:Name="FilesDisplayed" Text="{Binding Path=AllFilePaths}" HorizontalAlignment="Left" Margin="10,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="474" Height="322" Grid.ColumnSpan="2"/>
                     <Label Content="All Files:" HorizontalAlignment="Left" Margin="10,43,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
