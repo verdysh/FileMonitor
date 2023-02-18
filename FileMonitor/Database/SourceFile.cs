@@ -23,15 +23,7 @@ namespace FileMonitor.Database
         private List<int>? iDs;
         private ObservableCollection<string>? paths;
 
-        public ObservableCollection<string> Paths 
-        { 
-            get => paths; 
-            set 
-            {
-                foreach (var item in paths) Debug.WriteLine(item);
-                Debug.WriteLine(value);
-            }
-        }
+        public ObservableCollection<string> Paths { get => paths; }
 
         public SourceFile() 
         {
@@ -43,8 +35,8 @@ namespace FileMonitor.Database
             this.iDs = CastListFromObject<int>(idValues);
             List<string> temp = CastListFromObject<string>(pathValues);
 
-            // Get observable collection
-            paths = ConvertToObservableCollection<string>(temp);
+            // Convert list to ObservableCollection
+            paths = new ObservableCollection<string>(temp);
         }
 
         /// <summary>
