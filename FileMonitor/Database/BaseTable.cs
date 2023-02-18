@@ -58,7 +58,7 @@ namespace FileMonitor.Database
         }
 
         /// <summary>
-        /// This method casts each object in a List to the specified type.
+        /// Cast a List of objects to a List of the specified type
         /// </summary>
         /// <param name="values"> A List of objects from the database column </param>
         protected List<T>? CastListFromObject<T>(List<object> values)
@@ -69,19 +69,6 @@ namespace FileMonitor.Database
                 valuesCast.Add((T)entry); // Cast object to <T>
             }
             return valuesCast;
-        }
-
-        /// <summary>
-        /// Convert a List to an ObservableCollection
-        /// </summary>
-        protected ObservableCollection<T>? ConvertToObservableCollection<T>(List<T> values)
-        {
-            ObservableCollection<T> result = new ObservableCollection<T>();
-            foreach (T entry in values)
-            {
-                result.Add(entry); // Cast object to <T>
-            }
-            return result;
         }
     }
 }
