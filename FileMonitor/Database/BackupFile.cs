@@ -32,7 +32,7 @@ namespace FileMonitor.Database
             List<string> temp = CastListFromObject<string>(pathValues);
 
             // Get observable collection
-            paths = ConvertToObservableCollection<string>(temp);
+            paths = new ObservableCollection<string>(temp);
         }
     }
 }
