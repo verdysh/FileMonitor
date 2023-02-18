@@ -36,22 +36,6 @@ namespace FileMonitor
                 DatabaseBuilder database = new DatabaseBuilder();
                 database.Build();
             }
-            ReadOnlyObservableCollection<string> allFiles = monitoredFiles.AllFilePaths;
-            ShowFiles(allFiles);
-        }
-
-        /// <summary>
-        /// A method to display all monitored files in the UI
-        /// </summary>
-        /// <param name="files"> A list of files to display </param>
-        private void ShowFiles(ReadOnlyObservableCollection<string> files)
-        {
-            string result = "";
-            for (int i = 0; i < files.Count; i++)
-            {
-                result += files[i] + "\n";
-            }
-            this.FilesDisplayed.Text = result;
         }
 
         /// <summary>
