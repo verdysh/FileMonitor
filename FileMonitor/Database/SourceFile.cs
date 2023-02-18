@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SQLite;
 using System.Diagnostics;
+using System.Windows.Markup;
 
 namespace FileMonitor.Database
 {
@@ -44,6 +45,26 @@ namespace FileMonitor.Database
 
             // Get observable collection
             paths = ConvertToObservableCollection<string>(temp);
+        }
+
+        /// <summary>
+        /// Adds a new file path to the database
+        /// </summary>
+        public void AddFile(string path)
+        {
+            if (!paths.Contains(path))
+            {
+                int id = GetNextAvailableID(iDs);
+                string insertStatement = $"INSERT INTO source_file (id, path) values ({id}, {path})";
+
+                using (SQLiteConnection connection = GetConnection())
+                {
+                    using(SQLiteCommand command = new SQLiteCommand(insertStatement, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
         }
     }
 }

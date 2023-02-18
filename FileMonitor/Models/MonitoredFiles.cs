@@ -32,7 +32,7 @@ namespace FileMonitor.Models
         public void AddFile(string path)
         {
             allFiles.Add(path);
-            // todo: pass value to sourceFile
+            sourceFile.AddFile(path);
         }
     }
 }
