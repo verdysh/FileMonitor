@@ -11,7 +11,7 @@ namespace FileMonitor.Models
     /// <summary>
     /// Provides a base class for all "View" classes
     /// </summary>
-    internal abstract class ViewBase : INotifyPropertyChanged
+    internal abstract class BaseNotify : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
