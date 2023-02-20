@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
+using System.Windows.Data;
 
 namespace FileMonitor.Models 
 {
@@ -13,23 +15,35 @@ namespace FileMonitor.Models
     class MonitoredFiles : ViewBase
     {
         private ReadOnlyObservableCollection<string>? readOnlyFilePaths;
-        private ObservableCollection<string>? pathsChangedSinceBackup;
+        private string allFilePaths;
         private SourceFile sourceFile;
 
         public MonitoredFiles()
         {
             this.sourceFile = new SourceFile();
             readOnlyFilePaths = sourceFile.FilePaths;
+            allFilePaths = Convert(readOnlyFilePaths);
         }
 
-        public ReadOnlyObservableCollection<string>? AllFilePaths
+        public string? AllFilePaths
         {
-            get { return readOnlyFilePaths; }
+            get { return allFilePaths; }
         }
 
         public void AddFile(string path)
         {
             sourceFile.AddFile(path);
+            Console.WriteLine(Convert(readOnlyFilePaths));
+        }
+
+        private string Convert(ReadOnlyObservableCollection<string> collection) 
+        {
+            string result = "";
+            foreach(string item in collection)
+            {
+                result += item + "\n";
+            }
+            return result;
         }
     }
 }
