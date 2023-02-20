@@ -44,6 +44,7 @@ namespace FileMonitor.Database
         /// <summary>
         /// Adds a new file path to the database
         /// </summary>
+        /// <remarks> Updates FilePaths property </remarks>
         public void AddFile(string path)
         {
             if (!filePaths.Contains(path))
@@ -59,6 +60,7 @@ namespace FileMonitor.Database
                     }
                 }
             }
+            filePaths.Add(path);
         }
     }
 }
