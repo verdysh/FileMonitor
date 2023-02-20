@@ -12,7 +12,7 @@ namespace FileMonitor.Models
     /// <summary>
     /// Defines a class for MainWindow.xaml.cs to access a list of files that are monitored by the program.
     /// </summary>
-    class MonitoredFiles : ViewBase
+    class MonitoredFiles : BaseNotify
     {
         private ReadOnlyObservableCollection<string>? readOnlyFilePaths;
         private string allFilePaths;
@@ -33,7 +33,6 @@ namespace FileMonitor.Models
         public void AddFile(string path)
         {
             sourceFile.AddFile(path);
-            Console.WriteLine(Convert(readOnlyFilePaths));
         }
 
         private string Convert(ReadOnlyObservableCollection<string> collection) 
