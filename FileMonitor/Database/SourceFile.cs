@@ -47,11 +47,10 @@ namespace FileMonitor.Database
         /// <remarks> Updates FilePaths property </remarks>
         public void AddFile(string path)
         {
+            int id = GetNextAvailableID(iDs);
+            string insertStatement = $"INSERT INTO source_file (id, path) values ({id}, \'{path}\')";
             if (!filePaths.Contains(path))
             {
-                int id = GetNextAvailableID(iDs);
-                string insertStatement = $"INSERT INTO source_file (id, path) values ({id}, \'{path}\')";
-
                 using (SQLiteConnection connection = GetConnection())
                 {
                     using(SQLiteCommand command = new SQLiteCommand(insertStatement, connection))
@@ -60,6 +59,7 @@ namespace FileMonitor.Database
                     }
                 }
             }
+            iDs.Add(id);
             filePaths.Add(path);
         }
     }
