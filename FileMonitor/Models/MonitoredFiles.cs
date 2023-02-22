@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -14,15 +15,16 @@ namespace FileMonitor.Models
     /// </summary>
     class MonitoredFiles : BaseNotify
     {
-        private ReadOnlyObservableCollection<string>? readOnlyFilePaths;
+        private INotifyCollectionChanged? readOnlyFilePaths;
         private string allFilePaths;
         private SourceFile sourceFile;
 
         public MonitoredFiles()
         {
             this.sourceFile = new SourceFile();
-            readOnlyFilePaths = sourceFile.FilePaths;
-            allFilePaths = Convert(readOnlyFilePaths);
+            this.readOnlyFilePaths = sourceFile.FilePaths;
+            sourceFile.FilePaths.CollectionChanged += FilePaths_CollectionChanged; 
+            this.allFilePaths = Format((ReadOnlyObservableCollection<string>)readOnlyFilePaths);
         }
 
         public string? AllFilePaths
@@ -30,12 +32,16 @@ namespace FileMonitor.Models
             get { return allFilePaths; }
         }
 
+        /// <summary>
+        /// Adds a file path from the UI
+        /// </summary>
+        /// <param name="path"> Path to add </param>
         public void AddFile(string path)
         {
             sourceFile.AddFile(path);
         }
 
-        private string Convert(ReadOnlyObservableCollection<string> collection) 
+        private string Format(ReadOnlyObservableCollection<string> collection) 
         {
             string result = "";
             foreach(string item in collection)
@@ -43,6 +49,17 @@ namespace FileMonitor.Models
                 result += item + "\n";
             }
             return result;
+        }
+
+        /// <summary>
+        /// A method for subscribing to the CollectionChanged event in SourceFile.FilePaths
+        /// </summary>
+        public void FilePaths_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                this.allFilePaths = Format((ReadOnlyObservableCollection<string>)readOnlyFilePaths);
+            }
         }
     }
 }
