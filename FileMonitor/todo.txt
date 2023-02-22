@@ -1,4 +1,5 @@
 Fixes:
+- Fix: error where scroll bar prevents buttons from being clicked
 - Update textblocks from database. NOTE: XAML must bind to ObservableCollection to achieve this
 - Show file paths that have changed in TextBlock
 - Add helper class / helper methods to format how the text is displayed (ex. show the date modified)?
