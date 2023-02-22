@@ -36,7 +36,10 @@
                         <Button x:Name="EditFiles" Content=" Edit " Click="EditFiles_Click"/>
                         <Button x:Name="DeleteFiles" Content=" Delete " Click="DeleteFiles_Click"/>
                     </StackPanel>
-                    <TextBlock x:Name="FilesDisplayed" Text="{Binding Path=AllFilePaths}" HorizontalAlignment="Left" Margin="10,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="474" Height="322" Grid.ColumnSpan="2"/>
+                    <ScrollViewer>
+                        <TextBlock x:Name="FilesDisplayed" Text="{Binding Path=AllFilePaths}" HorizontalAlignment="Left" Margin="10,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="474" Height="322" Grid.ColumnSpan="2"/>
+                    </ScrollViewer>
+                    
                     <Label Content="All Files:" HorizontalAlignment="Left" Margin="10,43,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
