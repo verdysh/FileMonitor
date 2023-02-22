@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.Windows.Markup;
@@ -24,7 +25,7 @@ namespace FileMonitor.Database
         private ObservableCollection<string>? filePaths;
         private ReadOnlyObservableCollection<string>? readOnlyFilePaths;
 
-        public ReadOnlyObservableCollection<string> FilePaths { get => readOnlyFilePaths; }
+        public INotifyCollectionChanged FilePaths { get => readOnlyFilePaths; }
 
         public SourceFile() 
         {
@@ -33,8 +34,8 @@ namespace FileMonitor.Database
             List<object> idValues = SQLSelectFromColumn(tableName, idColumn);
             
             // Cast from object list
-            this.iDs = CastListFromObject<int>(idValues);
-            List<string> temp = CastListFromObject<string>(pathValues);
+            this.iDs = ToGenericList<int>(idValues);
+            List<string> temp = ToGenericList<string>(pathValues);
 
             // Convert list to ObservableCollection
             filePaths = new ObservableCollection<string>(temp);
