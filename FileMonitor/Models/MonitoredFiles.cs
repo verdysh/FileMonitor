@@ -58,7 +58,8 @@ namespace FileMonitor.Models
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
-                this.allFilePaths = Format((ReadOnlyObservableCollection<string>)readOnlyFilePaths);
+                if (e.NewItems.Count == 0) return;
+                else foreach (var item in e.NewItems) allFilePaths += $"{item}\n";
             }
         }
     }
