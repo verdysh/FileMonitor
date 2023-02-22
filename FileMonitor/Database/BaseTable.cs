@@ -61,7 +61,7 @@ namespace FileMonitor.Database
         /// Cast a List of objects to a List of the specified type
         /// </summary>
         /// <param name="values"> A List of objects from the database column </param>
-        protected List<T>? CastListFromObject<T>(List<object> values)
+        protected List<T>? ToGenericList<T>(List<object> values)
         {
             List<T> valuesCast = new List<T>();
             foreach (object entry in values)

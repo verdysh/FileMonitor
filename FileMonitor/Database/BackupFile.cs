@@ -28,8 +28,8 @@ namespace FileMonitor.Database
             List<object> idValues = SQLSelectFromColumn(tableName, idColumn);
 
             // Cast from object list
-            this.iDs = CastListFromObject<int>(idValues);
-            List<string> temp = CastListFromObject<string>(pathValues);
+            this.iDs = ToGenericList<int>(idValues);
+            List<string> temp = ToGenericList<string>(pathValues);
 
             // Get observable collection
             paths = new ObservableCollection<string>(temp);
