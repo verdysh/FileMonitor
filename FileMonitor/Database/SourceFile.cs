@@ -59,9 +59,9 @@ namespace FileMonitor.Database
                         command.ExecuteNonQuery();
                     }
                 }
+                iDs.Add(id);
+                filePaths.Add(path);
             }
-            iDs.Add(id);
-            filePaths.Add(path);
         }
     }
 }
