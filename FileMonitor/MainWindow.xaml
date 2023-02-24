@@ -16,13 +16,16 @@
         <Binding Source="{StaticResource MonitoredFilesSource}"/>
     </Window.DataContext>
     
+    <!-- Main Program Grid -->
     <Grid>
         <TabControl>
             <TabItem Header="Main">
-                <Grid Background="#FFE5E5E5">
-                    <Label Content="Recently changed files:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="RecentlyChangedFiles" Text="" HorizontalAlignment="Center" Height="355" Margin="0,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="474"/>
-                </Grid>
+                <ScrollViewer>
+                    <Grid Background="#FFE5E5E5">
+                        <Label Content="Recently changed files:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                        <TextBlock x:Name="RecentlyChangedFiles" Text="" HorizontalAlignment="Center" Height="355" Margin="0,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="474"/>
+                    </Grid>
+                </ScrollViewer>
             </TabItem>
             
             <TabItem Header="File Paths">
@@ -45,8 +48,10 @@
 
             </TabItem>
             <TabItem Header="Settings">
-                <Grid Background="#FFE5E5E5">
-                </Grid>
+                <ScrollViewer>
+                    <Grid Background="#FFE5E5E5">
+                    </Grid>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
 
