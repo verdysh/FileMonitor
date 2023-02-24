@@ -39,6 +39,7 @@ namespace FileMonitor.Models
         public void AddFile(string path)
         {
             sourceFile.AddFile(path);
+            OnPropertyChanged();
         }
 
         private string Format(ReadOnlyObservableCollection<string> collection) 
