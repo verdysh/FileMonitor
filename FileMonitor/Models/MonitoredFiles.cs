@@ -15,21 +15,19 @@ namespace FileMonitor.Models
     /// </summary>
     class MonitoredFiles : BaseNotify
     {
-        private INotifyCollectionChanged? readOnlyFilePaths;
         private string allFilePaths;
         private SourceFile sourceFile;
-
-        public MonitoredFiles()
-        {
-            this.sourceFile = new SourceFile();
-            this.readOnlyFilePaths = sourceFile.FilePaths;
-            sourceFile.FilePaths.CollectionChanged += FilePaths_CollectionChanged; 
-            this.allFilePaths = Format((ReadOnlyObservableCollection<string>)readOnlyFilePaths);
-        }
 
         public string? AllFilePaths
         {
             get { return allFilePaths; }
+        }
+
+        public MonitoredFiles()
+        {
+            this.sourceFile = new SourceFile();
+            this.sourceFile.FilePaths.CollectionChanged += FilePaths_CollectionChanged; 
+            this.allFilePaths = Format((ReadOnlyObservableCollection<string>)this.sourceFile.FilePaths);
         }
 
         /// <summary>
@@ -54,12 +52,12 @@ namespace FileMonitor.Models
         /// <summary>
         /// A method for subscribing to the CollectionChanged event in SourceFile.FilePaths
         /// </summary>
-        public void FilePaths_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        protected void FilePaths_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
                 if (e.NewItems.Count == 0) return;
-                else foreach (var item in e.NewItems) allFilePaths += $"{item}\n";
+                else foreach (var item in e.NewItems) this.allFilePaths += $"{item}\n";
             }
         }
     }
