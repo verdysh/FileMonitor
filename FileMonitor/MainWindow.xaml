@@ -13,7 +13,7 @@
         <c:MonitoredFiles x:Key="MonitoredFilesSource"/>
     </Window.Resources>
     <Window.DataContext>
-        <Binding Source="{StaticResource MonitoredFilesSource}"/>
+        <Binding Source="{StaticResource MonitoredFilesSource}" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" />
     </Window.DataContext>
     
     <!-- Main Program Grid -->
