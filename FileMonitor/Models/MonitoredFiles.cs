@@ -70,7 +70,7 @@ namespace FileMonitor.Models
                     string newValue = this.allFilePaths;
                     foreach (var item in e.NewItems) newValue += $"{item}\n";
                     this.allFilePaths = newValue;
-                    OnPropertyChanged(AllFilePaths);
+                    OnPropertyChanged("AllFilePaths");
                 }
             }
         }
