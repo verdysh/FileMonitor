@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using FileMonitor.Tests;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Data;
+using System.Windows.Input;
 
 namespace FileMonitor
 {
@@ -29,6 +31,7 @@ namespace FileMonitor
             }
 
             InitializeComponent();
+            DataContext = monitoredFiles;
 
             if (!File.Exists(databasePath))
             {
@@ -76,3 +79,5 @@ namespace FileMonitor
         }
     }
 }
+
+
