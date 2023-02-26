@@ -6,6 +6,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Data;
 
 namespace FileMonitor.Models 
@@ -13,10 +14,16 @@ namespace FileMonitor.Models
     /// <summary>
     /// Defines a class for MainWindow.xaml.cs to access a list of files that are monitored by the program.
     /// </summary>
-    class MonitoredFiles : BaseNotify
+    class MonitoredFiles : INotifyPropertyChanged
     {
         private string allFilePaths;
         private SourceFile sourceFile;
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         public string? AllFilePaths
         {
@@ -44,7 +51,7 @@ namespace FileMonitor.Models
             string result = "";
             foreach(string item in collection)
             {
-                result += item + "\n";
+                result += $"{item}\n";
             }
             return result;
         }
@@ -56,8 +63,15 @@ namespace FileMonitor.Models
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
+                
                 if (e.NewItems.Count == 0) return;
-                else foreach (var item in e.NewItems) this.allFilePaths += $"{item}\n";
+                else 
+                {
+                    string newValue = this.allFilePaths;
+                    foreach (var item in e.NewItems) newValue += $"{item}\n";
+                    this.allFilePaths = newValue;
+                    OnPropertyChanged(AllFilePaths);
+                }
             }
         }
     }
