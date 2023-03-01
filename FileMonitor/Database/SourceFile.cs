@@ -57,5 +57,15 @@ namespace FileMonitor.Database
                 filePaths.Add(path);
             }
         }
+
+        /// <summary>
+        /// Removes a file from the database column
+        /// </summary>
+        /// <remarks> Updates FilePaths property </remarks>
+        public void RemoveFile(string path)
+        {
+            SQLDeleteFrom(tableName, filePathColumn, path);
+            filePaths.Remove(path);
+        }
     }
 }
