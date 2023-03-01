@@ -59,21 +59,6 @@ namespace FileMonitor
             }
         }
 
-        /// <summary>
-        /// Update XAML TextBlocks when the PropertyChanged event is fired
-        /// </summary>
-        /// <param name="sender"> object sender arg </param>
-        /// <param name="e"> e.NewFiles contains the updated file list </param>
-        private void MonitoredFiles_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-
-        }
-
-        private void EditFiles_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void DeleteFiles_Click(object sender, RoutedEventArgs e)
         {
 
