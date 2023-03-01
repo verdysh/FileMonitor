@@ -58,6 +58,40 @@ namespace FileMonitor.Database
         }
 
         /// <summary>
+        /// A method for executing the SQL INSERT statement
+        /// Sample statement: INSERT INTO source_file (id, path) values (56, 'C:\NewFilePath') 
+        /// </summary>
+        /// <remarks> Overload for any table that has an integer and a varchar column </remarks>
+        protected void SQLInsertInto(string table, string column1, string column2, int id, string varCharValue)
+        {
+            string insertStatement = $"INSERT INTO {table} ({column1}, {column2}) values ({id}, \'{varCharValue}\')";
+            using (SQLiteConnection connection = GetConnection())
+            {
+                using (SQLiteCommand command = new SQLiteCommand(insertStatement, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }         
+        }
+
+        /// <summary>
+        /// A method for executing the SQL INSERT statement
+        /// Sample statement: INSERT INTO source_file_hash_rel (source_file_id, source_hash_id) values (56, 72) 
+        /// </summary>
+        /// <remarks> Overload for any table that has two integer columns </remarks>
+        protected void SQLInsertInto(string table, string column1, string column2, int id1, int id2)
+        {
+            string insertStatement = $"INSERT INTO {table} ({column1}, {column2}) values ({id1}, {id2})";
+            using (SQLiteConnection connection = GetConnection())
+            {
+                using (SQLiteCommand command = new SQLiteCommand(insertStatement, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        /// <summary>
         /// Cast a List of objects to a List of the specified type
         /// </summary>
         /// <param name="values"> A List of objects from the database column </param>

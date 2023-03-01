@@ -52,13 +52,7 @@ namespace FileMonitor.Database
             string insertStatement = $"INSERT INTO source_file (id, path) values ({id}, \'{path}\')";
             if (!filePaths.Contains(path))
             {
-                using (SQLiteConnection connection = GetConnection())
-                {
-                    using(SQLiteCommand command = new SQLiteCommand(insertStatement, connection))
-                    {
-                        command.ExecuteNonQuery();
-                    }
-                }
+                SQLInsertInto(tableName, idColumn, filePathColumn, id, path);
                 iDs.Add(id);
                 filePaths.Add(path);
             }
