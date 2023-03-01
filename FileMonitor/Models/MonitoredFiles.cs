@@ -46,6 +46,15 @@ namespace FileMonitor.Models
             sourceFile.AddFile(path);
         }
 
+        /// <summary>
+        /// Removes a file path as specified in the UI
+        /// </summary>
+        /// <param name="path"> Path to remove </param>
+        public void RemoveFile(string path)
+        {
+            sourceFile.RemoveFile(path);
+        }
+
         private string Format(ReadOnlyObservableCollection<string> collection) 
         {
             string result = "";
