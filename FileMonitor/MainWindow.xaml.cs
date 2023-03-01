@@ -17,13 +17,20 @@ namespace FileMonitor
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MonitoredFiles monitoredFiles = new MonitoredFiles();
+        private MonitoredFiles monitoredFiles;
 
         public static readonly string programDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\FileMonitor";
         public static readonly string databasePath = $"{programDir}\\FMDB.sqlite";
 
         public MainWindow()
         {
+            if (!File.Exists(databasePath))
+            {
+                Directory.CreateDirectory(programDir);
+                DatabaseBuilder database = new DatabaseBuilder();
+                database.Build();
+            }
+
             // Remove logic once SQL tests pass
             if (!File.Exists(JsonFile.storedPaths))
             {
@@ -31,14 +38,8 @@ namespace FileMonitor
             }
 
             InitializeComponent();
+            monitoredFiles = new MonitoredFiles();
             DataContext = monitoredFiles;
-
-            if (!File.Exists(databasePath))
-            {
-                Directory.CreateDirectory(programDir);
-                DatabaseBuilder database = new DatabaseBuilder();
-                database.Build();
-            }
         }
 
         /// <summary>
