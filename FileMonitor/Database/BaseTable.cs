@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SQLite;
 
@@ -20,17 +19,13 @@ namespace FileMonitor.Database
             return connection;
         }
 
-        /// <summary>
-        /// Check a list of IDs and retrieve the next available ID
-        /// </summary>
-        protected int GetNextAvailableID(List<int> iDs)
+        protected int GetNextAvailableID(Dictionary<int, string> columns)
         {
-            if (iDs.Count == 0) return 0;
-            else
+            for (int i = 0; i < columns.Count; i++) 
             {
-                int lastId = iDs[iDs.Count - 1];
-                return 1 + lastId;
-            }
+                if (!columns.ContainsKey(i)) return i;
+            } 
+            return columns.Count;
         }
 
         /// <summary>
@@ -56,17 +51,24 @@ namespace FileMonitor.Database
         /// Sample query:
         /// "SELECT path FROM source_file
         /// </summary>
-        protected List<object> SQLSelectFromColumn(string table, string column)
+        protected Dictionary<int, string> SQLSelectFromColumn(string table, string idColumn, string valueColumn)
         {
-            List<object> result = new List<object>();
-            string query = $"SELECT {column} FROM {table}";
+            Dictionary<int, string> result = new Dictionary<int, string>();
+            string query = $"SELECT * FROM {table}";
+            int key;
+            string value;
             using (SQLiteConnection connection = GetConnection())
             {
                 using (SQLiteCommand command = new SQLiteCommand(query, connection))
                 {
                     using (SQLiteDataReader reader = command.ExecuteReader())
                     {
-                        while (reader.Read()) result.Add(reader[column]);
+                        while (reader.Read()) 
+                        {
+                            key = reader.GetInt32(idColumn); 
+                            value = reader.GetString(valueColumn);
+                            result.Add(key, value);
+                        } 
                         return result;
                     }
                 }
