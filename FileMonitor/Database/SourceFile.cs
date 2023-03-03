@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Data.SQLite;
-using System.Diagnostics;
-using System.Windows.Markup;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace FileMonitor.Database
 {
@@ -15,31 +13,22 @@ namespace FileMonitor.Database
     internal class SourceFile : BaseTable
     {
         private const string tableName = "source_file";
-
-        // Column names
-        private const string filePathColumn = "path";
         private const string idColumn = "id";
+        private const string pathColumn = "path";
+        private Dictionary<int, string> columns;
 
-        // Column values
-        private List<int>? iDs;
-        private ObservableCollection<string>? filePaths;
-        private ReadOnlyObservableCollection<string>? readOnlyFilePaths;
-
-        public INotifyCollectionChanged FilePaths { get => readOnlyFilePaths; }
+        public event PropertyChangedEventHandler? PropertyChanged;
+        public INotifyCollectionChanged? FilePaths { get => AsReadOnlyObservableCollection(columns.Values); }
 
         public SourceFile() 
         {
             // Query database
-            List<object> pathValues = SQLSelectFromColumn(tableName, filePathColumn);
-            List<object> idValues = SQLSelectFromColumn(tableName, idColumn);
-            
-            // Cast from object list
-            this.iDs = ToGenericList<int>(idValues);
-            List<string> temp = ToGenericList<string>(pathValues);
+            columns = SQLSelectFromColumn(tableName, idColumn, pathColumn);
+        }
 
-            // Convert list to ObservableCollection
-            filePaths = new ObservableCollection<string>(temp);
-            readOnlyFilePaths = new ReadOnlyObservableCollection<string>(filePaths);
+        protected void OnPropertyChanged([CallerMemberName]string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         /// <summary>
@@ -48,13 +37,12 @@ namespace FileMonitor.Database
         /// <remarks> Updates FilePaths property </remarks>
         public void AddFile(string path)
         {
-            int id = GetNextAvailableID(iDs);
-            string insertStatement = $"INSERT INTO source_file (id, path) values ({id}, \'{path}\')";
-            if (!filePaths.Contains(path))
+            if (!columns.ContainsValue(path))
             {
-                SQLInsertInto(tableName, idColumn, filePathColumn, id, path);
-                iDs.Add(id);
-                filePaths.Add(path);
+                int id = GetNextAvailableID(columns);
+                SQLInsertInto(tableName, idColumn, pathColumn, id, path);
+                columns.Add(id, path);
+                OnPropertyChanged("FilePaths");
             }
         }
 
@@ -64,8 +52,23 @@ namespace FileMonitor.Database
         /// <remarks> Updates FilePaths property </remarks>
         public void RemoveFile(string path)
         {
-            SQLDeleteFrom(tableName, filePathColumn, path);
-            filePaths.Remove(path);
+            SQLDeleteFrom(tableName, pathColumn, path);
+            //columns.Remove(path);
+        }
+
+        /// <summary>
+        /// Convert a dictionary value collection to ReadOnlyObservableCollection 
+        /// </summary>
+        private ReadOnlyObservableCollection<string> AsReadOnlyObservableCollection(Dictionary<int, string>.ValueCollection collection)
+        {
+            ObservableCollection<string> result = new ObservableCollection<string>();
+            Dictionary<int, string>.ValueCollection.Enumerator enumerator = collection.GetEnumerator();
+            while(enumerator.Current != null)
+            {
+                result.Add(enumerator.Current.ToString());
+                enumerator.MoveNext();
+            }
+            return new ReadOnlyObservableCollection<string>(result);
         }
     }
 }
