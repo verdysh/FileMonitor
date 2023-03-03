@@ -24,15 +24,17 @@ namespace FileMonitor.Database
 
         public BackupFile() 
         {
-            List<object> pathValues = SQLSelectFromColumn(tableName, pathColumn);
-            List<object> idValues = SQLSelectFromColumn(tableName, idColumn);
+            // todo: refactor to account for private dictionary
 
-            // Cast from object list
-            this.iDs = ToGenericList<int>(idValues);
-            List<string> temp = ToGenericList<string>(pathValues);
+            //List<object> pathValues = SQLSelectFromColumn(tableName, pathColumn);
+            //List<object> idValues = SQLSelectFromColumn(tableName, idColumn);
 
-            // Get observable collection
-            paths = new ObservableCollection<string>(temp);
+            //// Cast from object list
+            //this.iDs = ToGenericList<int>(idValues);
+            //List<string> temp = ToGenericList<string>(pathValues);
+
+            //// Get observable collection
+            //paths = new ObservableCollection<string>(temp);
         }
     }
 }
