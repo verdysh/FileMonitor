@@ -20,11 +20,6 @@ namespace FileMonitor.Models
         private SourceFile sourceFile;
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         public string? AllFilePaths
         {
             get { return allFilePaths; }
@@ -32,9 +27,14 @@ namespace FileMonitor.Models
 
         public MonitoredFiles()
         {
-            this.sourceFile = new SourceFile();
-            this.sourceFile.FilePaths.CollectionChanged += FilePaths_CollectionChanged; 
-            this.allFilePaths = Format((ReadOnlyObservableCollection<string>)this.sourceFile.FilePaths);
+            sourceFile = new SourceFile();
+            sourceFile.FilePaths.CollectionChanged += FilePaths_CollectionChanged;
+            allFilePaths = Format((ReadOnlyObservableCollection<string>)this.sourceFile.FilePaths);
+        }
+
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         /// <summary>
