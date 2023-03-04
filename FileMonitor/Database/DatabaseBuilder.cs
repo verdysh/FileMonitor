@@ -32,10 +32,11 @@ namespace FileMonitor.Database
             {
                 for (int i = 0; i < commands.Length; i++)
                 {
-                    SQLiteCommand command = new SQLiteCommand(commands[i], connection);
-                    command.ExecuteNonQuery();
+                    using (SQLiteCommand command = new SQLiteCommand(commands[i], connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
                 }
-                connection.Dispose();
             }
         }
     }
