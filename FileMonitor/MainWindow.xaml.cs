@@ -25,12 +25,6 @@ namespace FileMonitor
                 database.Build();
             }
 
-            // Remove logic once SQL tests pass
-            if (!File.Exists(JsonFile.storedPaths))
-            {
-                File.Create(JsonFile.storedPaths);
-            }
-
             InitializeComponent();
             monitoredFiles = new MonitoredFiles();
             DataContext = monitoredFiles;
