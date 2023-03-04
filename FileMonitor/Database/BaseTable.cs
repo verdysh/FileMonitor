@@ -43,13 +43,13 @@ namespace FileMonitor.Database
         }
 
         /// <summary>
-        /// Get a list of object values from the specified database column
+        /// Select all values from the specified database column, returned as a Dictionary
         /// 
         /// The following sample shows the query as a formatted string: 
-        /// $"SELECT {column} FROM {table}"
+        /// $"SELECT * FROM {table}"
         /// 
         /// Sample query:
-        /// "SELECT path FROM source_file
+        /// SELECT path FROM source_file
         /// </summary>
         protected Dictionary<int, string> SQLSelectFromColumn(string table, string idColumn, string valueColumn)
         {
