@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace FileMonitor.Database
 {
@@ -16,19 +14,16 @@ namespace FileMonitor.Database
         private const string idColumn = "id";
         private const string pathColumn = "path";
         private Dictionary<int, string> columns;
+        private ObservableCollection<string> files;
+        private ReadOnlyObservableCollection<string> readOnlyFiles;
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        public INotifyCollectionChanged? FilePaths { get => AsReadOnlyObservableCollection(columns.Values); }
+        public INotifyCollectionChanged? FilePaths { get => readOnlyFiles; }
 
         public SourceFile() 
         {
-            // Query database
             columns = SQLSelectFromColumn(tableName, idColumn, pathColumn);
-        }
-
-        protected void OnPropertyChanged([CallerMemberName]string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            files = new ObservableCollection<string>(columns.Values);
+            readOnlyFiles = new ReadOnlyObservableCollection<string>(files);
         }
 
         /// <summary>
@@ -42,7 +37,7 @@ namespace FileMonitor.Database
                 int id = GetNextAvailableID(columns);
                 SQLInsertInto(tableName, idColumn, pathColumn, id, path);
                 columns.Add(id, path);
-                OnPropertyChanged("FilePaths");
+                files.Add(path);
             }
         }
 
@@ -54,21 +49,6 @@ namespace FileMonitor.Database
         {
             SQLDeleteFrom(tableName, pathColumn, path);
             //columns.Remove(path);
-        }
-
-        /// <summary>
-        /// Convert a dictionary value collection to ReadOnlyObservableCollection 
-        /// </summary>
-        private ReadOnlyObservableCollection<string> AsReadOnlyObservableCollection(Dictionary<int, string>.ValueCollection collection)
-        {
-            ObservableCollection<string> result = new ObservableCollection<string>();
-            Dictionary<int, string>.ValueCollection.Enumerator enumerator = collection.GetEnumerator();
-            while(enumerator.Current != null)
-            {
-                result.Add(enumerator.Current.ToString());
-                enumerator.MoveNext();
-            }
-            return new ReadOnlyObservableCollection<string>(result);
         }
     }
 }
