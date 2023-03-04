@@ -3,12 +3,6 @@ using FileMonitor.Models;
 using FileMonitor.Database;
 using System;
 using System.IO;
-using System.Collections.Generic;
-using FileMonitor.Tests;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows.Data;
-using System.Windows.Input;
 
 namespace FileMonitor
 {
