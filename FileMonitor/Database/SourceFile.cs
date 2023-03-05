@@ -47,16 +47,18 @@ namespace FileMonitor.Database
         /// <remarks> Updates FilePaths property </remarks>
         public void RemoveFile(string path)
         {
+            int id;
             foreach(int key in columns.Keys) 
             { 
                 if (columns[key] == path) 
-                { 
-                    columns.Remove(key); 
-                    break; 
+                {
+                    id = key;
+                    SQLDeleteFrom(tableName, idColumn, id);
+                    columns.Remove(id); 
+                    files.Remove(path); 
+                    return; 
                 } 
             }
-            SQLDeleteFrom(tableName, pathColumn, path);
-            //columns.Remove(path);
         }
     }
 }
