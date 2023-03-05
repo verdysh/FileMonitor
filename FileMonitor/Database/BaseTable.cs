@@ -123,13 +123,13 @@ namespace FileMonitor.Database
         /// Remove a single row from the specified database table
         /// 
         /// The following sample shows the statement as a formatted string:
-        /// $"DELETE FROM {table} WHERE {column} = {valueToRemove}"
+        /// $"DELETE FROM {table} WHERE {column} = {id}"
         /// 
-        /// Sample statement: DELETE FROM source_file WHERE path = 'C:\\pathToRemove'
+        /// Sample statement: DELETE FROM source_file WHERE id = 4
         /// </summary>
-        protected void SQLDeleteFrom(string table, string column, string valueToRemove)
+        protected void SQLDeleteFrom(string table, string column, int id)
         {
-            string deleteStatement = $"DELETE FROM {table} WHERE {column} = {valueToRemove}";
+            string deleteStatement = $"DELETE FROM {table} WHERE {column} = {id}";
             using(SQLiteConnection connection = GetConnection())
             {
                 using(SQLiteCommand command = new SQLiteCommand(deleteStatement, connection))
