@@ -44,7 +44,7 @@ namespace FileMonitor.Database
         /// <summary>
         /// Removes a file from the database column
         /// </summary>
-        /// <remarks> Updates FilePaths property </remarks>
+        /// <remarks> Fires the CollectionChanged event in the FilePaths property </remarks>
         public void RemoveFile(string path)
         {
             int id;
