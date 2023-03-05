@@ -21,7 +21,7 @@ namespace FileMonitor.Database
 
         public SourceFile() 
         {
-            columns = SQLSelectFromColumn(tableName, idColumn, pathColumn);
+            columns = SQLSelectFrom(tableName, idColumn, pathColumn);
             files = new ObservableCollection<string>(columns.Values);
             readOnlyFiles = new ReadOnlyObservableCollection<string>(files);
         }
@@ -47,6 +47,14 @@ namespace FileMonitor.Database
         /// <remarks> Updates FilePaths property </remarks>
         public void RemoveFile(string path)
         {
+            foreach(int key in columns.Keys) 
+            { 
+                if (columns[key] == path) 
+                { 
+                    columns.Remove(key); 
+                    break; 
+                } 
+            }
             SQLDeleteFrom(tableName, pathColumn, path);
             //columns.Remove(path);
         }
