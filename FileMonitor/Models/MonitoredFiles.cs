@@ -71,11 +71,16 @@ namespace FileMonitor.Models
                 if (e.NewItems.Count == 0) return;
                 else 
                 {
-                    string newValue = this.allFilePaths;
+                    string newValue = allFilePaths;
                     foreach (var item in e.NewItems) newValue += $"{item}\n";
-                    this.allFilePaths = newValue;
+                    allFilePaths = newValue;
                     OnPropertyChanged("AllFilePaths");
                 }
+            }
+
+            if(e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                string newValue = allFilePaths;
             }
         }
     }
