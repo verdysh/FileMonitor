@@ -51,7 +51,7 @@ namespace FileMonitor.Database
         /// Sample query:
         /// SELECT path FROM source_file
         /// </summary>
-        protected Dictionary<int, string> SQLSelectFromColumn(string table, string idColumn, string valueColumn)
+        protected Dictionary<int, string> SQLSelectFrom(string table, string idColumn, string valueColumn)
         {
             Dictionary<int, string> result = new Dictionary<int, string>();
             string query = $"SELECT * FROM {table}";
