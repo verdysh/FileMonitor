@@ -11,11 +11,11 @@ namespace FileMonitor.Models
     /// </summary>
     class MonitoredFiles : INotifyPropertyChanged
     {
-        private ObservableCollection<string>? allFilePaths;
+        private ReadOnlyObservableCollection<string>? allFilePaths;
         private SourceFile sourceFile;
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public ObservableCollection<string>? AllFilePaths
+        public ReadOnlyObservableCollection<string>? AllFilePaths
         {
             get { return allFilePaths; }
         }
@@ -23,7 +23,7 @@ namespace FileMonitor.Models
         public MonitoredFiles()
         {
             sourceFile = new SourceFile();
-            allFilePaths = sourceFile.FilePaths;
+            allFilePaths = new ReadOnlyObservableCollection<string>(sourceFile.FilePaths);
             //sourceFile.FilePaths.CollectionChanged += FilePaths_CollectionChanged;
         }
 
