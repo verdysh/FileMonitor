@@ -11,11 +11,11 @@ namespace FileMonitor.Models
     /// </summary>
     class MonitoredFiles : INotifyPropertyChanged
     {
-        private string allFilePaths;
+        private ObservableCollection<string>? allFilePaths;
         private SourceFile sourceFile;
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public string? AllFilePaths
+        public ObservableCollection<string>? AllFilePaths
         {
             get { return allFilePaths; }
         }
@@ -23,8 +23,8 @@ namespace FileMonitor.Models
         public MonitoredFiles()
         {
             sourceFile = new SourceFile();
-            sourceFile.FilePaths.CollectionChanged += FilePaths_CollectionChanged;
-            allFilePaths = Format((ReadOnlyObservableCollection<string>)this.sourceFile.FilePaths);
+            allFilePaths = sourceFile.FilePaths;
+            //sourceFile.FilePaths.CollectionChanged += FilePaths_CollectionChanged;
         }
 
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -60,28 +60,28 @@ namespace FileMonitor.Models
             return result;
         }
 
-        /// <summary>
-        /// A method for subscribing to the CollectionChanged event in SourceFile.FilePaths
-        /// </summary>
-        protected void FilePaths_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
+        ///// <summary>
+        ///// A method for subscribing to the CollectionChanged event in SourceFile.FilePaths
+        ///// </summary>
+        //protected void FilePaths_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        //{
+        //    if (e.Action == NotifyCollectionChangedAction.Add)
+        //    {
                 
-                if (e.NewItems.Count == 0) return;
-                else 
-                {
-                    string newValue = allFilePaths;
-                    foreach (var item in e.NewItems) newValue += $"{item}\n";
-                    allFilePaths = newValue;
-                    OnPropertyChanged("AllFilePaths");
-                }
-            }
+        //        if (e.NewItems.Count == 0) return;
+        //        else 
+        //        {
+        //            string newValue = allFilePaths;
+        //            foreach (var item in e.NewItems) newValue += $"{item}\n";
+        //            allFilePaths = newValue;
+        //            OnPropertyChanged("AllFilePaths");
+        //        }
+        //    }
 
-            if(e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                string newValue = allFilePaths;
-            }
-        }
+        //    if(e.Action == NotifyCollectionChangedAction.Remove)
+        //    {
+        //        string newValue = allFilePaths;
+        //    }
+        //}
     }
 }
