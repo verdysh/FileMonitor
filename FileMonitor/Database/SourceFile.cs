@@ -21,7 +21,7 @@ namespace FileMonitor.Database
         public SourceFile() 
         {
             columns = SQLSelectFrom(tableName, idColumn, pathColumn);
-            files = new ObservableCollection<string>(ToList(columns.Values));
+            files = new ObservableCollection<string>(columns.Values);
         }
 
         /// <summary>
