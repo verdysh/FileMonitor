@@ -15,15 +15,13 @@ namespace FileMonitor.Database
         private const string pathColumn = "path";
         private Dictionary<int, string> columns;
         private ObservableCollection<string> files;
-        private ReadOnlyObservableCollection<string> readOnlyFiles;
 
-        public INotifyCollectionChanged? FilePaths { get => readOnlyFiles; }
+        public ObservableCollection<string>? FilePaths { get => files; }
 
         public SourceFile() 
         {
             columns = SQLSelectFrom(tableName, idColumn, pathColumn);
-            files = new ObservableCollection<string>(columns.Values);
-            readOnlyFiles = new ReadOnlyObservableCollection<string>(files);
+            files = new ObservableCollection<string>(ToList(columns.Values));
         }
 
         /// <summary>
