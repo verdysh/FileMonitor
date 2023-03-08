@@ -29,20 +29,6 @@ namespace FileMonitor.Database
         }
 
         /// <summary>
-        /// Cast a List of objects to a List of the specified type
-        /// </summary>
-        /// <param name="values"> A List of objects from the database column </param>
-        protected List<T>? ToGenericList<T>(List<object> values)
-        {
-            List<T> valuesCast = new List<T>();
-            foreach (object entry in values)
-            {
-                valuesCast.Add((T)entry); // Cast object to <T>
-            }
-            return valuesCast;
-        }
-
-        /// <summary>
         /// Select all values from the specified database column, returned as a Dictionary
         /// 
         /// The following sample shows the query as a formatted string: 
