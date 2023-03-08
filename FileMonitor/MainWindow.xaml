@@ -15,7 +15,8 @@
                 <ScrollViewer>
                     <Grid Background="#FFE5E5E5">
                         <Label Content="Recently changed files:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-                        <TextBlock x:Name="RecentlyChangedFiles" Text="" HorizontalAlignment="Center" Height="355" Margin="0,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="474"/>
+                        <TextBlock x:Name="RecentlyChangedFiles" Text="" HorizontalAlignment="Center" Height="355" Margin="0,41,0,0" TextWrapping="Wrap" 
+                                   VerticalAlignment="Top" Width="474"/>
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -33,7 +34,8 @@
                             <Button x:Name="DeleteFiles" Content=" Delete " Click="DeleteFiles_Click"/>
                         </StackPanel>
                         <Label Content="All Files:" HorizontalAlignment="Left" Margin="10,43,0,0" VerticalAlignment="Top"/>
-                        <TextBlock x:Name="FilesDisplayed" Text="{Binding Path=AllFilePaths, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="10,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                        <CheckBox x:Name="FilesDisplayed" Content="{Binding Path=AllFilePaths}" HorizontalAlignment="Left" 
+                                  Margin="10,74,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
                     </Grid>
                 </ScrollViewer>
 
