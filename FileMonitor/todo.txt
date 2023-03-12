@@ -1,11 +1,9 @@
 Fixes:
-- Fix: must refactor how IDs are stored in code. Current code may cause problems when removing paths. A dictionary is likely a better structure here
 - Show file paths that have changed in TextBlock. Add property to MonitoredFiles
 - Add helper class / helper methods to format how the text is displayed (ex. show the date modified)?
 
 Features:
 - Allow user to add dir. Display warning: adding a dir will add all files and subfiles from that dir. If you want to add only specific files, you must add each file individually
-- Display "all files" in a TreeView
 - Offer setting for constant watch? Use the FileSystemWatcher class for this
 - NOTE: the program will break if paths are linked to removable storage media and the drive letter changes. Documentation will recommend the following: if using removable storage media for this app, suggest using permanent
 drive letters. Second, if the drive letter changes and breaks the path, offer the option to search the database for the user, i.e. "Backup path not found. Do you wish to search the database for the file(s)?". Third, there 
