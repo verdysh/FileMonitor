@@ -3,7 +3,7 @@ using FileMonitor.Models;
 using FileMonitor.Database;
 using System;
 using System.IO;
-using System.Transactions;
+using System.Collections.Generic;
 
 namespace FileMonitor
 {
@@ -50,7 +50,23 @@ namespace FileMonitor
 
         private void DeleteFiles_Click(object sender, RoutedEventArgs e)
         {
+            List<string> filesToRemove = new List<string>();
+            foreach(string file in FilesDisplayed.SelectedItems) filesToRemove.Add(file);
 
+            string filesFormatted = "";
+            foreach(string file in filesToRemove) { filesFormatted += $"{file}\n"; }
+            string text = $"Do you wish to delete the following files from the program? This cannot be undone.\n\n{filesFormatted}";
+            string caption = "Delete Files";
+
+            MessageBoxButton button = MessageBoxButton.YesNo;
+            MessageBoxImage image = MessageBoxImage.Warning;
+            MessageBoxResult result;
+            result = MessageBox.Show(text, caption, button, image);
+
+            if(result == MessageBoxResult.Yes)
+            {
+                foreach (string file in filesToRemove) monitoredFiles.RemoveFile(file);
+            }
         }
         
 
