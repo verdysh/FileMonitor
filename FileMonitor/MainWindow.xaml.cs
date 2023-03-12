@@ -3,6 +3,7 @@ using FileMonitor.Models;
 using FileMonitor.Database;
 using System;
 using System.IO;
+using System.Transactions;
 
 namespace FileMonitor
 {
@@ -50,6 +51,12 @@ namespace FileMonitor
         private void DeleteFiles_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+        
+
+        private void FilesDisplayed_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            DeleteFiles.IsEnabled = true;
         }
     }
 }
