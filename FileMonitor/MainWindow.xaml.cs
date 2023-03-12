@@ -31,13 +31,6 @@ namespace FileMonitor
             DataContext = monitoredFiles;
         }
 
-        /// <summary>
-        /// A method to execute when the AddNewFile button is clicked
-        /// </summary>
-        /// <remarks>
-        /// This method writes the new file to the SQLite database, and subscribes to the FilesChangedEventHandler.
-        /// This event handler will receive a method in its invocation list to update the program UI
-        /// </remarks>
         private void AddNewFile_Click(object sender, RoutedEventArgs e)
         {
             string newFile = FileDialogWindow.GetPath();
