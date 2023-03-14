@@ -11,20 +11,15 @@
     <!-- Main Program Grid -->
     <Grid>
         <TabControl>
-            <TabItem Header="Main">
-                <ScrollViewer>
-                    <Grid Background="#FFE5E5E5">
-                        <Label Content="Recently changed files:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-                        <TextBlock x:Name="RecentlyChangedFiles" Text="" HorizontalAlignment="Center" Height="355" Margin="0,41,0,0" TextWrapping="Wrap" 
-                                   VerticalAlignment="Top" Width="474"/>
-                    </Grid>
-                </ScrollViewer>
-            </TabItem>
 
-            <TabItem Header="File Paths" Margin="1,-1,-2,1">
+            <TabItem Header="Main" Margin="1,-1,-2,1">
                 <ScrollViewer>
                     <Grid Background="#FFE5E5E5">
-                        <StackPanel x:Name="MainPanel" Orientation="Vertical" VerticalAlignment="Top" Margin="5,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="8*"/>
+                            <ColumnDefinition Width="45*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="5,10,0,0" Grid.ColumnSpan="2">
                             <StackPanel.Resources>
                                 <Style TargetType="{x:Type FrameworkElement}">
                                     <Setter Property="Margin" Value="0,15,0,0"/>
@@ -40,8 +35,7 @@
                                 </StackPanel.Resources>
                                 <Button x:Name="AddNewFile" Content=" Add File " Click="AddNewFile_Click"/>
                                 <Button x:Name="DeleteFiles" Content=" Delete File " Click="DeleteFiles_Click" IsEnabled="False"/>
-                                <Button x:Name="BackUpAll" Content=" Back Up All " Click="DeleteFiles_Click" />
-                                <Button x:Name="BackUpSelected" Content=" Back Up Selected " Click="DeleteFiles_Click" IsEnabled="False" />
+                                <Button x:Name="PerformBackup" Content=" Perform Backup " Click="DeleteFiles_Click" />
                             </StackPanel>
                             <ListView x:Name="FilesDisplayed"  ItemsSource="{Binding Path=AllFilePaths}" HorizontalAlignment="Left" 
                                       VerticalAlignment="Top" Grid.ColumnSpan="2" SelectionChanged="FilesDisplayed_SelectionChanged">
@@ -61,14 +55,38 @@
 
                     </Grid>
                 </ScrollViewer>
-
             </TabItem>
+
+            <TabItem Header="Updated Files">
+                <ScrollViewer>
+                    <Grid Background="#FFE5E5E5">
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="5,10,0,0" Grid.ColumnSpan="2">
+                            <ListView x:Name="RecentlyChangedFiles" ItemsSource="{Binding Path=RecentlyChangedFiles}" HorizontalAlignment="Left" 
+                                      VerticalAlignment="Top" Grid.ColumnSpan="2" SelectionChanged="FilesDisplayed_SelectionChanged">
+                                <ListView.View>
+                                    <GridView >
+                                        <GridView.ColumnHeaderContainerStyle>
+                                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                                <Setter Property="IsHitTestVisible" Value="False"/>
+                                                <Setter Property="HorizontalAlignment" Value="Left"/>
+                                            </Style>
+                                        </GridView.ColumnHeaderContainerStyle>
+                                        <GridViewColumn Header="Shows files that have changed since the last backup:" />
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+
             <TabItem Header="Settings">
                 <ScrollViewer>
                     <Grid Background="#FFE5E5E5">
                     </Grid>
                 </ScrollViewer>
             </TabItem>
+
         </TabControl>
 
     </Grid>
