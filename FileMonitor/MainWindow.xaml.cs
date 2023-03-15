@@ -72,6 +72,11 @@ namespace FileMonitor
         {
             Backup backup = new Backup();
         }
+
+        private void AddNewFolder_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 

@@ -34,6 +34,7 @@
                                     </Style>
                                 </StackPanel.Resources>
                                 <Button x:Name="AddNewFile" Content=" Add File " Click="AddNewFile_Click"/>
+                                <Button x:Name="AddNewFolder" Content=" Add Folder " Click="AddNewFolder_Click"/>
                                 <Button x:Name="DeleteFiles" Content=" Delete File " Click="DeleteFiles_Click" IsEnabled="False"/>
                                 <Button x:Name="PerformBackup" Content=" Perform Backup " Click="PerformBackup_Click" />
                             </StackPanel>
