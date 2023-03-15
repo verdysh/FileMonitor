@@ -35,7 +35,7 @@
                                 </StackPanel.Resources>
                                 <Button x:Name="AddNewFile" Content=" Add File " Click="AddNewFile_Click"/>
                                 <Button x:Name="DeleteFiles" Content=" Delete File " Click="DeleteFiles_Click" IsEnabled="False"/>
-                                <Button x:Name="PerformBackup" Content=" Perform Backup " Click="DeleteFiles_Click" />
+                                <Button x:Name="PerformBackup" Content=" Perform Backup " Click="PerformBackup_Click" />
                             </StackPanel>
                             <ListView x:Name="FilesDisplayed"  ItemsSource="{Binding Path=AllFilePaths}" HorizontalAlignment="Left" 
                                       VerticalAlignment="Top" Grid.ColumnSpan="2" SelectionChanged="FilesDisplayed_SelectionChanged">

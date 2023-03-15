@@ -67,6 +67,11 @@ namespace FileMonitor
         {
             DeleteFiles.IsEnabled = true;
         }
+
+        private void PerformBackup_Click(object sender, RoutedEventArgs e)
+        {
+            Backup backup = new Backup();
+        }
     }
 }
 

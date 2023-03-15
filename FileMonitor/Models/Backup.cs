@@ -16,9 +16,12 @@ namespace FileMonitor.Models
             allLogicalDrives = DriveInfo.GetDrives();
         }
 
-        public static void Run(ReadOnlyObservableCollection<string> files)
+        public void Run(ReadOnlyObservableCollection<string> files, string destination)
         {
-            
+            foreach(string file in files)
+            {
+                File.Copy(file, destination, true);
+            }
         }
     }
 }
