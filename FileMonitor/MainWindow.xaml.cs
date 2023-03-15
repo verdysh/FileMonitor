@@ -41,6 +41,11 @@ namespace FileMonitor
             }
         }
 
+        private void AddNewFolder_Click(object sender, RoutedEventArgs e)
+        {
+            string newFolder = FolderDialogWindow.GetPath();
+        }
+
         private void DeleteFiles_Click(object sender, RoutedEventArgs e)
         {
             List<string> filesToRemove = new List<string>();
@@ -71,11 +76,6 @@ namespace FileMonitor
         private void PerformBackup_Click(object sender, RoutedEventArgs e)
         {
             Backup backup = new Backup();
-        }
-
-        private void AddNewFolder_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
