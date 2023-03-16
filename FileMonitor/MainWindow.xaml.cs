@@ -74,8 +74,6 @@ namespace FileMonitor
 
         private void PerformBackup_Click(object sender, RoutedEventArgs e)
         {
-            Backup backup = new Backup();
-
             MessageBoxButton messageBoxButton = MessageBoxButton.YesNo;
             MessageBoxImage image = MessageBoxImage.Information;
             MessageBoxResult result;
@@ -88,7 +86,8 @@ namespace FileMonitor
             {
                 string backupDestination = FolderDialogWindow.GetPath();
                 if (backupDestination.Equals("")) return;
-                backup.Run(monitoredFiles.AllFilePaths, backupDestination);
+                Backup backup = new Backup(backupDestination);
+                backup.Run(monitoredFiles.AllFilePaths);
             }
         }
     }
