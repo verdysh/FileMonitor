@@ -13,7 +13,6 @@ namespace FileMonitor
     public partial class MainWindow : Window
     {
         private MonitoredFiles monitoredFiles;
-
         public static readonly string programDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\FileMonitor";
         public static readonly string databasePath = $"{programDir}\\FMDB.sqlite";
 
@@ -76,6 +75,21 @@ namespace FileMonitor
         private void PerformBackup_Click(object sender, RoutedEventArgs e)
         {
             Backup backup = new Backup();
+
+            MessageBoxButton messageBoxButton = MessageBoxButton.YesNo;
+            MessageBoxImage image = MessageBoxImage.Information;
+            MessageBoxResult result;
+
+            string text = "You must choose a backup location. Do you wish to proceed?";
+            string caption = "Choose Backup Location";
+            result = MessageBox.Show(text, caption, messageBoxButton, image);
+
+            if(result == MessageBoxResult.Yes)
+            {
+                string backupDestination = FolderDialogWindow.GetPath();
+                if (backupDestination.Equals("")) return;
+                backup.Run(monitoredFiles.AllFilePaths, backupDestination);
+            }
         }
     }
 }
