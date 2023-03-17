@@ -1,43 +1,53 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 
 namespace FileMonitor.Models
 {
+    /// <summary>
+    /// Defines a class to handle backing up files that are monitored by the program
+    /// </summary>
     internal class Backup
     {
-        private DriveInfo[] allLogicalDrives;
-        private string backupDestination;
-        public DriveInfo[] AllLogicalDrives
+        private string backupFolder;
+
+        /// <summary>
+        /// Class constructor 
+        /// </summary>
+        /// <param name="backupFolder"> User-specified location to place the copied files </param>
+        public Backup(string backupFolder)
         {
-            get => allLogicalDrives;
+            this.backupFolder = backupFolder;
         }
 
-        public Backup(string backupDestination)
-        {
-            allLogicalDrives = DriveInfo.GetDrives();
-            this.backupDestination = backupDestination;
-        }
-
+        /// <summary>
+        /// A method to execute the backup
+        /// </summary>
+        /// <param name="files"> A collection of file paths to copy </param>
         public void Run(ReadOnlyObservableCollection<string> files)
         {
-            DirectoryInfo backupFileDirectoryPath;
+            string backupFolderWithDateTime = $"{backupFolder}\\Backup{DateTime.Now.ToString("yyyy-MM-dd-HHmmss")}\\";
             foreach(string sourceFile in files)
             {
-                //backupFileDirectoryPath = new DirectoryInfo(BackupFileDirectoryPath(sourceFile));
-                //if(!backupFileDirectoryPath.Exists) backupFileDirectoryPath.Create();
-                File.Copy(sourceFile, backupDestination, true);
+                string destination = GetFullDestinationPath(sourceFile, backupFolderWithDateTime);
+                CreateDirectory(destination);
+                File.Copy(sourceFile, destination, true);
             }
         }
 
-        private string GetFullBackupPath(string? sourceFile)
+        
+        private string GetFullDestinationPath(string? sourceFile, string backupFolderWithDateTime)
         {
+            // Remove the root from the source path and replace it with the backup folder path
             string oldRoot = Path.GetPathRoot(sourceFile);
-            return sourceFile.Replace(oldRoot, backupDestination);
+            return sourceFile.Replace(oldRoot, backupFolderWithDateTime);
         }
 
-        private string GetFullBackupDirectory(string? backupPath)
+        private void CreateDirectory(string path)
         {
-            return "";
+            string directory = Path.GetDirectoryName(path);
+            DirectoryInfo directoryInfo = new DirectoryInfo(directory);
+            if (!directoryInfo.Exists) directoryInfo.Create();
         }
     }
 }
