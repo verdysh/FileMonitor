@@ -84,9 +84,9 @@ namespace FileMonitor
 
             if(result == MessageBoxResult.Yes)
             {
-                string backupDestination = FolderDialogWindow.GetPath();
-                if (backupDestination.Equals("")) return;
-                Backup backup = new Backup(backupDestination);
+                string backupFolder = FolderDialogWindow.GetPath();
+                if (backupFolder.Equals("")) return;
+                Backup backup = new Backup(backupFolder);
                 backup.Run(monitoredFiles.AllFilePaths);
             }
         }
