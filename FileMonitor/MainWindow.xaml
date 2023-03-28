@@ -8,17 +8,27 @@
         mc:Ignorable="d"
         Title="FileMonitor" Height="768" Width="1024">
 
-    <!-- Main Program Grid -->
     <Grid>
+        <Grid.Resources>
+            <Style x:Key="lineStyle" TargetType="Line">
+                <Setter Property="Stroke" Value="Black"/>
+                <Setter Property="Stretch" Value="Fill"/>
+            </Style>
+        </Grid.Resources>
         <TabControl>
-
             <TabItem Header="Main" Margin="1,-1,-2,1">
                 <ScrollViewer>
-                    <Grid Background="#FFE5E5E5">
+                    <Grid Background="#FFE5E5E5" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
+                            <ColumnDefinition Width="2"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
+                        <Separator Grid.Column="1">
+                            <Separator.LayoutTransform>
+                                <RotateTransform Angle="90"/>
+                            </Separator.LayoutTransform>
+                        </Separator>
 
                         <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,10,0,0" Grid.Column="0" >
                             <StackPanel.Resources>
@@ -46,7 +56,7 @@
                             <ListView x:Name="FilesDisplayed"  ItemsSource="{Binding AllFilePaths}" SelectionChanged="FilesDisplayed_SelectionChanged" />
                         </StackPanel>
 
-                        <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,10,0,0" Grid.Column="1">
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,10,0,0" Grid.Column="2">
                             <Border BorderBrush="Black" BorderThickness=".5" Background="White" Padding="4" Width="286" HorizontalAlignment="Left">
                                 <TextBlock Text="Shows files that have changed since the last backup:" />
                             </Border>
