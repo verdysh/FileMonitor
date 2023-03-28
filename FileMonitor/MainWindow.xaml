@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:FileMonitor" 
         xmlns:c="clr-namespace:FileMonitor.Models"
         mc:Ignorable="d"
-        Title="FileMonitor" Height="450" Width="500">
+        Title="FileMonitor" Height="768" Width="1024">
 
     <!-- Main Program Grid -->
     <Grid>
@@ -16,18 +16,20 @@
                 <ScrollViewer>
                     <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="8*"/>
-                            <ColumnDefinition Width="45*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="5,10,0,0" Grid.ColumnSpan="2">
+
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,10,0,0" Grid.Column="0" >
                             <StackPanel.Resources>
                                 <Style TargetType="{x:Type FrameworkElement}">
                                     <Setter Property="Margin" Value="0,15,0,0"/>
                                 </Style>
                                 <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource {x:Type FrameworkElement}}"/>
                                 <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource {x:Type FrameworkElement}}"/>
+                                <Style TargetType="{x:Type Border}" BasedOn="{StaticResource {x:Type FrameworkElement}}"/>
                             </StackPanel.Resources>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Height="20" Grid.ColumnSpan="2">
+                            <StackPanel Orientation="Horizontal" Height="20" Grid.Column="0">
                                 <StackPanel.Resources>
                                     <Style TargetType="{x:Type Button}">
                                         <Setter Property="Margin" Value="0,0,10,0"/>
@@ -36,45 +38,19 @@
                                 <Button x:Name="AddNewFile" Content=" Add File " Click="AddNewFile_Click"/>
                                 <Button x:Name="AddNewFolder" Content=" Add Folder " Click="AddNewFolder_Click"/>
                                 <Button x:Name="DeleteFiles" Content=" Delete File " Click="DeleteFiles_Click" IsEnabled="False"/>
-                                <Button x:Name="PerformBackup" Content=" Perform Backup " Click="PerformBackup_Click" />
+                                <Button x:Name="PerformBackup" Content=" Copy All " Click="PerformBackup_Click" />
                             </StackPanel>
-                            <ListView x:Name="FilesDisplayed"  ItemsSource="{Binding Path=AllFilePaths}" HorizontalAlignment="Left" 
-                                      VerticalAlignment="Top" Grid.ColumnSpan="2" SelectionChanged="FilesDisplayed_SelectionChanged">
-                                <ListView.View>
-                                    <GridView >
-                                        <GridView.ColumnHeaderContainerStyle>
-                                            <Style TargetType="{x:Type GridViewColumnHeader}">
-                                                <Setter Property="IsHitTestVisible" Value="False"/>
-                                                <Setter Property="HorizontalAlignment" Value="Left"/>
-                                            </Style>
-                                        </GridView.ColumnHeaderContainerStyle>
-                                        <GridViewColumn Header="Shows all local files monitored by the program:" />
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
+                            <Border BorderBrush="Black" BorderThickness=".5" Background="White" Padding="3" Width="227" HorizontalAlignment="Left">
+                                <TextBlock Text="Shows all files monitored by the program:" />
+                            </Border>
+                            <ListView x:Name="FilesDisplayed"  ItemsSource="{Binding AllFilePaths}" SelectionChanged="FilesDisplayed_SelectionChanged" />
                         </StackPanel>
 
-                    </Grid>
-                </ScrollViewer>
-            </TabItem>
-
-            <TabItem Header="Updated Files">
-                <ScrollViewer>
-                    <Grid Background="#FFE5E5E5">
-                        <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="5,10,0,0" Grid.ColumnSpan="2">
-                            <ListView x:Name="RecentlyChangedFiles" ItemsSource="{Binding Path=RecentlyChangedFiles}" HorizontalAlignment="Left" 
-                                      VerticalAlignment="Top" Grid.ColumnSpan="2" SelectionChanged="FilesDisplayed_SelectionChanged">
-                                <ListView.View>
-                                    <GridView >
-                                        <GridView.ColumnHeaderContainerStyle>
-                                            <Style TargetType="{x:Type GridViewColumnHeader}">
-                                                <Setter Property="IsHitTestVisible" Value="False"/>
-                                                <Setter Property="HorizontalAlignment" Value="Left"/>
-                                            </Style>
-                                        </GridView.ColumnHeaderContainerStyle>
-                                        <GridViewColumn Header="Shows files that have changed since the last backup:" />
-                                    </GridView>
-                                </ListView.View>
+                        <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,10,0,0" Grid.Column="1">
+                            <Border BorderBrush="Black" BorderThickness=".5" Background="White" Padding="4" Width="286" HorizontalAlignment="Left">
+                                <TextBlock Text="Shows files that have changed since the last backup:" />
+                            </Border>
+                            <ListView x:Name="RecentlyChangedFiles" ItemsSource="{Binding Path=RecentlyChangedFiles}" SelectionChanged="FilesDisplayed_SelectionChanged">
                             </ListView>
                         </StackPanel>
                     </Grid>
