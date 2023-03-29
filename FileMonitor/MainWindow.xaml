@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:FileMonitor" 
         xmlns:c="clr-namespace:FileMonitor.Models"
         mc:Ignorable="d"
-        Title="FileMonitor" Height="768" Width="1024">
+        Title="FileMonitor" Height="720" Width="1280" MinHeight="600" MinWidth="800" WindowState="Maximized" >
 
     <Grid>
         <TabControl>
@@ -51,11 +51,12 @@
                                 <Button x:Name="PerformBackup" Content=" Copy All " Click="PerformBackup_Click" />
                             </StackPanel>
                             
-                            <Border BorderBrush="Black" BorderThickness=".5" Background="White" Padding="3" Width="227" HorizontalAlignment="Left">
+                            <Border BorderBrush="Black" BorderThickness=".5" Background="White" Padding="4" Width="227" HorizontalAlignment="Left">
                                 <TextBlock Text="Shows all files monitored by the program:" />
                             </Border>
                             
-                            <ListView x:Name="FilesDisplayed"  ItemsSource="{Binding AllFilePaths}" SelectionChanged="FilesDisplayed_SelectionChanged" />
+                            <ListView x:Name="FilesDisplayed"  ItemsSource="{Binding AllFilePaths}" SelectionChanged="FilesDisplayed_SelectionChanged" 
+                                      Height="600"  Width="800"/>
                             
                         </StackPanel>
 
@@ -70,14 +71,15 @@
                                 <Style TargetType="{x:Type Border}" BasedOn="{StaticResource {x:Type FrameworkElement}}"/>
                             </StackPanel.Resources>
 
-                            <Button x:Name="BackupRecentlyChangedFiles" Content="Copy Files" Click="BackupRecentlyChangedFiles_Click" HorizontalAlignment="Left" Width="70"/>
+                            <Button x:Name="BackupRecentlyChangedFiles" Content="Copy Files" Click="BackupRecentlyChangedFiles_Click" HorizontalAlignment="Left" 
+                                    Width="70"/>
 
                             <Border BorderBrush="Black" BorderThickness=".5" Background="White" Padding="4" Width="286" HorizontalAlignment="Left">
                                 <TextBlock Text="Shows files that have changed since the last backup:" />
                             </Border>
-                            
-                            <ListView x:Name="RecentlyChangedFiles" ItemsSource="{Binding Path=RecentlyChangedFiles}" />
-                            
+
+                            <ListView x:Name="RecentlyChangedFiles" ItemsSource="{Binding Path=RecentlyChangedFiles}" Height="600"  Width="800" />
+
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>
