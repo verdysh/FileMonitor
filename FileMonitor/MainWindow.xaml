@@ -9,21 +9,18 @@
         Title="FileMonitor" Height="768" Width="1024">
 
     <Grid>
-        <Grid.Resources>
-            <Style x:Key="lineStyle" TargetType="Line">
-                <Setter Property="Stroke" Value="Black"/>
-                <Setter Property="Stretch" Value="Fill"/>
-            </Style>
-        </Grid.Resources>
         <TabControl>
             <TabItem Header="Main" Margin="1,-1,-2,1">
                 <ScrollViewer>
                     <Grid Background="#FFE5E5E5" >
+                        
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition Width="2"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
+                        
+                        <!-- Draws a line down column 1 to separate the Window in two -->
                         <Separator Grid.Column="1">
                             <Separator.LayoutTransform>
                                 <RotateTransform Angle="90"/>
@@ -31,6 +28,7 @@
                         </Separator>
 
                         <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,10,0,0" Grid.Column="0" >
+                            <!-- Provides padding between stack panel elements -->
                             <StackPanel.Resources>
                                 <Style TargetType="{x:Type FrameworkElement}">
                                     <Setter Property="Margin" Value="0,15,0,0"/>
@@ -39,6 +37,8 @@
                                 <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource {x:Type FrameworkElement}}"/>
                                 <Style TargetType="{x:Type Border}" BasedOn="{StaticResource {x:Type FrameworkElement}}"/>
                             </StackPanel.Resources>
+                            
+                            <!-- Horizontal stack panel for button layout -->
                             <StackPanel Orientation="Horizontal" Height="20" Grid.Column="0">
                                 <StackPanel.Resources>
                                     <Style TargetType="{x:Type Button}">
@@ -50,18 +50,34 @@
                                 <Button x:Name="DeleteFiles" Content=" Delete File " Click="DeleteFiles_Click" IsEnabled="False"/>
                                 <Button x:Name="PerformBackup" Content=" Copy All " Click="PerformBackup_Click" />
                             </StackPanel>
+                            
                             <Border BorderBrush="Black" BorderThickness=".5" Background="White" Padding="3" Width="227" HorizontalAlignment="Left">
                                 <TextBlock Text="Shows all files monitored by the program:" />
                             </Border>
+                            
                             <ListView x:Name="FilesDisplayed"  ItemsSource="{Binding AllFilePaths}" SelectionChanged="FilesDisplayed_SelectionChanged" />
+                            
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,10,0,0" Grid.Column="2">
+                            <!-- Provides padding between stack panel elements -->
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type FrameworkElement}">
+                                    <Setter Property="Margin" Value="0,15,0,0"/>
+                                </Style>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type FrameworkElement}}"/>
+                                <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource {x:Type FrameworkElement}}"/>
+                                <Style TargetType="{x:Type Border}" BasedOn="{StaticResource {x:Type FrameworkElement}}"/>
+                            </StackPanel.Resources>
+
+                            <Button x:Name="BackupRecentlyChangedFiles" Content="Copy Files" Click="BackupRecentlyChangedFiles_Click" HorizontalAlignment="Left" Width="70"/>
+
                             <Border BorderBrush="Black" BorderThickness=".5" Background="White" Padding="4" Width="286" HorizontalAlignment="Left">
                                 <TextBlock Text="Shows files that have changed since the last backup:" />
                             </Border>
-                            <ListView x:Name="RecentlyChangedFiles" ItemsSource="{Binding Path=RecentlyChangedFiles}" SelectionChanged="FilesDisplayed_SelectionChanged">
-                            </ListView>
+                            
+                            <ListView x:Name="RecentlyChangedFiles" ItemsSource="{Binding Path=RecentlyChangedFiles}" />
+                            
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>
