@@ -74,13 +74,7 @@ namespace FileMonitor
 
         private void PerformBackup_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxButton messageBoxButton = MessageBoxButton.YesNo;
-            MessageBoxImage image = MessageBoxImage.Information;
-            MessageBoxResult result;
-
-            string text = "You must choose a backup location. Do you wish to proceed?";
-            string caption = "Choose Backup Location";
-            result = MessageBox.Show(text, caption, messageBoxButton, image);
+            MessageBoxResult result = ChooseBackupLocation();
 
             if(result == MessageBoxResult.Yes)
             {
@@ -89,6 +83,29 @@ namespace FileMonitor
                 Backup backup = new Backup(backupFolder);
                 backup.Run(monitoredFiles.AllFilePaths);
             }
+        }
+
+        private void BackupRecentlyChangedFiles_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = ChooseBackupLocation();
+
+            if (result == MessageBoxResult.Yes)
+            {
+                string backupFolder = FolderDialogWindow.GetPath();
+                if (backupFolder.Equals("")) return;
+                Backup backup = new Backup(backupFolder);
+                backup.Run(monitoredFiles.RecentlyChangedFiles);
+            }
+        }
+
+        private MessageBoxResult ChooseBackupLocation()
+        {
+            MessageBoxButton messageBoxButton = MessageBoxButton.YesNo;
+            MessageBoxImage image = MessageBoxImage.Information;
+
+            string text = "You must choose a backup location. Do you wish to proceed?";
+            string caption = "Choose Backup Location";
+            return MessageBox.Show(text, caption, messageBoxButton, image);
         }
     }
 }
