@@ -3,86 +3,125 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FileMonitor" 
-        xmlns:c="clr-namespace:FileMonitor.Models"
         mc:Ignorable="d"
-        Title="FileMonitor" Height="720" Width="1280" MinHeight="600" MinWidth="800" WindowState="Maximized" >
+        Title="FileMonitor" 
+        MinHeight="600" 
+        MinWidth="800" 
+        WindowState="Maximized" >
 
     <Grid>
         <TabControl>
-            <TabItem Header="Main" Margin="1,-1,-2,1">
-                <ScrollViewer>
-                    <Grid Background="#FFE5E5E5" >
-                        
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="2"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <!-- Draws a line down column 1 to separate the Window in two -->
-                        <Separator Grid.Column="1">
-                            <Separator.LayoutTransform>
-                                <RotateTransform Angle="90"/>
-                            </Separator.LayoutTransform>
-                        </Separator>
+            <TabItem Header="Main" 
+                     Margin="1,-1,-2,1">
+                <Grid Background="#FFE5E5E5" >
 
-                        <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,10,0,0" Grid.Column="0" >
-                            <!-- Provides padding between stack panel elements -->
-                            <StackPanel.Resources>
-                                <Style TargetType="{x:Type FrameworkElement}">
-                                    <Setter Property="Margin" Value="0,15,0,0"/>
-                                </Style>
-                                <Style TargetType="{x:Type StackPanel}" BasedOn="{StaticResource {x:Type FrameworkElement}}"/>
-                                <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource {x:Type FrameworkElement}}"/>
-                                <Style TargetType="{x:Type Border}" BasedOn="{StaticResource {x:Type FrameworkElement}}"/>
-                            </StackPanel.Resources>
-                            
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border BorderBrush="Black" 
+                            BorderThickness=".5" 
+                            Padding="4"
+                            Grid.Column="0"
+                            VerticalAlignment="Stretch"
+                            HorizontalAlignment="Stretch">
+
+                        <StackPanel Orientation="Vertical" 
+                                    VerticalAlignment="Stretch" 
+                                    HorizontalAlignment="Stretch" >
+
+                            <Border BorderBrush="Black" 
+                                    BorderThickness=".5" 
+                                    Background="Aquamarine"
+                                    Padding="9"
+                                    HorizontalAlignment="Stretch">
+
+                                <TextBlock Text="Shows all files monitored by the program:"
+                                           FontSize="16"/>
+                            </Border>
+
                             <!-- Horizontal stack panel for button layout -->
-                            <StackPanel Orientation="Horizontal" Height="20" Grid.Column="0">
+                            <StackPanel Orientation="Horizontal" 
+                                        Height="25" 
+                                        Margin="0,10,0,10">
+
                                 <StackPanel.Resources>
                                     <Style TargetType="{x:Type Button}">
-                                        <Setter Property="Margin" Value="0,0,10,0"/>
+                                        <Setter Property="Margin" 
+                                                    Value="0,0,10,0"/>
                                     </Style>
                                 </StackPanel.Resources>
-                                <Button x:Name="AddNewFile" Content=" Add File " Click="AddNewFile_Click"/>
-                                <Button x:Name="AddNewFolder" Content=" Add Folder " Click="AddNewFolder_Click"/>
-                                <Button x:Name="DeleteFiles" Content=" Delete File " Click="DeleteFiles_Click" IsEnabled="False"/>
-                                <Button x:Name="PerformBackup" Content=" Copy All " Click="PerformBackup_Click" />
+
+                                <Button x:Name="AddNewFile" 
+                                                Content=" Add File " 
+                                                Click="AddNewFile_Click"/>
+
+                                <Button x:Name="AddNewFolder" 
+                                                Content=" Add Folder " 
+                                                Click="AddNewFolder_Click"/>
+
+                                <Button x:Name="DeleteFiles" 
+                                                Content=" Delete File " 
+                                                Click="DeleteFiles_Click" 
+                                                IsEnabled="False"/>
+
+                                <Button x:Name="PerformBackup" 
+                                                Content=" Copy All "
+                                                Click="PerformBackup_Click" />
+
                             </StackPanel>
-                            
-                            <Border BorderBrush="Black" BorderThickness=".5" Background="White" Padding="4" Width="227" HorizontalAlignment="Left">
-                                <TextBlock Text="Shows all files monitored by the program:" />
-                            </Border>
-                            
-                            <ListView x:Name="FilesDisplayed"  ItemsSource="{Binding AllFilePaths}" SelectionChanged="FilesDisplayed_SelectionChanged" 
-                                      Height="600"  Width="800"/>
-                            
+
+                            <ListView x:Name="FilesDisplayed"  
+                                      ItemsSource="{Binding AllFilePaths}" 
+                                      SelectionChanged="FilesDisplayed_SelectionChanged" 
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                                      ScrollViewer.VerticalScrollBarVisibility="Visible"/>
                         </StackPanel>
+                    </Border>
 
-                        <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,10,0,0" Grid.Column="2">
-                            <!-- Provides padding between stack panel elements -->
-                            <StackPanel.Resources>
-                                <Style TargetType="{x:Type FrameworkElement}">
-                                    <Setter Property="Margin" Value="0,15,0,0"/>
-                                </Style>
-                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type FrameworkElement}}"/>
-                                <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource {x:Type FrameworkElement}}"/>
-                                <Style TargetType="{x:Type Border}" BasedOn="{StaticResource {x:Type FrameworkElement}}"/>
-                            </StackPanel.Resources>
+                    <Border BorderBrush="Black" 
+                            BorderThickness=".5" 
+                            Padding="4"
+                            Grid.Column="1">
 
-                            <Button x:Name="BackupRecentlyChangedFiles" Content="Copy Files" Click="BackupRecentlyChangedFiles_Click" HorizontalAlignment="Left" 
-                                    Width="70"/>
+                        <StackPanel Orientation="Vertical" 
+                                    VerticalAlignment="Top" 
+                                    HorizontalAlignment="Stretch" >
 
-                            <Border BorderBrush="Black" BorderThickness=".5" Background="White" Padding="4" Width="286" HorizontalAlignment="Left">
-                                <TextBlock Text="Shows files that have changed since the last backup:" />
+                            <Border BorderBrush="Black" 
+                                    BorderThickness=".5" 
+                                    Background="Aquamarine" 
+                                    Padding="9" 
+                                    HorizontalAlignment="Stretch">
+
+                                <TextBlock Text="Shows files that have changed since the last backup:"
+                                           FontSize="16"/>
                             </Border>
 
-                            <ListView x:Name="RecentlyChangedFiles" ItemsSource="{Binding Path=RecentlyChangedFiles}" Height="600"  Width="800" />
+                            <Button x:Name="BackupRecentlyChangedFiles" 
+                                    Content="Copy Files" 
+                                    Click="BackupRecentlyChangedFiles_Click" 
+                                    HorizontalAlignment="Left" 
+                                    Width="70"
+                                    Height="25" 
+                                    Margin="0,10,0,10"/>
 
+                            <ListView x:Name="RecentlyChangedFiles" 
+                                        ItemsSource="{Binding Path=RecentlyChangedFiles}" 
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                                        ScrollViewer.VerticalScrollBarVisibility="Visible"/>
                         </StackPanel>
-                    </Grid>
-                </ScrollViewer>
+                    </Border>
+                </Grid>
             </TabItem>
 
             <TabItem Header="Settings">
