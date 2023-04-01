@@ -21,34 +21,32 @@
                     </Grid.ColumnDefinitions>
                     
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-
+                    
                     <Border BorderBrush="Black" 
                             BorderThickness=".5" 
-                            Padding="4"
-                            Grid.Column="0"
-                            VerticalAlignment="Stretch"
-                            HorizontalAlignment="Stretch">
-
-                        <StackPanel Orientation="Vertical" 
-                                    VerticalAlignment="Stretch" 
-                                    HorizontalAlignment="Stretch" >
-
+                            Padding="8"
+                            Grid.Column="0">
+                        <Grid>
                             <Border BorderBrush="Black" 
-                                    BorderThickness=".5" 
-                                    Background="Aquamarine"
-                                    Padding="9"
-                                    HorizontalAlignment="Stretch">
+                                    BorderThickness=".4" 
+                                    Background="Aquamarine" 
+                                    Padding="9" 
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Top">
 
-                                <TextBlock Text="Shows all files monitored by the program:"
+                                <TextBlock Text="All files monitored by the program:"
                                            FontSize="16"/>
                             </Border>
 
                             <!-- Horizontal stack panel for button layout -->
                             <StackPanel Orientation="Horizontal" 
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Top"
                                         Height="25" 
-                                        Margin="0,10,0,10">
+                                        Margin="0,53,0,10">
 
                                 <StackPanel.Resources>
                                     <Style TargetType="{x:Type Button}">
@@ -58,50 +56,49 @@
                                 </StackPanel.Resources>
 
                                 <Button x:Name="AddNewFile" 
-                                                Content=" Add File " 
-                                                Click="AddNewFile_Click"/>
+                                        Content=" Add File " 
+                                        Click="AddNewFile_Click"/>
 
                                 <Button x:Name="AddNewFolder" 
-                                                Content=" Add Folder " 
-                                                Click="AddNewFolder_Click"/>
+                                        Content=" Add Folder " 
+                                        Click="AddNewFolder_Click"/>
 
                                 <Button x:Name="DeleteFiles" 
-                                                Content=" Delete File " 
-                                                Click="DeleteFiles_Click" 
-                                                IsEnabled="False"/>
+                                        Content=" Delete File " 
+                                        Click="DeleteFiles_Click" 
+                                        IsEnabled="False"/>
 
                                 <Button x:Name="PerformBackup" 
-                                                Content=" Copy All "
-                                                Click="PerformBackup_Click" />
+                                        Content=" Copy All "
+                                        Click="PerformBackup_Click" />
 
                             </StackPanel>
 
                             <ListView x:Name="FilesDisplayed"  
+                                      Margin="0,90,0,0"
                                       ItemsSource="{Binding AllFilePaths}" 
                                       SelectionChanged="FilesDisplayed_SelectionChanged" 
                                       HorizontalAlignment="Stretch"
                                       VerticalAlignment="Stretch"
                                       ScrollViewer.HorizontalScrollBarVisibility="Visible"
                                       ScrollViewer.VerticalScrollBarVisibility="Visible"/>
-                        </StackPanel>
+                        </Grid>
                     </Border>
 
                     <Border BorderBrush="Black" 
                             BorderThickness=".5" 
-                            Padding="4"
+                            Padding="8"
                             Grid.Column="1">
 
-                        <StackPanel Orientation="Vertical" 
-                                    VerticalAlignment="Top" 
-                                    HorizontalAlignment="Stretch" >
-
+                        <Grid>
                             <Border BorderBrush="Black" 
-                                    BorderThickness=".5" 
+                                    BorderThickness=".4" 
                                     Background="Aquamarine" 
                                     Padding="9" 
-                                    HorizontalAlignment="Stretch">
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Top">
 
-                                <TextBlock Text="Shows files that have changed since the last backup:"
+                                <TextBlock Text="Files that have changed since the last backup:"
                                            FontSize="16"/>
                             </Border>
 
@@ -109,17 +106,19 @@
                                     Content="Copy Files" 
                                     Click="BackupRecentlyChangedFiles_Click" 
                                     HorizontalAlignment="Left" 
+                                    VerticalAlignment="Top"
                                     Width="70"
                                     Height="25" 
-                                    Margin="0,10,0,10"/>
+                                    Margin="0,53,0,10"/>
 
                             <ListView x:Name="RecentlyChangedFiles" 
+                                        Margin="0,90,0,0"
                                         ItemsSource="{Binding Path=RecentlyChangedFiles}" 
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
                                         ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                                        ScrollViewer.VerticalScrollBarVisibility="Visible"/>
-                        </StackPanel>
+                                        ScrollViewer.VerticalScrollBarVisibility="Visible" />
+                        </Grid>
                     </Border>
                 </Grid>
             </TabItem>
@@ -135,3 +134,4 @@
 
     </Grid>
 </Window>
+    
