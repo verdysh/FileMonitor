@@ -7,6 +7,139 @@ namespace FileMonitor.Database
     /// <summary>
     /// Defines an abstract class for all SQL table classes to inherit from 
     /// </summary>
+    /// <remarks>
+    /// All tables use the INTEGER PRIMARY KEY for each row id. 
+    /// </remarks>
+    /// 
+    /// The following text provides a layout for all database tables:
+    /// 
+    /// The "source_file" table stores paths to files that the user wants to monitor. 
+    /// 
+    /// +----------------------------+
+    /// |         source_file        |
+    /// +----+-----------------------+
+    /// | id |         path          |
+    /// +----+-----------------------+
+    /// | 1  | C:\\Windows\\File.txt |
+    /// +----+-----------------------+
+    /// 
+    /// 
+    /// 
+    /// The "backup_file" table stores paths that have been copied to another drive. The copied files retain
+    /// their original folder structure.
+    /// 
+    /// +----------------------------+
+    /// |         backup_file        |
+    /// +----+-----------------------+
+    /// | id |         path          |
+    /// +----+-----------------------+
+    /// | 1  | D:\\Windows\\File.txt |
+    /// +----+-----------------------+
+    /// 
+    /// 
+    /// 
+    /// The "source_backup_file_rel" table relates all source file paths to their copied file paths.
+    /// 
+    /// +--------------------------------------+
+    /// |        source_backup_file_rel        |
+    /// +----+----------------+----------------+
+    /// | id | source_file_id | backup_file_id |
+    /// +----+----------------+----------------+
+    /// |  1 |        1       |        1       |
+    /// +----+----------------+----------------+
+    /// 
+    /// 
+    /// 
+    /// The "source_hash" table stores hash codes based on all source files. The hash codes 
+    /// are used to determine if a file has changed since the last time it was copied to the 
+    /// backup location.
+    /// 
+    /// +------------------+
+    /// |    source_hash   |
+    /// +----+-------------+
+    /// | id |  hash_code  |
+    /// +----+-------------+
+    /// |  1 | 0be624[...] |
+    /// +----+-------------+
+    /// 
+    /// 
+    /// 
+    /// The "backup_hash" table stores hash codes based on all of the copied files. If this hash code 
+    /// differs from the related source file hash code, then the file has changed.
+    /// 
+    /// +------------------+
+    /// |    backup_hash   |
+    /// +----+-------------+
+    /// | id |  hash_code  |
+    /// +----+-------------+
+    /// |  1 | 0yrxi4[...] |
+    /// +----+-------------+
+    /// 
+    /// 
+    /// 
+    /// The "source_backup_hash_rel" table relates the source file hash code to the backup file hash code.
+    /// This is used to compare the hash codes to determine if a file has changed.
+    /// 
+    /// +--------------------------------------+
+    /// |        source_backup_hash_rel        |
+    /// +----+----------------+----------------+
+    /// | id | source_hash_id | backup_hash_id |
+    /// +----+----------------+----------------+
+    /// |  1 |        1       |        1       |
+    /// +----+----------------+----------------+
+    /// 
+    /// 
+    /// 
+    /// The "source_file_hash_rel" table relates the source file to its hash code. 
+    /// 
+    /// +--------------------------------------+
+    /// |         source_file_hash_rel         |
+    /// +----+----------------+----------------+
+    /// | id | source_file_id | source_hash_id |
+    /// +----+----------------+----------------+
+    /// |  1 |        1       |        1       |
+    /// +----+----------------+----------------+
+    /// 
+    ///
+    /// 
+    /// The "backup_file_hash_rel" table relates the backup file to its hash code.
+    /// 
+    /// +--------------------------------------+
+    /// |         backup_file_hash_rel         |
+    /// +----+----------------+----------------+
+    /// | id | backup_file_id | backup_hash_id |
+    /// +----+----------------+----------------+
+    /// |  1 |        1       |        1       |
+    /// +----+----------------+----------------+
+    /// 
+    /// 
+    /// 
+    /// The "full_backup_location" table refers to user-specified locations. If the user initiates a full
+    /// backup of all monitored files, the backup will be moved to one of these locations.
+    /// 
+    /// +----------------------+
+    /// | full_backup_location |
+    /// +------+---------------+
+    /// |  id  |      path     |
+    /// +------+---------------+
+    /// |   1  |  F:\\Backups  |
+    /// +------+---------------+
+    /// 
+    /// 
+    /// 
+    /// The "consecutive_backup_location" table refers to user-specified locations. If the user wants to 
+    /// copy the monitored files only when they change, the copied files will be moved to one of these 
+    /// locations.
+    /// 
+    /// +-----------------------------+
+    /// | consecutive_backup_location |
+    /// +----------+------------------+
+    /// |    id    |       path       |
+    /// +----------+------------------+
+    /// |     1    |    G:\\Backups   |
+    /// +----------+------------------+
+
+
     internal abstract class BaseTable
     {
         /// <summary>
