@@ -19,7 +19,9 @@ namespace FileMonitor.Database
             "CREATE TABLE backup_hash (id INT PRIMARY KEY, hash_code VARCHAR(160))",
             "CREATE TABLE source_backup_hash_rel (id INT PRIMARY KEY, source_hash_id INT, backup_hash_id INT)",
             "CREATE TABLE source_file_hash_rel (id INT PRIMARY KEY, source_file_id INT, source_hash_id INT)",
-            "CREATE TABLE backup_file_hash_rel (id INT PRIMARY KEY, backup_file_id INT, backup_hash_id INT)"
+            "CREATE TABLE backup_file_hash_rel (id INT PRIMARY KEY, backup_file_id INT, backup_hash_id INT)",
+            "CREATE TABLE full_backup_location (id INT PRIMARY KEY, path VARCHAR(260))",
+            "CREATE TABLE consecutive_backup_location (id INT PRIMARY KEY, path VARCHAR(260))"
         };
 
         /// <summary>
