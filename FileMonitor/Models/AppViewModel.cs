@@ -8,7 +8,7 @@ namespace FileMonitor.Models
     /// <summary>
     /// Defines a class for MainWindow.xaml.cs to access a list of files that are monitored by the program.
     /// </summary>
-    class MonitoredFiles : INotifyPropertyChanged
+    class AppViewModel : INotifyPropertyChanged
     {
         private ReadOnlyObservableCollection<string>? allFilePaths;
         private ReadOnlyObservableCollection<string>? recentlyChangedFiles;
@@ -25,7 +25,7 @@ namespace FileMonitor.Models
             get => recentlyChangedFiles; 
         }
 
-        public MonitoredFiles()
+        public AppViewModel()
         {
             sourceFile = new SourceFile();
             allFilePaths = new ReadOnlyObservableCollection<string>(sourceFile.FilePaths);

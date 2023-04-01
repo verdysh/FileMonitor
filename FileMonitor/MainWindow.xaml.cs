@@ -12,7 +12,7 @@ namespace FileMonitor
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MonitoredFiles monitoredFiles;
+        private AppViewModel viewModel;
         public static readonly string programDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\FileMonitor";
         public static readonly string databasePath = $"{programDir}\\FMDB.sqlite";
 
@@ -26,8 +26,8 @@ namespace FileMonitor
             }
 
             InitializeComponent();
-            monitoredFiles = new MonitoredFiles();
-            DataContext = monitoredFiles;
+            viewModel = new AppViewModel();
+            DataContext = viewModel;
         }
 
         private void AddNewFile_Click(object sender, RoutedEventArgs e)
@@ -36,7 +36,7 @@ namespace FileMonitor
 
             if(newFile != "")
             {
-                monitoredFiles.AddFile(newFile);
+                viewModel.AddFile(newFile);
             }
         }
 
@@ -62,7 +62,7 @@ namespace FileMonitor
 
             if(result == MessageBoxResult.Yes)
             {
-                foreach (string file in filesToRemove) monitoredFiles.RemoveFile(file);
+                foreach (string file in filesToRemove) viewModel.RemoveFile(file);
             }
         }
         
@@ -81,7 +81,7 @@ namespace FileMonitor
                 string backupFolder = FolderDialogWindow.GetPath();
                 if (backupFolder.Equals("")) return;
                 Backup backup = new Backup(backupFolder);
-                backup.Run(monitoredFiles.AllFilePaths);
+                backup.Run(viewModel.AllFilePaths);
             }
         }
 
@@ -94,7 +94,7 @@ namespace FileMonitor
                 string backupFolder = FolderDialogWindow.GetPath();
                 if (backupFolder.Equals("")) return;
                 Backup backup = new Backup(backupFolder);
-                backup.Run(monitoredFiles.RecentlyChangedFiles);
+                backup.Run(viewModel.RecentlyChangedFiles);
             }
         }
 
