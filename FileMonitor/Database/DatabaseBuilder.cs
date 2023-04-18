@@ -12,16 +12,16 @@ namespace FileMonitor.Database
         /// </summary>
         private readonly string[] commands = new string[]
         {
-            "CREATE TABLE source_file (id INT PRIMARY KEY, path VARCHAR(260))",
-            "CREATE TABLE backup_file (id INT PRIMARY KEY, path VARCHAR(260))",
-            "CREATE TABLE source_backup_file_rel (id INT PRIMARY KEY, source_file_id INT, backup_file_id INT)",
-            "CREATE TABLE source_hash (id INT PRIMARY KEY, hash_code VARCHAR(160))",
-            "CREATE TABLE backup_hash (id INT PRIMARY KEY, hash_code VARCHAR(160))",
-            "CREATE TABLE source_backup_hash_rel (id INT PRIMARY KEY, source_hash_id INT, backup_hash_id INT)",
-            "CREATE TABLE source_file_hash_rel (id INT PRIMARY KEY, source_file_id INT, source_hash_id INT)",
-            "CREATE TABLE backup_file_hash_rel (id INT PRIMARY KEY, backup_file_id INT, backup_hash_id INT)",
-            "CREATE TABLE full_backup_location (id INT PRIMARY KEY, path VARCHAR(260))",
-            "CREATE TABLE consecutive_backup_location (id INT PRIMARY KEY, path VARCHAR(260))"
+            "CREATE TABLE source_file (id INTEGER NOT NULL UNIQUE, path VARCHAR(260), PRIMARY KEY(id AUTOINCREMENT))",
+            "CREATE TABLE backup_file (id INTEGER NOT NULL UNIQUE, path VARCHAR(260), PRIMARY KEY(id AUTOINCREMENT))",
+            "CREATE TABLE source_backup_file_rel (id INTEGER NOT NULL UNIQUE, source_file_id INTEGER, backup_file_id INTEGER, PRIMARY KEY(id AUTOINCREMENT))",
+            "CREATE TABLE source_hash (id INTEGER NOT NULL UNIQUE, hash_code VARCHAR(160), PRIMARY KEY(id AUTOINCREMENT))",
+            "CREATE TABLE backup_hash (id INTEGER NOT NULL UNIQUE, hash_code VARCHAR(160), PRIMARY KEY(id AUTOINCREMENT))",
+            "CREATE TABLE source_backup_hash_rel (id INTEGER NOT NULL UNIQUE, source_hash_id INTEGER, backup_hash_id INTEGER, PRIMARY KEY(id AUTOINCREMENT))",
+            "CREATE TABLE source_file_hash_rel (id INTEGER NOT NULL UNIQUE, source_file_id INTEGER, source_hash_id INTEGER, PRIMARY KEY(id AUTOINCREMENT))",
+            "CREATE TABLE backup_file_hash_rel (id INTEGER NOT NULL UNIQUE, backup_file_id INTEGER, backup_hash_id INTEGER, PRIMARY KEY(id AUTOINCREMENT))",
+            "CREATE TABLE full_backup_location (id INTEGER NOT NULL UNIQUE, path VARCHAR(260), PRIMARY KEY(id AUTOINCREMENT))",
+            "CREATE TABLE consecutive_backup_location (id INTEGER NOT NULL UNIQUE, path VARCHAR(260), PRIMARY KEY(id AUTOINCREMENT))"
         };
 
         /// <summary>
