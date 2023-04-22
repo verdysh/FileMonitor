@@ -1,4 +1,5 @@
-﻿using System.Data.SQLite;
+﻿using System.Configuration;
+using System.Data.SQLite;
 
 namespace FileMonitor.Database
 {
@@ -29,7 +30,8 @@ namespace FileMonitor.Database
         /// </summary>
         public void Build()
         {
-            SQLiteConnection.CreateFile(MainWindow.databasePath);
+            string path = "C:\\Users\\Public\\FMDB.sqlite";
+            SQLiteConnection.CreateFile(path);
             using(SQLiteConnection connection = GetConnection())
             {
                 for (int i = 0; i < commands.Length; i++)

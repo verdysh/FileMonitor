@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using DataAccessLayer;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SQLite;
 
@@ -147,7 +149,8 @@ namespace FileMonitor.Database
         /// </summary>
         protected SQLiteConnection GetConnection()
         {
-            SQLiteConnection connection = new SQLiteConnection($"Data Source={MainWindow.databasePath};Version=3;");
+            string connectionString = "Data Source=C:\\Users\\Public\\FMDB.sqlite;Version=3;";
+            SQLiteConnection connection = new SQLiteConnection(connectionString);
             connection.Open();
             return connection;
         }
