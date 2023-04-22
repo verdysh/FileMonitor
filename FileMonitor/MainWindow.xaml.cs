@@ -1,9 +1,9 @@
 ﻿using System.Windows;
 using FileMonitor.Models;
 using FileMonitor.Database;
-using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Configuration;
 
 namespace FileMonitor
 {
@@ -13,14 +13,12 @@ namespace FileMonitor
     public partial class MainWindow : Window
     {
         private AppViewModel viewModel;
-        public static readonly string programDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\FileMonitor";
-        public static readonly string databasePath = $"{programDir}\\FMDB.sqlite";
 
         public MainWindow()
         {
-            if (!File.Exists(databasePath))
+            if (!File.Exists(ConfigurationManager.AppSettings["DatabasePath"]))
             {
-                Directory.CreateDirectory(programDir);
+                Directory.CreateDirectory(ConfigurationManager.AppSettings["ProgramDirectory"]);
                 DatabaseBuilder database = new DatabaseBuilder();
                 database.Build();
             }
