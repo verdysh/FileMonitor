@@ -85,7 +85,6 @@
                                 <ListView.View>
                                     <GridView>
                                         <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Path}" />
-                                        <GridViewColumn Header="ID"  DisplayMemberBinding="{Binding Id}" />
                                     </GridView>
                                 </ListView.View>
                             </ListView>

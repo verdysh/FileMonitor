@@ -6,6 +6,7 @@ using System.Configuration;
 using FileMonitor.ViewModels;
 using Services.SourceFiles;
 using DataAccessLayer;
+using Services.SourceFiles.Dto;
 
 namespace FileMonitor
 {
@@ -14,9 +15,7 @@ namespace FileMonitor
     /// </summary>
     public partial class MainWindow : Window
     {
-        //private AppViewModel viewModel;
         private readonly FilesViewModel _viewModel;
-
 
         public MainWindow()
         {
@@ -33,6 +32,7 @@ namespace FileMonitor
             FilesDisplayed.DataContext = _viewModel;
         }
 
+        // Add a file to be monitored by the program
         private void AddNewFile_Click(object sender, RoutedEventArgs e)
         {
             string newFile = FileDialogWindow.GetPath();
@@ -44,16 +44,17 @@ namespace FileMonitor
                 _viewModel.Files = service.GetFiles();
             }
         }
-
+        // Add a folder to be monitored by the program
         private void AddNewFolder_Click(object sender, RoutedEventArgs e)
         {
             string newFolder = FolderDialogWindow.GetPath();
         }
 
+        // Remove a file from the collection of monitored files
         private void DeleteFiles_Click(object sender, RoutedEventArgs e)
         {
             List<string> filesToRemove = new List<string>();
-            foreach(string file in FilesDisplayed.SelectedItems) filesToRemove.Add(file);
+            foreach(SourceFileDto file in FilesDisplayed.SelectedItems) filesToRemove.Add(file);
 
             string filesFormatted = "";
             foreach(string file in filesToRemove) { filesFormatted += $"{file}\n"; }
@@ -71,7 +72,7 @@ namespace FileMonitor
             }
         }
         
-
+        // DeleteFiles button remains greyed out until this event handler is called
         private void FilesDisplayed_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             DeleteFiles.IsEnabled = true;
