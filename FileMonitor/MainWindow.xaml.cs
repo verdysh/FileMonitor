@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using FileMonitor.Models;
-using FileMonitor.Database;
 using System.IO;
 using System.Collections.Generic;
 using System.Configuration;
@@ -31,7 +30,7 @@ namespace FileMonitor
             using var service = new SourceFilesService();
             _viewModel = new FilesViewModel();
             _viewModel.Files = service.GetFiles();
-            FilesDisplayed.DataContext = _viewModel.Files;
+            FilesDisplayed.DataContext = _viewModel;
         }
 
         private void AddNewFile_Click(object sender, RoutedEventArgs e)
