@@ -53,23 +53,37 @@ namespace FileMonitor
         // Remove a file from the collection of monitored files
         private void DeleteFiles_Click(object sender, RoutedEventArgs e)
         {
-            List<string> filesToRemove = new List<string>();
-            foreach(SourceFileDto file in FilesDisplayed.SelectedItems) filesToRemove.Add(file);
+            // Cast to IEnumerable<>
+            IEnumerable<SourceFileDto> selectedFiles = (IEnumerable<SourceFileDto>)FilesDisplayed.SelectedItems; 
+            string filesFormatted = FormatFilesToDelete(selectedFiles); 
+            MessageBoxResult result = ConfirmDeleteFiles(filesFormatted);
+            if (result == MessageBoxResult.Yes)
+            {
+                SourceFilesService service = new SourceFilesService();
+                service.Remove(selectedFiles);
+            }
+        }
 
+        // Return a formatted string of all files to remove from the program
+        private string FormatFilesToDelete(IEnumerable<SourceFileDto> selectedFiles)
+        {
             string filesFormatted = "";
-            foreach(string file in filesToRemove) { filesFormatted += $"{file}\n"; }
-            string text = $"Do you wish to delete the following files from the program? This cannot be undone.\n\n{filesFormatted}";
+            List<SourceFileDto> filesToDelete = new List<SourceFileDto>();
+
+            foreach (SourceFileDto file in selectedFiles) filesToDelete.Add(file);
+            foreach (SourceFileDto file in filesToDelete) filesFormatted += $"{file}\n"; 
+            return filesFormatted;
+        }
+
+        // Confirm if the user wants to delete these files from the program
+        private MessageBoxResult ConfirmDeleteFiles(string filesToDelete)
+        {
+            string text = $"Do you wish to delete the following files from the program? This cannot be undone.\n\n{filesToDelete}";
             string caption = "Delete Files";
 
             MessageBoxButton button = MessageBoxButton.YesNo;
             MessageBoxImage image = MessageBoxImage.Warning;
-            MessageBoxResult result;
-            result = MessageBox.Show(text, caption, button, image);
-
-            if(result == MessageBoxResult.Yes)
-            {
-                //foreach (string file in filesToRemove) viewModel.RemoveFile(file);
-            }
+            return MessageBox.Show(text, caption, button, image);
         }
         
         // DeleteFiles button remains greyed out until this event handler is called
