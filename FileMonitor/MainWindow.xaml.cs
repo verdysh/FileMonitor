@@ -4,6 +4,9 @@ using FileMonitor.Database;
 using System.IO;
 using System.Collections.Generic;
 using System.Configuration;
+using FileMonitor.ViewModels;
+using Services.SourceFiles;
+using DataAccessLayer;
 
 namespace FileMonitor
 {
@@ -12,20 +15,23 @@ namespace FileMonitor
     /// </summary>
     public partial class MainWindow : Window
     {
-        private AppViewModel viewModel;
+        //private AppViewModel viewModel;
+        private readonly FilesViewModel _viewModel;
+
 
         public MainWindow()
         {
             if (!File.Exists(ConfigurationManager.AppSettings["DatabasePath"]))
             {
-                Directory.CreateDirectory(ConfigurationManager.AppSettings["ProgramDirectory"]);
-                DatabaseBuilder database = new DatabaseBuilder();
-                database.Build();
+                using var _db = new FileMonitorDbContext(ConfigurationManager.ConnectionStrings[nameof(FileMonitorDbContext)].ConnectionString);
+                _db.Database.EnsureCreated();
             }
 
             InitializeComponent();
-            viewModel = new AppViewModel();
-            DataContext = viewModel;
+            using var service = new SourceFilesService();
+            _viewModel = new FilesViewModel();
+            _viewModel.Files = service.GetFiles();
+            FilesDisplayed.DataContext = _viewModel.Files;
         }
 
         private void AddNewFile_Click(object sender, RoutedEventArgs e)
@@ -34,7 +40,9 @@ namespace FileMonitor
 
             if(newFile != "")
             {
-                viewModel.AddFile(newFile);
+                using var service = new SourceFilesService();
+                service.Add(newFile);
+                _viewModel.Files = service.GetFiles();
             }
         }
 
@@ -60,7 +68,7 @@ namespace FileMonitor
 
             if(result == MessageBoxResult.Yes)
             {
-                foreach (string file in filesToRemove) viewModel.RemoveFile(file);
+                //foreach (string file in filesToRemove) viewModel.RemoveFile(file);
             }
         }
         
@@ -79,7 +87,7 @@ namespace FileMonitor
                 string backupFolder = FolderDialogWindow.GetPath();
                 if (backupFolder.Equals("")) return;
                 Backup backup = new Backup(backupFolder);
-                backup.Run(viewModel.AllFilePaths);
+                //backup.Run(viewModel.AllFilePaths);
             }
         }
 
@@ -92,7 +100,7 @@ namespace FileMonitor
                 string backupFolder = FolderDialogWindow.GetPath();
                 if (backupFolder.Equals("")) return;
                 Backup backup = new Backup(backupFolder);
-                backup.Run(viewModel.RecentlyChangedFiles);
+                //backup.Run(viewModel.RecentlyChangedFiles);
             }
         }
 
