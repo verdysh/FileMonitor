@@ -7,6 +7,8 @@ using FileMonitor.ViewModels;
 using Services.SourceFiles;
 using DataAccessLayer;
 using Services.SourceFiles.Dto;
+using System.Collections.ObjectModel;
+using Services.Extensions;
 
 namespace FileMonitor
 {
@@ -28,7 +30,8 @@ namespace FileMonitor
             InitializeComponent();
             using var service = new SourceFilesService();
             _viewModel = new FilesViewModel();
-            _viewModel.Files = service.GetFiles();
+            ObservableCollection<SourceFileDto> observableFiles = new ObservableCollection<SourceFileDto>(service.GetFiles());
+            _viewModel.Files = observableFiles;
             FilesDisplayed.DataContext = _viewModel;
         }
 
@@ -40,10 +43,11 @@ namespace FileMonitor
             if(newFile != "")
             {
                 using var service = new SourceFilesService();
-                service.Add(newFile);
-                _viewModel.Files = service.GetFiles();
+                SourceFileDto addedFile = service.Add(newFile);
+                _viewModel.Files.Add(addedFile);
             }
         }
+
         // Add a folder to be monitored by the program
         private void AddNewFolder_Click(object sender, RoutedEventArgs e)
         {
@@ -53,32 +57,31 @@ namespace FileMonitor
         // Remove a file from the collection of monitored files
         private void DeleteFiles_Click(object sender, RoutedEventArgs e)
         {
-            // Cast to IEnumerable<>
-            IEnumerable<SourceFileDto> selectedFiles = (IEnumerable<SourceFileDto>)FilesDisplayed.SelectedItems; 
-            string filesFormatted = FormatFilesToDelete(selectedFiles); 
-            MessageBoxResult result = ConfirmDeleteFiles(filesFormatted);
+            List<SourceFileDto> selectedFiles = new List<SourceFileDto>();
+            foreach (object item in FilesDisplayed.SelectedItems)
+            {
+                selectedFiles.Add((SourceFileDto)item);
+            }
+
+            MessageBoxResult result = ConfirmDeleteFiles();
+
             if (result == MessageBoxResult.Yes)
             {
                 SourceFilesService service = new SourceFilesService();
-                service.Remove(selectedFiles);
+                List<int> ids = new List<int>();
+                foreach (var item in selectedFiles)
+                {
+                    ids.Add(item.Id);
+                }
+                service.Remove(ids);
+                _viewModel.Files.RemoveRange<SourceFileDto>(selectedFiles);
             }
         }
 
-        // Return a formatted string of all files to remove from the program
-        private string FormatFilesToDelete(IEnumerable<SourceFileDto> selectedFiles)
-        {
-            string filesFormatted = "";
-            List<SourceFileDto> filesToDelete = new List<SourceFileDto>();
-
-            foreach (SourceFileDto file in selectedFiles) filesToDelete.Add(file);
-            foreach (SourceFileDto file in filesToDelete) filesFormatted += $"{file}\n"; 
-            return filesFormatted;
-        }
-
         // Confirm if the user wants to delete these files from the program
-        private MessageBoxResult ConfirmDeleteFiles(string filesToDelete)
+        private MessageBoxResult ConfirmDeleteFiles()
         {
-            string text = $"Do you wish to delete the following files from the program? This cannot be undone.\n\n{filesToDelete}";
+            string text = "Do you wish to delete the selected file(s) from the program? This cannot be undone.";
             string caption = "Delete Files";
 
             MessageBoxButton button = MessageBoxButton.YesNo;
