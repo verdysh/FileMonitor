@@ -63,7 +63,7 @@
                                         Click="AddNewFolder_Click"/>
 
                                 <Button x:Name="DeleteFiles" 
-                                        Content=" Delete File " 
+                                        Content=" Delete File(s) " 
                                         Click="DeleteFiles_Click" 
                                         IsEnabled="False"/>
 
