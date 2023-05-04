@@ -95,7 +95,7 @@ namespace FileMonitor
             DeleteFiles.IsEnabled = true;
         }
 
-        private void PerformBackup_Click(object sender, RoutedEventArgs e)
+        private void CreateFullBackup_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = ChooseBackupLocation();
 
@@ -108,7 +108,7 @@ namespace FileMonitor
             }
         }
 
-        private void BackupRecentlyChangedFiles_Click(object sender, RoutedEventArgs e)
+        private void CreateSequentialBackup_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = ChooseBackupLocation();
 
