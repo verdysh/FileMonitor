@@ -10,6 +10,8 @@ namespace DataAccessLayer
     {
         private readonly string _connectionString;
         public DbSet<SourceFile> SourceFiles { get; set; }
+        public DbSet<FullBackup> FullBackups { get; set; }
+        public DbSet<SequentialBackup> SequentialBackups { get; set; }
 
         public FileMonitorDbContext(string connectionString)
         {
