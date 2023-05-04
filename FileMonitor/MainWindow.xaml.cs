@@ -35,7 +35,9 @@ namespace FileMonitor
             FilesDisplayed.DataContext = _viewModel;
         }
 
-        // Add a file to be monitored by the program
+        /// <summary>
+        /// Add a file to be monitored by the program
+        /// </summary>
         private void AddNewFile_Click(object sender, RoutedEventArgs e)
         {
             string newFile = FileDialogWindow.GetPath();
@@ -48,13 +50,17 @@ namespace FileMonitor
             }
         }
 
-        // Add a folder to be monitored by the program
+        /// <summary>
+        /// Add a folder to be monitored by the program
+        /// </summary>
         private void AddNewFolder_Click(object sender, RoutedEventArgs e)
         {
             string newFolder = FolderDialogWindow.GetPath();
         }
 
-        // Remove a file from the collection of monitored files
+        /// <summary>
+        /// Remove a file from the collection of monitored files
+        /// </summary>
         private void DeleteFiles_Click(object sender, RoutedEventArgs e)
         {
             List<SourceFileDto> selectedFiles = new List<SourceFileDto>();
@@ -78,7 +84,10 @@ namespace FileMonitor
             }
         }
 
-        // Confirm if the user wants to delete these files from the program
+        /// <summary>
+        /// Confirm if the user wants to delete these files from the program
+        /// </summary>
+        /// <returns> The user's message box selection </returns>
         private MessageBoxResult ConfirmDeleteFiles()
         {
             string text = "Do you wish to delete the selected file(s) from the program? This cannot be undone.";
@@ -89,12 +98,17 @@ namespace FileMonitor
             return MessageBox.Show(text, caption, button, image);
         }
         
-        // DeleteFiles button remains greyed out until this event handler is called
+        /// <summary>
+        /// Allow the DeleteFiles button to be selected once an item is highlighted in the FilesDisplayed property
+        /// </summary>
         private void FilesDisplayed_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             DeleteFiles.IsEnabled = true;
         }
 
+        /// <summary>
+        /// Create a full backup of all files monitored by the program
+        /// </summary>
         private void CreateFullBackup_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = ChooseBackupLocation();
@@ -108,6 +122,9 @@ namespace FileMonitor
             }
         }
 
+        /// <summary>
+        /// Create a sequential backup for files that have changed since the last backup
+        /// </summary>
         private void CreateSequentialBackup_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = ChooseBackupLocation();
