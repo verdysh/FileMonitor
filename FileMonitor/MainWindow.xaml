@@ -27,7 +27,8 @@
                     
                     <Border BorderBrush="Black" 
                             BorderThickness=".5" 
-                            Grid.Column="0">
+                            Grid.Column="0"
+                            Grid.Row="0">
                         <Grid>
                             <Border BorderBrush="Black" 
                                     BorderThickness=".4" 
@@ -55,20 +56,20 @@
                                 </StackPanel.Resources>
 
                                 <Button x:Name="AddNewFile" 
-                                        Content=" Add File " 
+                                        Content="Add File" 
                                         Click="AddNewFile_Click"/>
 
                                 <Button x:Name="AddNewFolder" 
-                                        Content=" Add Folder " 
+                                        Content="Add Folder" 
                                         Click="AddNewFolder_Click"/>
 
                                 <Button x:Name="DeleteFiles" 
-                                        Content=" Delete File(s) " 
+                                        Content="Delete File(s)" 
                                         Click="DeleteFiles_Click" 
                                         IsEnabled="False"/>
 
                                 <Button x:Name="PerformBackup" 
-                                        Content=" Copy All "
+                                        Content="Create Full Backup"
                                         Click="PerformBackup_Click" />
 
                             </StackPanel>
@@ -98,7 +99,8 @@
 
                     <Border BorderBrush="Black" 
                             BorderThickness=".5" 
-                            Grid.Column="1">
+                            Grid.Column="1"
+                            Grid.Row="0">
 
                         <Grid>
                             <Border BorderBrush="Black" 
@@ -113,11 +115,11 @@
                             </Border>
 
                             <Button x:Name="BackupRecentlyChangedFiles" 
-                                    Content="Copy Files" 
+                                    Content="Create Sequential Backup" 
                                     Click="BackupRecentlyChangedFiles_Click" 
                                     HorizontalAlignment="Left" 
                                     VerticalAlignment="Top"
-                                    Width="70"
+
                                     Height="25" 
                                     Margin="10,53,0,10"/>
 
@@ -130,6 +132,60 @@
                                         ScrollViewer.VerticalScrollBarVisibility="Auto" />
                         </Grid>
                     </Border>
+                    
+                    
+                    <Border BorderBrush="Black" 
+                            BorderThickness=".5" 
+                            Grid.Column="0"
+                            Grid.Row="1">
+                        <Grid>
+                            <Border BorderBrush="Black" 
+                                    BorderThickness=".4" 
+                                    Background="Orange" 
+                                    Padding="9" 
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Top">
+
+                                <TextBlock Text="Full Backup Locations:"
+                                           FontSize="16"/>
+                            </Border>
+
+                            <ListView x:Name="FullBackupPaths" 
+                                        Margin="0,53,0,0"
+                                        ItemsSource="{Binding RecentlyChangedFiles}" 
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                        ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                        </Grid>
+                    </Border>
+                    
+                    <Border BorderBrush="Black" 
+                            BorderThickness=".5" 
+                            Grid.Column="1"
+                            Grid.Row="1">
+                        <Grid>
+                            <Border BorderBrush="Black" 
+                                    BorderThickness=".4" 
+                                    Background="Orange" 
+                                    Padding="9" 
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Top">
+
+                                <TextBlock Text="Sequential Backup Locations:"
+                                           FontSize="16"/>
+                            </Border>
+                            
+                            <ListView x:Name="CreateSequentialBackup" 
+                                        Margin="0,53,0,0"
+                                        ItemsSource="{Binding RecentlyChangedFiles}" 
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                        ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                        </Grid>
+                    </Border>
+                    
                 </Grid>
             </TabItem>
 
