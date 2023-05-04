@@ -68,9 +68,9 @@
                                         Click="DeleteFiles_Click" 
                                         IsEnabled="False"/>
 
-                                <Button x:Name="PerformBackup" 
+                                <Button x:Name="CreateFullBackup" 
                                         Content="Create Full Backup"
-                                        Click="PerformBackup_Click" />
+                                        Click="CreateFullBackup_Click" />
 
                             </StackPanel>
 
@@ -114,9 +114,9 @@
                                            FontSize="16"/>
                             </Border>
 
-                            <Button x:Name="BackupRecentlyChangedFiles" 
+                            <Button x:Name="CreateSequentialBackup" 
                                     Content="Create Sequential Backup" 
-                                    Click="BackupRecentlyChangedFiles_Click" 
+                                    Click="CreateSequentialBackup_Click" 
                                     HorizontalAlignment="Left" 
                                     VerticalAlignment="Top"
 
@@ -146,7 +146,7 @@
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Top">
 
-                                <TextBlock Text="Full Backup Locations:"
+                                <TextBlock Text="Full Backup Paths:"
                                            FontSize="16"/>
                             </Border>
 
@@ -172,11 +172,11 @@
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Top">
 
-                                <TextBlock Text="Sequential Backup Locations:"
+                                <TextBlock Text="Sequential Backup Paths:"
                                            FontSize="16"/>
                             </Border>
                             
-                            <ListView x:Name="CreateSequentialBackup" 
+                            <ListView x:Name="SequentialBackupPaths" 
                                         Margin="0,53,0,0"
                                         ItemsSource="{Binding RecentlyChangedFiles}" 
                                         HorizontalAlignment="Stretch"
