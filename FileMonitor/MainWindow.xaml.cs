@@ -10,8 +10,8 @@ using Services.SourceFiles;
 using Services.FullBackupPaths;
 using Services.SourceFiles.Dto;
 using Services.Extensions;
-using DataAccessLayer;
 using Services.FullBackupPaths.Dto;
+using DataAccessLayer;
 
 namespace FileMonitor
 {
