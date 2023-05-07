@@ -10,8 +10,8 @@ namespace DataAccessLayer
     {
         private readonly string _connectionString;
         public DbSet<SourceFile> SourceFiles { get; set; }
-        public DbSet<FullBackup> FullBackups { get; set; }
-        public DbSet<SequentialBackup> SequentialBackups { get; set; }
+        public DbSet<FullBackupPath> FullBackupPaths { get; set; }
+        public DbSet<SequentialBackupPath> SequentialBackupPaths { get; set; }
 
         public FileMonitorDbContext(string connectionString)
         {
@@ -27,8 +27,8 @@ namespace DataAccessLayer
         {
             /// Make all paths unique
             modelBuilder.Entity<SourceFile>().HasIndex(s => new { s.Path}).IsUnique();
-            modelBuilder.Entity<FullBackup>().HasIndex(s => new { s.Path }).IsUnique();
-            modelBuilder.Entity<SequentialBackup>().HasIndex(s => new { s.Path }).IsUnique();
+            modelBuilder.Entity<FullBackupPath>().HasIndex(s => new { s.Path }).IsUnique();
+            modelBuilder.Entity<SequentialBackupPath>().HasIndex(s => new { s.Path }).IsUnique();
         }
     }
 }
