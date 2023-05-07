@@ -7,9 +7,11 @@ using FileMonitor.Models;
 using FileMonitor.Backups;
 using FileMonitor.ViewModels;
 using Services.SourceFiles;
+using Services.FullBackupPaths;
 using Services.SourceFiles.Dto;
 using Services.Extensions;
 using DataAccessLayer;
+using Services.FullBackupPaths.Dto;
 
 namespace FileMonitor
 {
@@ -18,7 +20,8 @@ namespace FileMonitor
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly FilesViewModel _viewModel;
+        private readonly FilesViewModel _sourceFileViewModel;
+        private readonly FullBackupViewModel _fullBackupViewModel;
 
         public MainWindow()
         {
@@ -29,11 +32,17 @@ namespace FileMonitor
             }
 
             InitializeComponent();
-            using var service = new SourceFileService();
-            _viewModel = new FilesViewModel();
-            ObservableCollection<SourceFileDto> observableFiles = new ObservableCollection<SourceFileDto>(service.GetFiles());
-            _viewModel.Files = observableFiles;
-            FilesDisplayed.DataContext = _viewModel;
+            using var sourceFileService = new SourceFileService();
+            using var fullBackupService = new FullBackupService();
+
+            var observableFiles = new ObservableCollection<SourceFileDto>(sourceFileService.GetFiles());
+            var observableBackupPaths = new ObservableCollection<FullBackupDto>(fullBackupService.GetPaths());
+
+            _sourceFileViewModel = new FilesViewModel();
+            _fullBackupViewModel = new FullBackupViewModel();
+
+            FilesDisplayed.DataContext = _sourceFileViewModel;
+            FullBackupPaths.DataContext = _fullBackupViewModel;
         }
 
         /// <summary>
@@ -47,7 +56,7 @@ namespace FileMonitor
             {
                 using var service = new SourceFileService();
                 SourceFileDto addedFile = service.Add(newFile);
-                if(addedFile != null) _viewModel.Files.Add(addedFile);
+                if(addedFile != null) _sourceFileViewModel.Files.Add(addedFile);
             }
         }
 
@@ -81,7 +90,7 @@ namespace FileMonitor
                     ids.Add(item.Id);
                 }
                 service.Remove(ids);
-                _viewModel.Files.RemoveRange<SourceFileDto>(selectedFiles);
+                _sourceFileViewModel.Files.RemoveRange<SourceFileDto>(selectedFiles);
             }
         }
 
