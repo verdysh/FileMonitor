@@ -22,5 +22,13 @@ namespace DataAccessLayer
         {
             optionsBuilder.UseSqlite(_connectionString);
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            /// Make all paths unique
+            modelBuilder.Entity<SourceFile>().HasIndex(s => new { s.Path}).IsUnique();
+            modelBuilder.Entity<FullBackup>().HasIndex(s => new { s.Path }).IsUnique();
+            modelBuilder.Entity<SequentialBackup>().HasIndex(s => new { s.Path }).IsUnique();
+        }
     }
 }
