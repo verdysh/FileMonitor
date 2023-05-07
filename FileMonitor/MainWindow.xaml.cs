@@ -29,7 +29,7 @@ namespace FileMonitor
             }
 
             InitializeComponent();
-            using var service = new SourceFilesService();
+            using var service = new SourceFileService();
             _viewModel = new FilesViewModel();
             ObservableCollection<SourceFileDto> observableFiles = new ObservableCollection<SourceFileDto>(service.GetFiles());
             _viewModel.Files = observableFiles;
@@ -45,7 +45,7 @@ namespace FileMonitor
 
             if(newFile != "")
             {
-                using var service = new SourceFilesService();
+                using var service = new SourceFileService();
                 SourceFileDto addedFile = service.Add(newFile);
                 if(addedFile != null) _viewModel.Files.Add(addedFile);
             }
@@ -74,7 +74,7 @@ namespace FileMonitor
 
             if (result == MessageBoxResult.Yes)
             {
-                SourceFilesService service = new SourceFilesService();
+                SourceFileService service = new SourceFileService();
                 List<int> ids = new List<int>();
                 foreach (var item in selectedFiles)
                 {
