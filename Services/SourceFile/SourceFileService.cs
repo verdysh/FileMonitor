@@ -5,10 +5,10 @@ using System.Configuration;
 
 namespace Services.SourceFiles
 {
-    public class SourceFilesService: DisposableService
+    public class SourceFileService: DisposableService
     {
         private readonly FileMonitorDbContext _db;
-        public SourceFilesService()
+        public SourceFileService()
         {
             _db = new FileMonitorDbContext(ConfigurationManager.ConnectionStrings[nameof(FileMonitorDbContext)].ConnectionString);
         }
