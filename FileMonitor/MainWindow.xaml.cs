@@ -1,15 +1,15 @@
 ﻿using System.Windows;
-using FileMonitor.Models;
 using System.IO;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Collections.ObjectModel;
+using FileMonitor.Models;
+using FileMonitor.Backups;
 using FileMonitor.ViewModels;
 using Services.SourceFiles;
-using DataAccessLayer;
 using Services.SourceFiles.Dto;
-using System.Collections.ObjectModel;
 using Services.Extensions;
-using FileMonitor.Backups;
+using DataAccessLayer;
 
 namespace FileMonitor
 {
