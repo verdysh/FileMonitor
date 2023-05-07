@@ -5,7 +5,7 @@ using System.Configuration;
 
 namespace Services.FullBackupPaths
 {
-    internal class FullBackupService : DisposableService
+    public class FullBackupService : DisposableService
     {
         private readonly FileMonitorDbContext _db;
         public FullBackupService()
