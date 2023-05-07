@@ -1,4 +1,4 @@
-﻿namespace Services.FullBackups.Dto
+﻿namespace Services.FullBackupPaths.Dto
 {
     internal class FullBackupDto
     {

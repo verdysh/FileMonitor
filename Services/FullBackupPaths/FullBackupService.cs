@@ -1,6 +1,6 @@
 ﻿using DataAccessLayer;
 using DataAccessLayer.Entities;
-using Services.FullBackups.Dto;
+using Services.FullBackupPaths.Dto;
 using System.Configuration;
 
 namespace Services.FullBackupPaths
