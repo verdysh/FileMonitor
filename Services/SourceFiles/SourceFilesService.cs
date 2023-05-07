@@ -25,19 +25,24 @@ namespace Services.SourceFiles
 
         public SourceFileDto Add(string path)
         {
-            var entity = new SourceFile
+            /// Return null if value exists in the database
+            if (_db.SourceFiles.Any(obj => obj.Path == path)) return null;
+            else
             {
-                Path = path
-            };
+                var entity = new SourceFile
+                {
+                    Path = path
+                };
 
-            _db.SourceFiles.Add(entity);
-            _db.SaveChanges();
+                _db.SourceFiles.Add(entity);
+                _db.SaveChanges();
 
-            return new SourceFileDto
-            {
-                Id = entity.Id,
-                Path = entity.Path
-            };
+                return new SourceFileDto
+                {
+                    Id = entity.Id,
+                    Path = entity.Path
+                };
+            }
         }
 
         public void Remove(IEnumerable<int> ids)
