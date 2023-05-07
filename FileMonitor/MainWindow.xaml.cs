@@ -9,6 +9,7 @@ using DataAccessLayer;
 using Services.SourceFiles.Dto;
 using System.Collections.ObjectModel;
 using Services.Extensions;
+using FileMonitor.Backups;
 
 namespace FileMonitor
 {
@@ -117,7 +118,7 @@ namespace FileMonitor
             {
                 string backupFolder = FolderDialogWindow.GetPath();
                 if (backupFolder.Equals("")) return;
-                Backup backup = new Backup(backupFolder);
+                FullBackup backup = new FullBackup(backupFolder);
                 //backup.Run(viewModel.AllFilePaths);
             }
         }
@@ -133,7 +134,7 @@ namespace FileMonitor
             {
                 string backupFolder = FolderDialogWindow.GetPath();
                 if (backupFolder.Equals("")) return;
-                Backup backup = new Backup(backupFolder);
+                FullBackup backup = new FullBackup(backupFolder);
                 //backup.Run(viewModel.RecentlyChangedFiles);
             }
         }
