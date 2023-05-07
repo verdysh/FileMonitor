@@ -152,7 +152,7 @@
 
                             <ListView x:Name="FullBackupPaths" 
                                         Margin="0,53,0,0"
-                                        ItemsSource="{Binding RecentlyChangedFiles}" 
+                                        ItemsSource="{Binding Paths}" 
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
                                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
