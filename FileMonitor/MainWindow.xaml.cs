@@ -46,7 +46,7 @@ namespace FileMonitor
             {
                 using var service = new SourceFilesService();
                 SourceFileDto addedFile = service.Add(newFile);
-                _viewModel.Files.Add(addedFile);
+                if(addedFile != null) _viewModel.Files.Add(addedFile);
             }
         }
 
