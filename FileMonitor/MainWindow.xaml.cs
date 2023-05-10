@@ -35,11 +35,11 @@ namespace FileMonitor
             using var sourceFileService = new SourceFileService();
             using var fullBackupService = new FullBackupService();
 
-            var observableFiles = new ObservableCollection<SourceFileDto>(sourceFileService.GetFiles());
-            var observableBackupPaths = new ObservableCollection<FullBackupDto>(fullBackupService.GetPaths());
-
             _sourceFileViewModel = new FilesViewModel();
             _fullBackupViewModel = new FullBackupViewModel();
+
+            _sourceFileViewModel.Files = new ObservableCollection<SourceFileDto>(sourceFileService.GetFiles());
+            _fullBackupViewModel.Paths = new ObservableCollection<FullBackupDto>(fullBackupService.GetPaths());
 
             FilesDisplayed.DataContext = _sourceFileViewModel;
             FullBackupPaths.DataContext = _fullBackupViewModel;
@@ -51,13 +51,10 @@ namespace FileMonitor
         private void AddNewFile_Click(object sender, RoutedEventArgs e)
         {
             string newFile = FileDialogWindow.GetPath();
-
-            if(newFile != "")
-            {
-                using var service = new SourceFileService();
-                SourceFileDto addedFile = service.Add(newFile);
-                if(addedFile != null) _sourceFileViewModel.Files.Add(addedFile);
-            }
+            using var service = new SourceFileService();
+            if (newFile == "" || service.PathExists(newFile)) return;
+            SourceFileDto addedFile = service.Add(newFile);
+            _sourceFileViewModel.Files.Add(addedFile);
         }
 
         /// <summary>
@@ -146,6 +143,23 @@ namespace FileMonitor
                 FullBackup backup = new FullBackup(backupFolder);
                 //backup.Run(viewModel.RecentlyChangedFiles);
             }
+        }
+
+        /// <summary>
+        /// Add a folder path for a full backup to be copied to
+        /// </summary>
+        private void AddFullBackupPath_Click(object sender, RoutedEventArgs e)
+        {
+            string backupPath = FolderDialogWindow.GetPath();
+            using var service = new FullBackupService();
+            if (backupPath == "" || service.PathExists(backupPath)) return;
+            FullBackupDto backupDto = service.Add(backupPath);
+            _fullBackupViewModel.Paths.Add(backupDto);
+        }
+
+        private void AddSequentialBackupPath_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private MessageBoxResult ChooseBackupLocation()
