@@ -6,7 +6,6 @@ namespace FileMonitor.ViewModels
     public class FullBackupViewModel
     {
         private ObservableCollection<FullBackupDto> _backupPaths;
-
         public ObservableCollection<FullBackupDto> Paths
         {
             get { return _backupPaths; }
