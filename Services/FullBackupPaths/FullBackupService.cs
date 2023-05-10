@@ -26,24 +26,19 @@ namespace Services.FullBackupPaths
 
         public FullBackupDto Add(string path)
         {
-            /// Return null if value exists in the database
-            if (_db.FullBackupPaths.Any(obj => obj.Path == path)) return null;
-            else
+            var entity = new FullBackupPath
             {
-                var entity = new FullBackupPath
-                {
-                    Path = path
-                };
+                Path = path
+            };
 
-                _db.FullBackupPaths.Add(entity);
-                _db.SaveChanges();
+            _db.FullBackupPaths.Add(entity);
+            _db.SaveChanges();
 
-                return new FullBackupDto
-                {
-                    Id = entity.Id,
-                    Path = entity.Path
-                };
-            }
+            return new FullBackupDto
+            {
+                Id = entity.Id,
+                Path = entity.Path
+            };
         }
 
         public void Remove(IEnumerable<int> ids)
@@ -62,6 +57,14 @@ namespace Services.FullBackupPaths
         {
             _db.Dispose();
             base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Return true if the path exists in the database
+        /// </summary>
+        public bool PathExists(string path)
+        {
+            return _db.FullBackupPaths.Any(obj => obj.Path == path);
         }
     }
 }
