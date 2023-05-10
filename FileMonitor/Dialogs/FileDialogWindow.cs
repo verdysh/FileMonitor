@@ -13,15 +13,7 @@ namespace FileMonitor.Models
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Multiselect = true;
             openFileDialog.ShowDialog();
-
-            if (openFileDialog.FileName != "")
-            {
-                return openFileDialog.FileName;
-            }
-            else
-            {
-                return "";
-            }
+            return openFileDialog.FileName;
         }
     }
 }

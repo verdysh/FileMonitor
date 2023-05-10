@@ -12,15 +12,7 @@ namespace FileMonitor.Models
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
             dialog.ShowDialog();
-
-            if (dialog.SelectedPath != "")
-            {
-                return dialog.SelectedPath;
-            }
-            else
-            {
-                return "";
-            }
+            return dialog.SelectedPath;
         }
     }
 }
