@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 
@@ -24,7 +25,7 @@ namespace FileMonitor.Backups
         /// A method to execute the backup
         /// </summary>
         /// <param name="files"> A collection of file paths to copy </param>
-        public void Run(ReadOnlyObservableCollection<string> files)
+        public void Run(IEnumerable<string> files)
         {
             string backupFolderWithDateTime = $"{backupFolder}\\Backup{DateTime.Now.ToString("yyyy-MM-dd-HHmmss")}\\";
             foreach (string sourceFile in files)
