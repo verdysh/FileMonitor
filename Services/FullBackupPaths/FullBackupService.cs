@@ -13,12 +13,13 @@ namespace Services.FullBackupPaths
             _db = new FileMonitorDbContext(ConfigurationManager.ConnectionStrings[nameof(FileMonitorDbContext)].ConnectionString);
         }
 
-        public List<FullBackupDto> GetPaths()
+        public List<FullBackupDto> GetFullBackupRows()
         {
             IQueryable<FullBackupDto> query = _db.FullBackupPaths.Select(obj => new FullBackupDto
             {
                 Id = obj.Id,
-                Path = obj.Path
+                Path = obj.Path,
+                IsSelected = obj.IsSelected
             });
 
             return query.ToList();
@@ -50,6 +51,15 @@ namespace Services.FullBackupPaths
                     Id = id
                 });
             }
+            _db.SaveChanges();
+        }
+
+        public void Update(FullBackupDto dto)
+        {
+            var entity = _db.FullBackupPaths.FirstOrDefault<FullBackupPath>(f => f.Id == dto.Id);
+            if (entity == null) return;
+            entity.Path = dto.Path;
+            entity.IsSelected = dto.IsSelected;
             _db.SaveChanges();
         }
 
