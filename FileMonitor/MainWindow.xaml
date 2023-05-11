@@ -172,7 +172,9 @@
                                             <GridViewColumn>
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <CheckBox IsChecked="{Binding Mode=TwoWay, Path=IsSelected}" />
+                                                        <CheckBox Name="FullBackupPathSelected" 
+                                                                  IsChecked="{Binding Mode=TwoWay, Path=IsSelected}" 
+                                                                  Click="FullBackupPathSelected_Click"/>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
