@@ -12,6 +12,7 @@ namespace DataAccessLayer
         public DbSet<SourceFile> SourceFiles { get; set; }
         public DbSet<FullBackupPath> FullBackupPaths { get; set; }
         public DbSet<SequentialBackupPath> SequentialBackupPaths { get; set; }
+        public DbSet<BackupFile> BackupFiles { get; set; }
 
         public FileMonitorDbContext(string connectionString)
         {
