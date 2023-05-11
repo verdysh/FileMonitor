@@ -12,6 +12,7 @@ using Services.SourceFiles.Dto;
 using Services.Extensions;
 using Services.FullBackupPaths.Dto;
 using DataAccessLayer;
+using System.Linq;
 
 namespace FileMonitor
 {
@@ -39,7 +40,7 @@ namespace FileMonitor
             _fullBackupViewModel = new FullBackupViewModel();
 
             _sourceFileViewModel.Files = new ObservableCollection<SourceFileDto>(sourceFileService.GetFiles());
-            _fullBackupViewModel.Paths = new ObservableCollection<FullBackupDto>(fullBackupService.GetPaths());
+            _fullBackupViewModel.Paths = new ObservableCollection<FullBackupDto>(fullBackupService.GetFullBackupRows());
 
             FilesDisplayed.DataContext = _sourceFileViewModel;
             FullBackupPaths.DataContext = _fullBackupViewModel;
@@ -118,14 +119,13 @@ namespace FileMonitor
         /// </summary>
         private void CreateFullBackup_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = ChooseBackupLocation();
-
-            if(result == MessageBoxResult.Yes)
+            foreach(FullBackupDto dto in _fullBackupViewModel.Paths)
             {
-                string backupFolder = FolderDialogWindow.GetPath();
-                if (backupFolder.Equals("")) return;
-                FullBackup backup = new FullBackup(backupFolder);
-                //backup.Run(viewModel.AllFilePaths);
+                if(dto.IsSelected)
+                {
+                    FullBackup backup = new FullBackup(dto.Path);
+                    backup.Run(_sourceFileViewModel.Files.Select(f => f.Path));
+                }
             }
         }
 
@@ -170,6 +170,14 @@ namespace FileMonitor
             string text = "You must choose a backup location. Do you wish to proceed?";
             string caption = "Choose Backup Location";
             return MessageBox.Show(text, caption, messageBoxButton, image);
+        }
+
+        private void FullBackupPathSelected_Click(object sender, RoutedEventArgs e)
+        {
+            var checkBox = (System.Windows.Controls.CheckBox)sender;
+            var fullBackupDto = (FullBackupDto)checkBox.DataContext;
+            using var service = new FullBackupService();
+            service.Update(fullBackupDto);
         }
     }
 }
