@@ -105,14 +105,6 @@ namespace FileMonitor
             MessageBoxImage image = MessageBoxImage.Warning;
             return MessageBox.Show(text, caption, button, image);
         }
-        
-        /// <summary>
-        /// Allow the DeleteFiles button to be selected once an item is highlighted in the FilesDisplayed property
-        /// </summary>
-        private void FilesDisplayed_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            DeleteFiles.IsEnabled = true;
-        }
 
         /// <summary>
         /// Create a full backup of all files monitored by the program
@@ -127,6 +119,7 @@ namespace FileMonitor
                     backup.Run(_sourceFileViewModel.Files.Select(f => f.Path));
                 }
             }
+            MessageBox.Show("Backup complete");
         }
 
         /// <summary>
