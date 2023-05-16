@@ -3,11 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:valueConverters="clr-namespace:FileMonitor.ValueConverters"
         mc:Ignorable="d"
         Title="FileMonitor" 
         MinHeight="600" 
         MinWidth="800" 
         WindowState="Maximized" >
+    
+    <Window.Resources>
+        <valueConverters:IntToBoolValueConverter x:Key="IntToBoolValueConverter" />
+    </Window.Resources>
 
     <Grid>
         <TabControl>
@@ -65,15 +70,18 @@
 
                                 <Button x:Name="DeleteFiles" 
                                         Content="Delete File(s)" 
-                                        Click="DeleteFiles_Click" 
-                                        IsEnabled="False"/>
+                                        Click="DeleteFiles_Click"
+                                        IsEnabled="{
+                                            Binding ElementName=FilesDisplayed, 
+                                            Path=SelectedIndex, 
+                                            Converter={StaticResource 
+                                            IntToBoolValueConverter}}" />
 
                             </StackPanel>
 
                             <ListView x:Name="FilesDisplayed"  
                                       Margin="0,90,0,0"
                                       ItemsSource="{Binding Files}" 
-                                      SelectionChanged="FilesDisplayed_SelectionChanged" 
                                       HorizontalAlignment="Stretch"
                                       VerticalAlignment="Stretch"
                                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
