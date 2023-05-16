@@ -19,7 +19,7 @@ namespace Services.SourceFiles
             {
                 Id = s.Id,
                 Path = s.Path
-            });
+            }).OrderBy(s => s.Id);
             return query.ToList();
         }
 
@@ -27,7 +27,8 @@ namespace Services.SourceFiles
         {
             var entity = new SourceFile
             {
-                Path = path
+                Path = path,
+                Hash = EncryptionHelper.GetHash(path)
             };
 
             _db.SourceFiles.Add(entity);
