@@ -30,6 +30,7 @@ namespace DataAccessLayer
             modelBuilder.Entity<SourceFile>().HasIndex(s => new { s.Path}).IsUnique();
             modelBuilder.Entity<FullBackupPath>().HasIndex(s => new { s.Path }).IsUnique();
             modelBuilder.Entity<SequentialBackupPath>().HasIndex(s => new { s.Path }).IsUnique();
+            modelBuilder.Entity<FilesToBeSequentiallyCopied>().HasIndex(s => new { s.SourceFileId }).IsUnique();
         }
     }
 }
