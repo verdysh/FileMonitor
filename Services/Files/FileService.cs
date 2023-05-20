@@ -1,10 +1,11 @@
 ﻿using DataAccessLayer.Entities;
 using DataAccessLayer.Repositories;
 using Services.Files.Dto;
+using Services.Helpers;
 
 namespace Services.Files
 {
-    internal class FileService : IDisposable
+    public class FileService : IDisposable
     {
         private ISourceFileRepository _sourceFileRepository;
         private bool disposedValue;
