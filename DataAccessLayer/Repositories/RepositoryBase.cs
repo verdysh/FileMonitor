@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace DataAccessLayer.Repositories
@@ -31,18 +32,24 @@ namespace DataAccessLayer.Repositories
         public void SaveChanges()
             => _db.SaveChanges();
 
-        public List<TResult> GetMany<TResult>(
+        public List<TResult> GetMany<TResult, TProperty>(
             Expression<Func<TEntity, bool>> predicate,
             Expression<Func<TEntity, TResult>> select,
+            Expression<Func<TEntity, TProperty>> order = null,
             bool distinct = false
             )
         {
-            IQueryable<TResult> query = _dbSet.Where(predicate).Select(select);
+            var query = _dbSet.Where(predicate);
 
-            if(distinct)
-                query = query.Distinct();
+            if (order is not null)
+                query = query.OrderBy(order);
 
-            return query.ToList();
+            var projected = query.Select(select);
+
+            if (distinct)
+                projected = projected.Distinct();
+
+            return projected.ToList();
         }
 
         public List<TEntity> GetMany(
@@ -64,7 +71,7 @@ namespace DataAccessLayer.Repositories
             params string[] includeProperties
             )
         {
-            IQueryable <TEntity> query = _dbSet.AsQueryable();
+            IQueryable<TEntity> query = _dbSet.AsQueryable();
 
             foreach (string property in includeProperties)
                 query = query.Include(property);
