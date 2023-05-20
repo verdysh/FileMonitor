@@ -5,12 +5,12 @@ using Services.Helpers;
 
 namespace Services
 {
-    public class FileService : IDisposable
+    public class SourceFileService : IDisposable
     {
         private ISourceFileRepository _sourceFileRepository;
         private bool disposedValue;
 
-        public FileService(ISourceFileRepository sourceFileRepository)
+        public SourceFileService(ISourceFileRepository sourceFileRepository)
         {
             _sourceFileRepository = sourceFileRepository;
         }
