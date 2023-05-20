@@ -60,7 +60,7 @@ namespace Services
             return _repository.Exists(obj => obj.Path == path);
         }
 
-        public void UpdateIsSelected(FullBackupDto dto)
+        public void Update(FullBackupDto dto)
         {
             var entity = _repository.FirstOrDefault(f => f.Id == dto.Id);
             if (entity == null) return;
