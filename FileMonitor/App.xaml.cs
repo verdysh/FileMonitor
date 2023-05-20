@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DataAccessLayer;
 using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
 
 namespace FileMonitor
@@ -13,5 +10,14 @@ namespace FileMonitor
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            if (!File.Exists(ConfigurationManager.AppSettings["DatabasePath"]))
+            {
+                using var _db = new FileMonitorDbContext(ConfigurationManager.ConnectionStrings[nameof(FileMonitorDbContext)].ConnectionString);
+                _db.Database.EnsureCreated();
+            }
+            base.OnStartup(e);
+        }
     }
 }
