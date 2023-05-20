@@ -1,38 +1,40 @@
 ﻿using DataAccessLayer;
 using DataAccessLayer.Entities;
 using System.Configuration;
+using Services.Dto;
+using DataAccessLayer.Repositories;
 
 namespace Services
 {
     public class FullBackupService : DisposableService
     {
-        private readonly FileMonitorDbContext _db;
-        public FullBackupService()
+        private IFullBackupPathRepository _repository;
+        public FullBackupService(IFullBackupPathRepository repository)
         {
-            _db = new FileMonitorDbContext(ConfigurationManager.ConnectionStrings[nameof(FileMonitorDbContext)].ConnectionString);
+            _repository = repository;
         }
 
         public List<FullBackupDto> GetFullBackupRows()
         {
-            IQueryable<FullBackupDto> query = _db.FullBackupPaths.Select(obj => new FullBackupDto
+            List<FullBackupDto> result = _repository.GetMany(f => true, f => new FullBackupDto
             {
-                Id = obj.Id,
-                Path = obj.Path,
-                IsSelected = obj.IsSelected
-            });
-
-            return query.ToList();
+                Id = f.Id,
+                Path = f.Path,
+                IsSelected = f.IsSelected
+            },
+            f => f.Id);
+            return result;
         }
 
         public FullBackupDto Add(string path)
         {
-            var entity = new FullBackupPath
+            FullBackupPath entity = new FullBackupPath
             {
                 Path = path
             };
 
-            _db.FullBackupPaths.Add(entity);
-            _db.SaveChanges();
+            _repository.Add(entity);
+            _repository.SaveChanges();
 
             return new FullBackupDto
             {
@@ -45,35 +47,32 @@ namespace Services
         {
             foreach (int id in ids)
             {
-                _db.FullBackupPaths.Remove(new FullBackupPath
+                _repository.Remove(new FullBackupPath
                 {
                     Id = id
                 });
             }
-            _db.SaveChanges();
+            _repository.SaveChanges();
         }
 
-        public void Update(FullBackupDto dto)
+        public bool PathExists(string path)
         {
-            var entity = _db.FullBackupPaths.FirstOrDefault(f => f.Id == dto.Id);
+            return _repository.Exists(obj => obj.Path == path);
+        }
+
+        public void UpdateIsSelected(FullBackupDto dto)
+        {
+            var entity = _repository.FirstOrDefault(f => f.Id == dto.Id);
             if (entity == null) return;
             entity.Path = dto.Path;
             entity.IsSelected = dto.IsSelected;
-            _db.SaveChanges();
+            _repository.SaveChanges();
         }
 
         protected override void Dispose(bool disposing)
         {
-            _db.Dispose();
+            _repository.Dispose();
             base.Dispose(disposing);
-        }
-
-        /// <summary>
-        /// Return true if the path exists in the database
-        /// </summary>
-        public bool PathExists(string path)
-        {
-            return _db.FullBackupPaths.Any(obj => obj.Path == path);
         }
     }
 }

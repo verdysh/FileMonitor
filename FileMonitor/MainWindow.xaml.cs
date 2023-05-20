@@ -1,17 +1,12 @@
 ﻿using System.Windows;
-using System.IO;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Collections.ObjectModel;
 using FileMonitor.Models;
 using FileMonitor.Backups;
 using FileMonitor.ViewModels;
-using Services.SourceFiles;
-using Services.FullBackupPaths;
-using Services.SourceFiles.Dto;
+using Services.Files;
 using Services.Extensions;
-using Services.FullBackupPaths.Dto;
-using DataAccessLayer;
+using Services.Helpers;
 using System.Linq;
 
 namespace FileMonitor
@@ -26,14 +21,8 @@ namespace FileMonitor
 
         public MainWindow()
         {
-            if (!File.Exists(ConfigurationManager.AppSettings["DatabasePath"]))
-            {
-                using var _db = new FileMonitorDbContext(ConfigurationManager.ConnectionStrings[nameof(FileMonitorDbContext)].ConnectionString);
-                _db.Database.EnsureCreated();
-            }
-
             InitializeComponent();
-            using var sourceFileService = new SourceFileService();
+            using var sourceFileService = new FileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
             using var fullBackupService = new FullBackupService();
 
             _sourceFileViewModel = new FilesViewModel();
