@@ -1,4 +1,4 @@
-﻿using Services.SourceFiles.Dto;
+﻿using Services.Dto;
 using System.Collections.ObjectModel;
 
 namespace FileMonitor.ViewModels

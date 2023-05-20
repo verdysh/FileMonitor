@@ -1,4 +1,4 @@
-﻿using Services.FullBackupPaths.Dto;
+﻿using Services.Dto;
 using System.Collections.ObjectModel;
 
 namespace FileMonitor.ViewModels
