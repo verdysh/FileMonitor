@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace Services
+namespace Services.Helpers
 {
     public static class EncryptionHelper
     {
