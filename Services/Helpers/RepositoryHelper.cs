@@ -4,7 +4,7 @@ using System.Configuration;
 
 namespace Services.Helpers
 {
-    internal class RepositoryHelper
+    public class RepositoryHelper
     {
         public static ISourceFileRepository CreateSourceFileRepositoryInstance()
             => new SourceFileRepository(CreateInstance());
