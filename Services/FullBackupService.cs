@@ -1,9 +1,8 @@
 ﻿using DataAccessLayer;
 using DataAccessLayer.Entities;
-using Services.FullBackupPaths.Dto;
 using System.Configuration;
 
-namespace Services.FullBackupPaths
+namespace Services
 {
     public class FullBackupService : DisposableService
     {
@@ -56,7 +55,7 @@ namespace Services.FullBackupPaths
 
         public void Update(FullBackupDto dto)
         {
-            var entity = _db.FullBackupPaths.FirstOrDefault<FullBackupPath>(f => f.Id == dto.Id);
+            var entity = _db.FullBackupPaths.FirstOrDefault(f => f.Id == dto.Id);
             if (entity == null) return;
             entity.Path = dto.Path;
             entity.IsSelected = dto.IsSelected;

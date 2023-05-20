@@ -1,9 +1,9 @@
 ﻿using DataAccessLayer.Entities;
 using DataAccessLayer.Repositories;
-using Services.Files.Dto;
+using Services.Dto;
 using Services.Helpers;
 
-namespace Services.Files
+namespace Services
 {
     public class FileService : IDisposable
     {
@@ -21,7 +21,7 @@ namespace Services.Files
             {
                 Id = s.Id,
                 Path = s.Path
-            }, 
+            },
             s => s.Id);
             return result;
         }

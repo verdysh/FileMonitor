@@ -1,4 +1,4 @@
-﻿namespace Services.Files.Dto
+﻿namespace Services.Dto
 {
     public class SourceFileDto
     {
