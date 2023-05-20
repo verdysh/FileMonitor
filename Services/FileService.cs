@@ -17,7 +17,7 @@ namespace Services
 
         public List<SourceFileDto> GetFiles()
         {
-            var result = _sourceFileRepository.GetMany(s => true, s => new SourceFileDto
+            List<SourceFileDto> result = _sourceFileRepository.GetMany(s => true, s => new SourceFileDto
             {
                 Id = s.Id,
                 Path = s.Path
@@ -28,7 +28,7 @@ namespace Services
 
         public SourceFileDto Add(string path)
         {
-            var entity = new SourceFile
+            SourceFile entity = new SourceFile
             {
                 Path = path,
                 Hash = EncryptionHelper.GetHash(path)
