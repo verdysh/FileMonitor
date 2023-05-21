@@ -26,14 +26,12 @@ namespace FileMonitor
             using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
             using var fullBackupService = new FullBackupService(RepositoryHelper.CreateFullBackupPathRepositoryInstance());
 
-            _sourceFileViewModel = new FilesViewModel();
-            _fullBackupViewModel = new FullBackupViewModel();
-
-            _sourceFileViewModel.Files = new ObservableCollection<SourceFileDto>(sourceFileService.GetFiles());
-            _fullBackupViewModel.Paths = new ObservableCollection<FullBackupDto>(fullBackupService.GetFullBackupRows());
+            _sourceFileViewModel = new FilesViewModel(collection: new ObservableCollection<SourceFileDto>(sourceFileService.GetFiles()));
+            _fullBackupViewModel = new FullBackupViewModel(collection: new ObservableCollection<FullBackupDto>(fullBackupService.GetFullBackupRows()));
 
             FilesDisplayed.DataContext = _sourceFileViewModel;
             FullBackupPaths.DataContext = _fullBackupViewModel;
+            CreateFullBackup.DataContext = _fullBackupViewModel;
         }
 
         /// <summary>
@@ -101,7 +99,7 @@ namespace FileMonitor
         /// </summary>
         private void CreateFullBackup_Click(object sender, RoutedEventArgs e)
         {
-            foreach(FullBackupDto dto in _fullBackupViewModel.Paths)
+            foreach(FullBackupDto dto in _fullBackupViewModel.BackupPaths)
             {
                 if(dto.IsSelected)
                 {
@@ -137,7 +135,7 @@ namespace FileMonitor
             using var service = new FullBackupService(RepositoryHelper.CreateFullBackupPathRepositoryInstance());
             if (backupPath == "" || service.PathExists(backupPath)) return;
             FullBackupDto backupDto = service.Add(backupPath);
-            _fullBackupViewModel.Paths.Add(backupDto);
+            _fullBackupViewModel.BackupPaths.Add(backupDto);
         }
 
         private void AddSequentialBackupPath_Click(object sender, RoutedEventArgs e)
