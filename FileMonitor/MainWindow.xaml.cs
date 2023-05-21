@@ -26,6 +26,7 @@ namespace FileMonitor
             using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
             using var fullBackupService = new FullBackupService(RepositoryHelper.CreateFullBackupPathRepositoryInstance());
 
+
             _sourceFileViewModel = new FilesViewModel(collection: new ObservableCollection<SourceFileDto>(sourceFileService.GetFiles()));
             _fullBackupViewModel = new FullBackupViewModel(collection: new ObservableCollection<FullBackupDto>(fullBackupService.GetFullBackupRows()));
 
@@ -158,7 +159,10 @@ namespace FileMonitor
             System.Windows.Controls.CheckBox checkBox = (System.Windows.Controls.CheckBox)sender;
             FullBackupDto fullBackupDto = (FullBackupDto)checkBox.DataContext;
             using FullBackupService service = new FullBackupService(RepositoryHelper.CreateFullBackupPathRepositoryInstance());
+            FullBackupDto oldValue = _fullBackupViewModel.BackupPaths.FirstOrDefault<FullBackupDto>(f => fullBackupDto.Id == f.Id);
             service.Update(fullBackupDto);
+            if(oldValue != null)
+                _fullBackupViewModel.BackupPaths.Replace(oldValue, fullBackupDto);
         }
     }
 }
