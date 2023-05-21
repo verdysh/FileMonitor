@@ -60,7 +60,7 @@ namespace Services
 
         public void Update(FullBackupDto dto)
         {
-            var entity = _repository.FirstOrDefault(f => f.Id == dto.Id);
+            FullBackupPath entity = _repository.FirstOrDefault(f => f.Id == dto.Id, asNoTracking: false);
             if (entity == null) return;
             entity.Path = dto.Path;
             entity.IsSelected = dto.IsSelected;
