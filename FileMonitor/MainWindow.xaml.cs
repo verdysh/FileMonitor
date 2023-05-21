@@ -157,9 +157,9 @@ namespace FileMonitor
 
         private void FullBackupPathSelected_Click(object sender, RoutedEventArgs e)
         {
-            var checkBox = (System.Windows.Controls.CheckBox)sender;
-            var fullBackupDto = (FullBackupDto)checkBox.DataContext;
-            using var service = new FullBackupService(RepositoryHelper.CreateFullBackupPathRepositoryInstance());
+            System.Windows.Controls.CheckBox checkBox = (System.Windows.Controls.CheckBox)sender;
+            FullBackupDto fullBackupDto = (FullBackupDto)checkBox.DataContext;
+            using FullBackupService service = new FullBackupService(RepositoryHelper.CreateFullBackupPathRepositoryInstance());
             service.Update(fullBackupDto);
         }
     }
