@@ -159,11 +159,12 @@
                                     HorizontalAlignment="Left" 
                                     VerticalAlignment="Top"
                                     Height="25" 
-                                    Margin="75,53,0,10"/>
+                                    Margin="75,53,0,10"
+                                    IsEnabled="{Binding BackupSelected}"/>
 
                             <ListView x:Name="FullBackupPaths" 
                                         Margin="0,90,0,0"
-                                        ItemsSource="{Binding Paths}" 
+                                        ItemsSource="{Binding BackupPaths}" 
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
                                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
