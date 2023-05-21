@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 
-namespace FileMonitor.Backups
+namespace FileMonitor.FileBackups
 {
     /// <summary>
     /// Defines a class to handle backing up files that are monitored by the program

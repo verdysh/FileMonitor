@@ -1,8 +1,6 @@
-﻿using DataAccessLayer;
-using DataAccessLayer.Entities;
-using System.Configuration;
-using Services.Dto;
+﻿using DataAccessLayer.Entities;
 using DataAccessLayer.Repositories;
+using Services.Dto;
 
 namespace Services
 {

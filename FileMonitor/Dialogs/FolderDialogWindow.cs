@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace FileMonitor.Models
+namespace FileMonitor.Dialogs
 {
     internal static class FolderDialogWindow
     {

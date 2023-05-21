@@ -1,8 +1,8 @@
 ﻿using System.Windows;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using FileMonitor.Models;
-using FileMonitor.Backups;
+using FileMonitor.Dialogs;
+using FileMonitor.FileBackups;
 using FileMonitor.ViewModels;
 using Services;
 using Services.Dto;
