@@ -11,7 +11,7 @@ namespace FileMonitor.ValueConverters
             if (!(value is int intValue))
                 return false;
 
-            if (intValue == -1)
+            if (intValue < 0)
                 return false;
 
             return true;
