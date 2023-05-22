@@ -40,11 +40,14 @@ namespace FileMonitor
         /// </summary>
         private void AddNewFile_Click(object sender, RoutedEventArgs e)
         {
-            string newFile = FileDialogWindow.GetPath();
+            string[] newFiles = FileDialogWindow.GetPath();
             using var service = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
-            if (newFile == "" || service.PathExists(newFile)) return;
-            SourceFileDto addedFile = service.Add(newFile);
-            _sourceFileViewModel.Files.Add(addedFile);
+            foreach (string newFile in newFiles)
+            {
+                if (newFile == "" || service.PathExists(newFile)) continue;
+                SourceFileDto addedFile = service.Add(newFile);
+                _sourceFileViewModel.Files.Add(addedFile);
+            }
         }
 
         /// <summary>
@@ -159,10 +162,8 @@ namespace FileMonitor
             System.Windows.Controls.CheckBox checkBox = (System.Windows.Controls.CheckBox)sender;
             FullBackupDto fullBackupDto = (FullBackupDto)checkBox.DataContext;
             using FullBackupService service = new FullBackupService(RepositoryHelper.CreateFullBackupPathRepositoryInstance());
-            FullBackupDto oldValue = _fullBackupViewModel.BackupPaths.FirstOrDefault<FullBackupDto>(f => fullBackupDto.Id == f.Id);
             service.Update(fullBackupDto);
-            if(oldValue != null)
-                _fullBackupViewModel.BackupPaths.Replace(oldValue, fullBackupDto);
+            _fullBackupViewModel.BackupSelected = _fullBackupViewModel.IsAnyBackupSelected();
         }
     }
 }
