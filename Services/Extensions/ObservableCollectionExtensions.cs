@@ -11,25 +11,5 @@ namespace Services.Extensions
                 collection.Remove(item);
             }
         }
-
-        public static void Replace<T>(this ObservableCollection<T> collection, T oldValue, T newValue)
-        {
-            bool matchFound = false;
-            int index = 0;
-            foreach (var item in collection)
-            {
-                if (item.Equals(oldValue))
-                {
-                    index = collection.IndexOf(item);
-                    matchFound = true;
-                    break;
-                }
-            }
-            if(matchFound)
-            {
-                collection.Remove(oldValue);
-                collection.Insert(index, newValue);
-            }
-        }
     }
 }
