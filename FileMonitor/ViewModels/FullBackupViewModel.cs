@@ -1,4 +1,5 @@
 ﻿using Services.Dto;
+using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -16,6 +17,22 @@ namespace FileMonitor.ViewModels
         {
             _backupPaths = collection;
             _backupSelected = IsAnyBackupSelected();
+
+            BackupPaths.CollectionChanged += BackupPaths_CollectionChanged;
+        }
+
+        private void BackupPaths_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            SetBackupWidth();
+        }
+
+        public void SetBackupWidth()
+        {
+            int maxWidth = 1;
+            foreach (FullBackupDto backup in _backupPaths)
+                maxWidth = Math.Max(maxWidth, backup.Path.Length);
+
+            BackupWidth = maxWidth;
         }
 
         public ObservableCollection<FullBackupDto> BackupPaths
@@ -35,6 +52,17 @@ namespace FileMonitor.ViewModels
                 _backupSelected = value;
                 OnPropertyChanged(nameof(BackupSelected));
             }
+        }
+
+        private int _backupWidth;
+        public int BackupWidth
+        {
+            set
+            {
+                _backupWidth = value * 7;
+                OnPropertyChanged(nameof(BackupWidth));
+            }
+            get => _backupWidth;
         }
 
         public void OnPropertyChanged(string propertyName) 

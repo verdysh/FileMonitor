@@ -172,11 +172,11 @@
                                 
                                 <ListView.View>
                                     <GridView AllowsColumnReorder="False">
-                                        <!--<GridView.ColumnHeaderContainerStyle>
+                                        <GridView.ColumnHeaderContainerStyle>
                                             <Style TargetType="{x:Type GridViewColumnHeader}">
                                                 <Setter Property="Visibility" Value="Collapsed" />
                                             </Style>
-                                        </GridView.ColumnHeaderContainerStyle>-->
+                                        </GridView.ColumnHeaderContainerStyle>
                                         <GridView.Columns>
                                             <GridViewColumn>
                                                 <GridViewColumn.CellTemplate>
@@ -187,7 +187,7 @@
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn DisplayMemberBinding="{Binding Path}" Header="Path" />
+                                            <GridViewColumn DisplayMemberBinding="{Binding Path}" Header="Path" Width="{Binding BackupWidth}"/>
                                         </GridView.Columns>
                                     </GridView>
                                 </ListView.View>

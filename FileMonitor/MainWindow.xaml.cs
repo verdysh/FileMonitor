@@ -33,6 +33,8 @@ namespace FileMonitor
             FilesDisplayed.DataContext = _sourceFileViewModel;
             FullBackupPaths.DataContext = _fullBackupViewModel;
             CreateFullBackup.DataContext = _fullBackupViewModel;
+
+            _fullBackupViewModel.SetBackupWidth();
         }
 
         /// <summary>
