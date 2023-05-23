@@ -89,12 +89,12 @@
                                 
                                 <ListView.View>
                                     <GridView AllowsColumnReorder="False">
-                                        <!--<GridView.ColumnHeaderContainerStyle>
+                                        <GridView.ColumnHeaderContainerStyle>
                                             <Style TargetType="{x:Type GridViewColumnHeader}">
                                                 <Setter Property="Visibility" Value="Collapsed" />
                                             </Style>
-                                        </GridView.ColumnHeaderContainerStyle>-->
-                                        <GridViewColumn DisplayMemberBinding="{Binding Path}" />
+                                        </GridView.ColumnHeaderContainerStyle>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Path}" Width="{Binding FileWidth}"/>
                                     </GridView>
                                 </ListView.View>
                             </ListView>

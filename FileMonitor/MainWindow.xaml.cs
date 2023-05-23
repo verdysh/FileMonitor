@@ -17,8 +17,7 @@ namespace FileMonitor
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly FilesViewModel _sourceFileViewModel;
-        private readonly FullBackupViewModel _fullBackupViewModel;
+        private readonly MainWindowViewModel _viewModel;
 
         public MainWindow()
         {
@@ -26,15 +25,16 @@ namespace FileMonitor
             using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
             using var fullBackupService = new FullBackupService(RepositoryHelper.CreateFullBackupPathRepositoryInstance());
 
+            _viewModel = new MainWindowViewModel(
+                new ObservableCollection<FullBackupDto>(fullBackupService.GetFullBackupRows()), 
+                new ObservableCollection<SourceFileDto>(sourceFileService.GetFiles())
+            );
 
-            _sourceFileViewModel = new FilesViewModel(collection: new ObservableCollection<SourceFileDto>(sourceFileService.GetFiles()));
-            _fullBackupViewModel = new FullBackupViewModel(collection: new ObservableCollection<FullBackupDto>(fullBackupService.GetFullBackupRows()));
+            FilesDisplayed.DataContext = _viewModel;
+            FullBackupPaths.DataContext = _viewModel;
+            CreateFullBackup.DataContext = _viewModel;
 
-            FilesDisplayed.DataContext = _sourceFileViewModel;
-            FullBackupPaths.DataContext = _fullBackupViewModel;
-            CreateFullBackup.DataContext = _fullBackupViewModel;
-
-            _fullBackupViewModel.SetBackupWidth();
+            _viewModel.Init();
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace FileMonitor
             {
                 if (newFile == "" || service.PathExists(newFile)) continue;
                 SourceFileDto addedFile = service.Add(newFile);
-                _sourceFileViewModel.Files.Add(addedFile);
+                _viewModel.Files.Add(addedFile);
             }
         }
 
@@ -82,7 +82,7 @@ namespace FileMonitor
                     ids.Add(item.Id);
                 }
                 service.Remove(ids);
-                _sourceFileViewModel.Files.RemoveRange<SourceFileDto>(selectedFiles);
+                _viewModel.Files.RemoveRange<SourceFileDto>(selectedFiles);
             }
         }
 
@@ -105,12 +105,12 @@ namespace FileMonitor
         /// </summary>
         private void CreateFullBackup_Click(object sender, RoutedEventArgs e)
         {
-            foreach(FullBackupDto dto in _fullBackupViewModel.BackupPaths)
+            foreach(FullBackupDto dto in _viewModel.BackupPaths)
             {
                 if(dto.IsSelected)
                 {
                     FullBackup backup = new FullBackup(dto.Path);
-                    backup.Run(_sourceFileViewModel.Files.Select(f => f.Path));
+                    backup.Run(_viewModel.Files.Select(f => f.Path));
                 }
             }
             MessageBox.Show("Backup complete");
@@ -141,7 +141,7 @@ namespace FileMonitor
             using var service = new FullBackupService(RepositoryHelper.CreateFullBackupPathRepositoryInstance());
             if (backupPath == "" || service.PathExists(backupPath)) return;
             FullBackupDto backupDto = service.Add(backupPath);
-            _fullBackupViewModel.BackupPaths.Add(backupDto);
+            _viewModel.BackupPaths.Add(backupDto);
         }
 
         private void AddSequentialBackupPath_Click(object sender, RoutedEventArgs e)
@@ -165,7 +165,7 @@ namespace FileMonitor
             FullBackupDto fullBackupDto = (FullBackupDto)checkBox.DataContext;
             using FullBackupService service = new FullBackupService(RepositoryHelper.CreateFullBackupPathRepositoryInstance());
             service.Update(fullBackupDto);
-            _fullBackupViewModel.BackupSelected = _fullBackupViewModel.IsAnyBackupSelected();
+            _viewModel.BackupSelected = _viewModel.IsAnyBackupSelected();
         }
     }
 }
