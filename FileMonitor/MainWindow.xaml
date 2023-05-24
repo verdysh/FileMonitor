@@ -81,7 +81,7 @@
 
                             <ListView x:Name="FilesDisplayed"  
                                       Margin="0,90,0,0"
-                                      ItemsSource="{Binding Files}" 
+                                      ItemsSource="{Binding SourceFiles}" 
                                       HorizontalAlignment="Stretch"
                                       VerticalAlignment="Stretch"
                                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
