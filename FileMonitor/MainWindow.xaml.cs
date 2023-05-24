@@ -9,6 +9,9 @@ using Services.Dto;
 using Services.Extensions;
 using Services.Helpers;
 using System.Linq;
+using System.IO;
+using System;
+using System.Diagnostics;
 
 namespace FileMonitor
 {
@@ -47,8 +50,8 @@ namespace FileMonitor
             foreach (string newFile in newFiles)
             {
                 if (newFile == "" || service.PathExists(newFile)) continue;
-                SourceFileDto addedFile = service.Add(newFile);
-                _viewModel.SourceFiles.Add(addedFile);
+                SourceFileDto dto = service.Add(newFile);
+                _viewModel.SourceFiles.Add(dto);
             }
         }
 
@@ -57,7 +60,34 @@ namespace FileMonitor
         /// </summary>
         private void AddNewFolder_Click(object sender, RoutedEventArgs e)
         {
-            string newFolder = FolderDialogWindow.GetPath();
+            string directory = FolderDialogWindow.GetPath();
+            if(directory != "")
+            {
+                using var service = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
+                string[] paths = Directory.GetFileSystemEntries(directory, "*", SearchOption.AllDirectories);
+                int numberOfDirectories = Directory.GetDirectories(directory, "*", SearchOption.AllDirectories).Length;
+                int numberOfFiles = paths.Length;
+                if (VerifyAddFiles(directory, numberOfDirectories, numberOfFiles))
+                {
+                    foreach (string path in paths)
+                    {
+                        SourceFileDto dto = service.Add(path);
+                        _viewModel.SourceFiles.Add(dto);
+                    }
+                }
+            }
+        }
+
+        private bool VerifyAddFiles(string directory, int numberOfDirectories, int numberOfFiles)
+        {
+            string text = $@"Do you wish to add the directory {directory}? 
+{numberOfFiles} file(s) from {numberOfDirectories} subdirectories(s) will be monitored by the program.";
+            string caption = "Confirm Add Directory";
+
+            MessageBoxButton button = MessageBoxButton.YesNo;
+            MessageBoxImage image = MessageBoxImage.Warning;
+            MessageBoxResult result = MessageBox.Show(text, caption, button, image);
+            return result == MessageBoxResult.Yes;
         }
 
         /// <summary>
