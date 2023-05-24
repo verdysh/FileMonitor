@@ -80,9 +80,9 @@ namespace FileMonitor
 
         private bool VerifyAddFiles(string directory, int numberOfDirectories, int numberOfFiles)
         {
-            string text = $@"Do you wish to add the directory {directory}? 
-{numberOfFiles} file(s) from {numberOfDirectories} subdirectories(s) will be monitored by the program.";
-            string caption = "Confirm Add Directory";
+            string text = $@"Do you wish to add the folder {directory}? 
+{numberOfFiles} file(s) from {numberOfDirectories} subfolders(s) will be monitored by the program.";
+            string caption = "Confirm Add Folder";
 
             MessageBoxButton button = MessageBoxButton.YesNo;
             MessageBoxImage image = MessageBoxImage.Warning;
