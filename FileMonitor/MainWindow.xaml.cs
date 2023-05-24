@@ -48,7 +48,7 @@ namespace FileMonitor
             {
                 if (newFile == "" || service.PathExists(newFile)) continue;
                 SourceFileDto addedFile = service.Add(newFile);
-                _viewModel.Files.Add(addedFile);
+                _viewModel.SourceFiles.Add(addedFile);
             }
         }
 
@@ -82,7 +82,7 @@ namespace FileMonitor
                     ids.Add(item.Id);
                 }
                 service.Remove(ids);
-                _viewModel.Files.RemoveRange<SourceFileDto>(selectedFiles);
+                _viewModel.SourceFiles.RemoveRange<SourceFileDto>(selectedFiles);
             }
         }
 
@@ -93,7 +93,7 @@ namespace FileMonitor
         private MessageBoxResult ConfirmDeleteFiles()
         {
             string text = "Do you wish to delete the selected file(s) from the program? This cannot be undone.";
-            string caption = "Delete Files";
+            string caption = "Delete SourceFiles";
 
             MessageBoxButton button = MessageBoxButton.YesNo;
             MessageBoxImage image = MessageBoxImage.Warning;
@@ -110,7 +110,7 @@ namespace FileMonitor
                 if(dto.IsSelected)
                 {
                     FullBackup backup = new FullBackup(dto.Path);
-                    backup.Run(_viewModel.Files.Select(f => f.Path));
+                    backup.Run(_viewModel.SourceFiles.Select(f => f.Path));
                 }
             }
             MessageBox.Show("Backup complete");

@@ -36,32 +36,22 @@ namespace FileMonitor.ViewModels
             }
         }
 
-        public ObservableCollection<FullBackupDto> BackupPaths
-        {
-            get { return _backupPaths; }
-            set
-            {
-                _backupPaths = value;
-            }
-        }
-
-        public ObservableCollection<SourceFileDto> Files
-        {
-            get { return _files; }
-            set
-            {
-                _files = value;
-            }
-        }
-
         public int FileWidth
         {
             get { return _fileWidth; }
-            set
-            {
-                _fileWidth = value;
+            set { _fileWidth = value; }
+        }
 
-            }
+        public ObservableCollection<FullBackupDto> BackupPaths
+        {
+            get { return _backupPaths; }
+            set { _backupPaths = value; }
+        }
+
+        public ObservableCollection<SourceFileDto> SourceFiles
+        {
+            get { return _files; }
+            set { _files = value; }
         }
 
         public MainWindowViewModel(ObservableCollection<FullBackupDto> backups, ObservableCollection<SourceFileDto> sourceFiles)
@@ -71,7 +61,7 @@ namespace FileMonitor.ViewModels
             _backupSelected = IsAnyBackupSelected();
             BackupPaths.CollectionChanged += (sender, e) 
                 => BackupWidth = GetColumnWidth(_backupPaths);
-            Files.CollectionChanged += (sender, e)
+            SourceFiles.CollectionChanged += (sender, e)
                 => FileWidth = GetColumnWidth(_files);
         }
 
