@@ -39,7 +39,11 @@ namespace FileMonitor.ViewModels
         public int FileWidth
         {
             get { return _fileWidth; }
-            set { _fileWidth = value; }
+            set 
+            { 
+                _fileWidth = value;
+                OnPropertyChanged(nameof(FileWidth));
+            }
         }
 
         public ObservableCollection<FullBackupDto> BackupPaths
