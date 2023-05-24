@@ -41,7 +41,7 @@ namespace FileMonitor.ViewModels
             get { return _fileWidth; }
             set 
             { 
-                _fileWidth = value;
+                _fileWidth = value * 7;
                 OnPropertyChanged(nameof(FileWidth));
             }
         }
