@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.IO;
 using FileMonitor.Dialogs;
 using FileMonitor.FileBackups;
 using FileMonitor.ViewModels;
@@ -8,10 +10,7 @@ using Services;
 using Services.Dto;
 using Services.Extensions;
 using Services.Helpers;
-using System.Linq;
-using System.IO;
 using System;
-using System.Diagnostics;
 
 namespace FileMonitor
 {
@@ -33,10 +32,7 @@ namespace FileMonitor
                 new ObservableCollection<SourceFileDto>(sourceFileService.GetFiles())
             );
 
-            FilesDisplayed.DataContext = _viewModel;
-            FullBackupPaths.DataContext = _viewModel;
-            CreateFullBackup.DataContext = _viewModel;
-
+            DataContext = _viewModel;
             _viewModel.Init();
         }
 
@@ -61,10 +57,18 @@ namespace FileMonitor
         private void AddNewFolder_Click(object sender, RoutedEventArgs e)
         {
             string directory = FolderDialogWindow.GetPath();
-            if(directory != "")
             {
                 using var service = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
-                string[] paths = Directory.GetFileSystemEntries(directory, "*", SearchOption.AllDirectories);
+                string[] paths = null;
+                try
+                {
+                    paths = Directory.GetFileSystemEntries(directory, "*", SearchOption.AllDirectories);
+                }
+                catch(UnauthorizedAccessException ex)
+                {
+                    MessageBox.Show("Access to system files denied.\nRun program as administrator.");
+                    return;
+                }
                 int numberOfDirectories = Directory.GetDirectories(directory, "*", SearchOption.AllDirectories).Length;
                 int numberOfFiles = paths.Length;
                 if (VerifyAddFiles(directory, numberOfDirectories, numberOfFiles))
@@ -81,6 +85,7 @@ namespace FileMonitor
         private bool VerifyAddFiles(string directory, int numberOfDirectories, int numberOfFiles)
         {
             string text = $@"Do you wish to add the folder {directory}? 
+
 {numberOfFiles} file(s) from {numberOfDirectories} subfolders(s) will be monitored by the program.";
             string caption = "Confirm Add Folder";
 
