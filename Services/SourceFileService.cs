@@ -31,7 +31,8 @@ namespace Services
             SourceFile entity = new SourceFile
             {
                 Path = path,
-                Hash = EncryptionHelper.GetHash(path)
+                Hash = EncryptionHelper.GetHash(path),
+                IsModified = true
             };
 
             _sourceFileRepository.Add(entity);
