@@ -2,7 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-
+using System.Windows.Data;
 
 namespace FileMonitor.ViewModels
 {
@@ -10,11 +10,21 @@ namespace FileMonitor.ViewModels
     {
         private ObservableCollection<FullBackupDto> _backupPaths;
         private ObservableCollection<SourceFileDto> _files;
+        private CollectionViewSource _checkedBackupFolders;
+
         private bool _backupSelected;
         private int _backupWidth;
         private int _fileWidth;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        public ICollectionView CheckedBackupFolders
+        {
+            get
+            {
+                return _checkedBackupFolders.View;
+            }
+        }
 
         public bool BackupSelected
         {
@@ -69,10 +79,30 @@ namespace FileMonitor.ViewModels
             _backupPaths = backups;
             _files = sourceFiles;
             _backupSelected = IsAnyBackupSelected();
-            BackupPaths.CollectionChanged += (sender, e) 
-                => BackupWidth = GetColumnWidth(_backupPaths);
-            Files.CollectionChanged += (sender, e)
-                => FileWidth = GetColumnWidth(_files);
+
+            _checkedBackupFolders = new CollectionViewSource
+            {
+                Source = _backupPaths,
+            };
+            _checkedBackupFolders.Filter += (sender, e) => e.Accepted = (e.Item as FullBackupDto).IsSelected;
+
+            BackupPaths.CollectionChanged += (sender, e) => BackupPathsOnChange("CollectionChanged");
+
+            Files.CollectionChanged += (sender, e) => FileWidth = GetColumnWidth(_files);
+        }
+
+        // "action" parameter type "string" is not the best choice, I use string type for simplicity
+        public void BackupPathsOnChange(string action)
+        {
+            if(action == "CollectionChanged")
+            {
+                BackupWidth = GetColumnWidth(_backupPaths);
+            }                
+            else if(action == "CheckboxClicked")
+            {
+                BackupSelected = IsAnyBackupSelected();
+                _checkedBackupFolders.View.Refresh();
+            }
         }
 
         public void OnPropertyChanged(string propertyName) 
@@ -80,7 +110,7 @@ namespace FileMonitor.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public bool IsAnyBackupSelected()
+        private bool IsAnyBackupSelected()
         {
             foreach (FullBackupDto dto in  _backupPaths)
             {
@@ -89,7 +119,7 @@ namespace FileMonitor.ViewModels
             return false;
         }
 
-        public int GetColumnWidth<T>(ObservableCollection<T> collection) where T : IHasPath
+        private int GetColumnWidth<T>(ObservableCollection<T> collection) where T : IHasPath
         {
             int maxWidth = 1;
             foreach (T dto in collection)

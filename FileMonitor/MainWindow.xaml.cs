@@ -30,9 +30,7 @@ namespace FileMonitor
                 new ObservableCollection<SourceFileDto>(sourceFileService.GetFiles())
             );
 
-            FilesDisplayed.DataContext = _viewModel;
-            FullBackupPaths.DataContext = _viewModel;
-            CreateFullBackup.DataContext = _viewModel;
+            DataContext = _viewModel;
 
             _viewModel.Init();
         }
@@ -165,7 +163,8 @@ namespace FileMonitor
             FullBackupDto fullBackupDto = (FullBackupDto)checkBox.DataContext;
             using FullBackupService service = new FullBackupService(RepositoryHelper.CreateFullBackupPathRepositoryInstance());
             service.Update(fullBackupDto);
-            _viewModel.BackupSelected = _viewModel.IsAnyBackupSelected();
+
+            _viewModel.BackupPathsOnChange("CheckboxClicked");
         }
     }
 }

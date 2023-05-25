@@ -5,5 +5,10 @@
         public int Id { get; set; }
         public string Path { get; set; }
         public bool IsSelected { get; set; }
+
+        public override string ToString()
+        {
+            return Path;
+        }
     }
 }

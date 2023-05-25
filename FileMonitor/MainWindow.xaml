@@ -89,11 +89,11 @@
                                 
                                 <ListView.View>
                                     <GridView AllowsColumnReorder="False">
-                                        <GridView.ColumnHeaderContainerStyle>
+                                        <!--<GridView.ColumnHeaderContainerStyle>
                                             <Style TargetType="{x:Type GridViewColumnHeader}">
                                                 <Setter Property="Visibility" Value="Collapsed" />
                                             </Style>
-                                        </GridView.ColumnHeaderContainerStyle>
+                                        </GridView.ColumnHeaderContainerStyle>-->
                                         <GridViewColumn DisplayMemberBinding="{Binding Path}" Width="{Binding FileWidth}"/>
                                     </GridView>
                                 </ListView.View>
@@ -120,7 +120,7 @@
 
                             <ListView x:Name="UpdatedFiles" 
                                         Margin="0,90,0,0"
-                                        ItemsSource="{Binding UpdatedFiles}" 
+                                        ItemsSource="{Binding CheckedBackupFolders}" 
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
                                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
