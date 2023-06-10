@@ -6,8 +6,8 @@ namespace Services
 {
     public class BackupPathService : DisposableService
     {
-        private IFullBackupPathRepository _repository;
-        public BackupPathService(IFullBackupPathRepository repository)
+        private IBackupPathRepository _repository;
+        public BackupPathService(IBackupPathRepository repository)
         {
             _repository = repository;
         }
