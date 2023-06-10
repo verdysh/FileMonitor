@@ -3,10 +3,10 @@
 namespace DataAccessLayer.Entities
 {
     /// <summary>
-    /// An entity class for the full_backup table
+    /// An entity class for the backup_path table
     /// </summary>
-    [Table("full_backup_path")]
-    public class FullBackupPath
+    [Table("backup_path")]
+    public class BackupPath
     {
         public int Id { get; set; }
         public string Path { get; set; }
