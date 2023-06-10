@@ -17,7 +17,7 @@ namespace Services
 
         public List<SourceFileDto> GetFiles()
         {
-            List<SourceFileDto> result = _sourceFileRepository.GetMany(s => true, s => new SourceFileDto
+            List<SourceFileDto> result = _sourceFileRepository.GetRange(s => true, s => new SourceFileDto
             {
                 Id = s.Id,
                 Path = s.Path

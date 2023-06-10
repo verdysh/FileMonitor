@@ -9,13 +9,13 @@ namespace DataAccessLayer.Repositories
         void Add(TEntity row);
         void AddRange(List<TEntity> rows);
         void SaveChanges();
-        List<TResult> GetMany<TResult, TProperty>(
+        List<TResult> GetRange<TResult, TProperty>(
             Expression<Func<TEntity, bool>> predicate,
             Expression<Func<TEntity, TResult>> select,
             Expression<Func<TEntity, TProperty>> order = null,
             bool distinct = false
         );
-        List<TEntity> GetMany(
+        List<TEntity> GetRange(
             Expression<Func<TEntity, bool>> predicate,
             bool asNoTracking = false
         );

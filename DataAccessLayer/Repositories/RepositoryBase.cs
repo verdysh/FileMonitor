@@ -31,7 +31,7 @@ namespace DataAccessLayer.Repositories
         public void SaveChanges()
             => _db.SaveChanges();
 
-        public List<TResult> GetMany<TResult, TProperty>(
+        public List<TResult> GetRange<TResult, TProperty>(
             Expression<Func<TEntity, bool>> predicate,
             Expression<Func<TEntity, TResult>> select,
             Expression<Func<TEntity, TProperty>> order = null,
@@ -51,7 +51,7 @@ namespace DataAccessLayer.Repositories
             return projected.ToList();
         }
 
-        public List<TEntity> GetMany(
+        public List<TEntity> GetRange(
             Expression<Func<TEntity, bool>> predicate,
             bool asNoTracking = false
             ) 

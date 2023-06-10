@@ -14,7 +14,7 @@ namespace Services
 
         public List<BackupPathDto> GetFullBackupRows()
         {
-            List<BackupPathDto> result = _repository.GetMany(f => true, f => new BackupPathDto
+            List<BackupPathDto> result = _repository.GetRange(f => true, f => new BackupPathDto
             {
                 Id = f.Id,
                 Path = f.Path,
