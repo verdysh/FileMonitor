@@ -4,10 +4,10 @@ using Services.Dto;
 
 namespace Services
 {
-    public class FullBackupService : DisposableService
+    public class BackupPathService : DisposableService
     {
         private IFullBackupPathRepository _repository;
-        public FullBackupService(IFullBackupPathRepository repository)
+        public BackupPathService(IFullBackupPathRepository repository)
         {
             _repository = repository;
         }
