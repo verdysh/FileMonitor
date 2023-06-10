@@ -9,7 +9,7 @@
         MinHeight="600" 
         MinWidth="800" 
         WindowState="Maximized" >
-    
+
     <Window.Resources>
         <valueConverters:IntToBoolValueConverter x:Key="IntToBoolValueConverter" />
     </Window.Resources>
@@ -24,16 +24,17 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    
+
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    
+
                     <Border BorderBrush="Black" 
                             BorderThickness=".5" 
                             Grid.Column="0"
-                            Grid.Row="0">
+                            Grid.Row="0"
+                            Grid.RowSpan="2">
                         <Grid>
                             <Border BorderBrush="Black" 
                                     BorderThickness=".4" 
@@ -56,7 +57,9 @@
                                 <StackPanel.Resources>
                                     <Style TargetType="{x:Type Button}">
                                         <Setter Property="Margin" 
-                                                    Value="0,0,10,0"/>
+                                                Value="0,0,10,0"/>
+                                        <Setter Property="Padding"
+                                                Value="3"/>
                                     </Style>
                                 </StackPanel.Resources>
 
@@ -76,6 +79,11 @@
                                             Path=SelectedIndex, 
                                             Converter={StaticResource 
                                             IntToBoolValueConverter}}" />
+                                
+                                <Button x:Name="CreateFullBackup" 
+                                        Content="Copy All" 
+                                        Click="CreateFullBackup_Click" 
+                                        IsEnabled="{Binding BackupSelected}"/>
 
                             </StackPanel>
 
@@ -86,7 +94,7 @@
                                       VerticalAlignment="Stretch"
                                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                       ScrollViewer.VerticalScrollBarVisibility="Auto" >
-                                
+
                                 <ListView.View>
                                     <GridView AllowsColumnReorder="False">
                                         <GridView.ColumnHeaderContainerStyle>
@@ -117,6 +125,15 @@
                                 <TextBlock Text="Updated files:"
                                            FontSize="16"/>
                             </Border>
+                            
+                            <Button x:Name="CreateSequentialBackup" 
+                                    Content="Copy All" 
+                                    Click="CreateSequentialBackup_Click" 
+                                    HorizontalAlignment="Left" 
+                                    VerticalAlignment="Top"
+                                    Padding="3"
+                                    Height="25" 
+                                    Margin="10,53,0,0"/>
 
                             <ListView x:Name="UpdatedFiles" 
                                         Margin="0,90,0,0"
@@ -125,7 +142,7 @@
                                         VerticalAlignment="Stretch"
                                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                         ScrollViewer.VerticalScrollBarVisibility="Auto" >
-                                
+
                                 <ListView.View>
                                     <GridView AllowsColumnReorder="False">
                                         <GridView.ColumnHeaderContainerStyle>
@@ -139,11 +156,10 @@
                             </ListView>
                         </Grid>
                     </Border>
-                    
-                    
+
                     <Border BorderBrush="Black" 
                             BorderThickness=".5" 
-                            Grid.Column="0"
+                            Grid.Column="1"
                             Grid.Row="1">
                         <Grid>
                             <Border BorderBrush="Black" 
@@ -153,26 +169,18 @@
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Top">
 
-                                <TextBlock Text="Full Backup Paths:"
+                                <TextBlock Text="Backup Paths:"
                                            FontSize="16"/>
                             </Border>
-                           
+
                             <Button x:Name="AddFullBackupPath" 
                                     Content="Add Path" 
                                     Click="AddFullBackupPath_Click" 
                                     HorizontalAlignment="Left" 
                                     VerticalAlignment="Top"
+                                    Padding="3"
                                     Height="25" 
                                     Margin="10,53,0,10"/>
-                            
-                            <Button x:Name="CreateFullBackup" 
-                                    Content="Run Backup" 
-                                    Click="CreateFullBackup_Click" 
-                                    HorizontalAlignment="Left" 
-                                    VerticalAlignment="Top"
-                                    Height="25" 
-                                    Margin="75,53,0,10"
-                                    IsEnabled="{Binding BackupSelected}"/>
 
                             <ListView x:Name="FullBackupPaths" 
                                         Margin="0,90,0,0"
@@ -181,7 +189,7 @@
                                         VerticalAlignment="Stretch"
                                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                         ScrollViewer.VerticalScrollBarVisibility="Auto" >
-                                
+
                                 <ListView.View>
                                     <GridView AllowsColumnReorder="False">
                                         <GridView.ColumnHeaderContainerStyle>
@@ -203,52 +211,10 @@
                                         </GridView.Columns>
                                     </GridView>
                                 </ListView.View>
-                            </ListView>  
+                            </ListView>
                         </Grid>
                     </Border>
-                    
-                    <Border BorderBrush="Black" 
-                            BorderThickness=".5" 
-                            Grid.Column="1"
-                            Grid.Row="1">
-                        <Grid>
-                            <Border BorderBrush="Black" 
-                                    BorderThickness=".4" 
-                                    Background="Orange" 
-                                    Padding="9" 
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Top">
 
-                                <TextBlock Text="Sequential Backup Paths:"
-                                           FontSize="16"/>
-                            </Border>
-                            
-                            <Button x:Name="AddSequentialBackupPath" 
-                                    Content="Add Path" 
-                                    Click="AddSequentialBackupPath_Click"
-                                    HorizontalAlignment="Left" 
-                                    VerticalAlignment="Top"
-                                    Height="25" 
-                                    Margin="10,53,0,10"/>
-                            
-                            <Button x:Name="CreateSequentialBackup" 
-                                    Content="Run Backup" 
-                                    Click="CreateSequentialBackup_Click" 
-                                    HorizontalAlignment="Left" 
-                                    VerticalAlignment="Top"
-                                    Height="25" 
-                                    Margin="75,53,0,10"/>
-                            
-                            <ListView x:Name="SequentialBackupPaths" 
-                                        Margin="0,90,0,0"
-                                        ItemsSource="{Binding RecentlyChangedFiles}" 
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Stretch"
-                                        ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                        ScrollViewer.VerticalScrollBarVisibility="Auto" />
-                        </Grid>
-                    </Border>
-                    
                 </Grid>
             </TabItem>
 
