@@ -9,7 +9,7 @@ namespace Services.Helpers
         public static ISourceFileRepository CreateSourceFileRepositoryInstance()
             => new SourceFileRepository(CreateInstance());
 
-        public static IBackupPathRepository CreateFullBackupPathRepositoryInstance()
+        public static IBackupPathRepository CreateBackupPathRepositoryInstance()
             => new BackupPathRepository(CreateInstance());
 
         private static FileMonitorDbContext CreateInstance()

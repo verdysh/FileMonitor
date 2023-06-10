@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.IO;
+using System;
 using FileMonitor.Dialogs;
 using FileMonitor.FileBackups;
 using FileMonitor.ViewModels;
@@ -10,7 +11,6 @@ using Services;
 using Services.Dto;
 using Services.Extensions;
 using Services.Helpers;
-using System;
 
 namespace FileMonitor
 {
@@ -25,7 +25,7 @@ namespace FileMonitor
         {
             InitializeComponent();
             using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
-            using var fullBackupService = new BackupPathService(RepositoryHelper.CreateFullBackupPathRepositoryInstance());
+            using var fullBackupService = new BackupPathService(RepositoryHelper.CreateBackupPathRepositoryInstance());
 
             _viewModel = new MainWindowViewModel(
                 new ObservableCollection<BackupPathDto>(fullBackupService.GetFullBackupRows()), 
