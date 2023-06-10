@@ -201,9 +201,9 @@
                                             <GridViewColumn>
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <CheckBox Name="BackupPathSelected" 
+                                                        <CheckBox Name="BackupPathCheckBox" 
                                                                   IsChecked="{Binding Mode=TwoWay, Path=IsSelected}" 
-                                                                  Click="BackupPathSelected_Click"/>
+                                                                  Click="BackupPathCheckBox_Click"/>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>

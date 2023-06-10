@@ -189,7 +189,14 @@ namespace FileMonitor
             return MessageBox.Show(text, caption, messageBoxButton, image);
         }
 
-        private void BackupPathSelected_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Event handler to be called when the a BackupPathCheckBox is checked in the UI
+        /// </summary>
+        /// <remarks>
+        /// Update the IsSelected property in the database using a data transfer object. This ensures
+        /// that the CheckBox remains selected even after the program exits. 
+        /// </remarks>
+        private void BackupPathCheckBox_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Controls.CheckBox checkBox = (System.Windows.Controls.CheckBox)sender;
             BackupPathDto backupPathDto = (BackupPathDto)checkBox.DataContext;
