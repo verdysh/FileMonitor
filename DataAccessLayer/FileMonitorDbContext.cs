@@ -10,7 +10,7 @@ namespace DataAccessLayer
     {
         private readonly string _connectionString;
         public DbSet<SourceFile> SourceFiles { get; set; }
-        public DbSet<FullBackupPath> FullBackupPaths { get; set; }
+        public DbSet<BackupPath> FullBackupPaths { get; set; }
         public DbSet<SequentialBackupPath> SequentialBackupPaths { get; set; }
         public DbSet<BackupFile> BackupFiles { get; set; }
 
@@ -28,7 +28,7 @@ namespace DataAccessLayer
         {
             // Configure all Path columns to be indexed in the database
             modelBuilder.Entity<SourceFile>().HasIndex(s => new { s.Path }).IsUnique();
-            modelBuilder.Entity<FullBackupPath>().HasIndex(s => new { s.Path }).IsUnique();
+            modelBuilder.Entity<BackupPath>().HasIndex(s => new { s.Path }).IsUnique();
             modelBuilder.Entity<SequentialBackupPath>().HasIndex(s => new { s.Path }).IsUnique();
         }
     }
