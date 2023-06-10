@@ -138,7 +138,7 @@ namespace FileMonitor
         /// <summary>
         /// Create a full backup of all files monitored by the program
         /// </summary>
-        private void CreateFullBackup_Click(object sender, RoutedEventArgs e)
+        private void CopyAllFiles_Click(object sender, RoutedEventArgs e)
         {
             foreach(BackupPathDto dto in _viewModel.BackupPaths)
             {
@@ -152,9 +152,9 @@ namespace FileMonitor
         }
 
         /// <summary>
-        /// Create a sequential backup for files that have changed since the last backup
+        /// Create a backup only for files that have been updated or changed
         /// </summary>
-        private void CreateSequentialBackup_Click(object sender, RoutedEventArgs e)
+        private void CopyUpdatedFiles_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = ChooseBackupLocation();
 
@@ -170,18 +170,13 @@ namespace FileMonitor
         /// <summary>
         /// Add a folder path for a full backup to be copied to
         /// </summary>
-        private void AddFullBackupPath_Click(object sender, RoutedEventArgs e)
+        private void AddBackupPath_Click(object sender, RoutedEventArgs e)
         {
             string backupPath = FolderDialogWindow.GetPath();
             using var backupPathService = new BackupPathService(RepositoryHelper.CreateBackupPathRepositoryInstance());
             if (backupPath == "" || backupPathService.PathExists(backupPath)) return;
             BackupPathDto backupPathDto = backupPathService.Add(backupPath);
             _viewModel.BackupPaths.Add(backupPathDto);
-        }
-
-        private void AddSequentialBackupPath_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private MessageBoxResult ChooseBackupLocation()
@@ -194,7 +189,7 @@ namespace FileMonitor
             return MessageBox.Show(text, caption, messageBoxButton, image);
         }
 
-        private void FullBackupPathSelected_Click(object sender, RoutedEventArgs e)
+        private void BackupPathSelected_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Controls.CheckBox checkBox = (System.Windows.Controls.CheckBox)sender;
             BackupPathDto backupPathDto = (BackupPathDto)checkBox.DataContext;

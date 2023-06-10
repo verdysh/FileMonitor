@@ -80,9 +80,9 @@
                                             Converter={StaticResource 
                                             IntToBoolValueConverter}}" />
                                 
-                                <Button x:Name="CreateFullBackup" 
+                                <Button x:Name="CopyAllFiles" 
                                         Content="Copy All" 
-                                        Click="CreateFullBackup_Click" 
+                                        Click="CopyAllFiles_Click" 
                                         IsEnabled="{Binding BackupSelected}"/>
 
                             </StackPanel>
@@ -126,9 +126,9 @@
                                            FontSize="16"/>
                             </Border>
                             
-                            <Button x:Name="CreateSequentialBackup" 
+                            <Button x:Name="CopyUpdatedFiles" 
                                     Content="Copy All" 
-                                    Click="CreateSequentialBackup_Click" 
+                                    Click="CopyUpdatedFiles_Click" 
                                     HorizontalAlignment="Left" 
                                     VerticalAlignment="Top"
                                     Padding="3"
@@ -173,16 +173,16 @@
                                            FontSize="16"/>
                             </Border>
 
-                            <Button x:Name="AddFullBackupPath" 
+                            <Button x:Name="AddBackupPath" 
                                     Content="Add Path" 
-                                    Click="AddFullBackupPath_Click" 
+                                    Click="AddBackupPath_Click" 
                                     HorizontalAlignment="Left" 
                                     VerticalAlignment="Top"
                                     Padding="3"
                                     Height="25" 
                                     Margin="10,53,0,10"/>
 
-                            <ListView x:Name="FullBackupPaths" 
+                            <ListView x:Name="BackupPaths" 
                                         Margin="0,90,0,0"
                                         ItemsSource="{Binding BackupPaths}" 
                                         HorizontalAlignment="Stretch"
@@ -201,9 +201,9 @@
                                             <GridViewColumn>
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <CheckBox Name="FullBackupPathSelected" 
+                                                        <CheckBox Name="BackupPathSelected" 
                                                                   IsChecked="{Binding Mode=TwoWay, Path=IsSelected}" 
-                                                                  Click="FullBackupPathSelected_Click"/>
+                                                                  Click="BackupPathSelected_Click"/>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
