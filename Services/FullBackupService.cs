@@ -26,7 +26,7 @@ namespace Services
 
         public FullBackupDto Add(string path)
         {
-            FullBackupPath entity = new FullBackupPath
+            BackupPath entity = new BackupPath
             {
                 Path = path
             };
@@ -45,7 +45,7 @@ namespace Services
         {
             foreach (int id in ids)
             {
-                _repository.Remove(new FullBackupPath
+                _repository.Remove(new BackupPath
                 {
                     Id = id
                 });
@@ -60,7 +60,7 @@ namespace Services
 
         public void Update(FullBackupDto dto)
         {
-            FullBackupPath entity = _repository.FirstOrDefault(f => f.Id == dto.Id, asNoTracking: false);
+            BackupPath entity = _repository.FirstOrDefault(f => f.Id == dto.Id, asNoTracking: false);
             if (entity == null) return;
             entity.Path = dto.Path;
             entity.IsSelected = dto.IsSelected;
