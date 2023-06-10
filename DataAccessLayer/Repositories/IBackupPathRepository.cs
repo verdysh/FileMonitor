@@ -2,7 +2,7 @@
 
 namespace DataAccessLayer.Repositories
 {
-    public interface IFullBackupPathRepository: IRepository<BackupPath>
+    public interface IBackupPathRepository: IRepository<BackupPath>
     {
     }
 }
