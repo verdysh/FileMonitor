@@ -26,8 +26,8 @@ namespace DataAccessLayer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            /// Make all paths unique
-            modelBuilder.Entity<SourceFile>().HasIndex(s => new { s.Path}).IsUnique();
+            // Configure all Path columns to be indexed in the database
+            modelBuilder.Entity<SourceFile>().HasIndex(s => new { s.Path }).IsUnique();
             modelBuilder.Entity<FullBackupPath>().HasIndex(s => new { s.Path }).IsUnique();
             modelBuilder.Entity<SequentialBackupPath>().HasIndex(s => new { s.Path }).IsUnique();
         }
