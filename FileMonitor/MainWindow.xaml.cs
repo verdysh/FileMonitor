@@ -25,10 +25,10 @@ namespace FileMonitor
         {
             InitializeComponent();
             using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
-            using var fullBackupService = new BackupPathService(RepositoryHelper.CreateBackupPathRepositoryInstance());
+            using var backupPathService = new BackupPathService(RepositoryHelper.CreateBackupPathRepositoryInstance());
 
             _viewModel = new MainWindowViewModel(
-                new ObservableCollection<BackupPathDto>(fullBackupService.GetFullBackupRows()), 
+                new ObservableCollection<BackupPathDto>(backupPathService.GetFullBackupRows()), 
                 new ObservableCollection<SourceFileDto>(sourceFileService.GetFiles())
             );
 
@@ -42,11 +42,11 @@ namespace FileMonitor
         private void AddNewFile_Click(object sender, RoutedEventArgs e)
         {
             string[] newFiles = FileDialogWindow.GetPath();
-            using var service = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
+            using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
             foreach (string newFile in newFiles)
             {
-                if (newFile == "" || service.PathExists(newFile)) continue;
-                SourceFileDto dto = service.Add(newFile);
+                if (newFile == "" || sourceFileService.PathExists(newFile)) continue;
+                SourceFileDto dto = sourceFileService.Add(newFile);
                 _viewModel.SourceFiles.Add(dto);
             }
         }
@@ -58,7 +58,7 @@ namespace FileMonitor
         {
             string directory = FolderDialogWindow.GetPath();
             {
-                using var service = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
+                using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
                 string[] paths = null;
                 try
                 {
@@ -75,7 +75,7 @@ namespace FileMonitor
                 {
                     foreach (string path in paths)
                     {
-                        SourceFileDto dto = service.Add(path);
+                        SourceFileDto dto = sourceFileService.Add(path);
                         _viewModel.SourceFiles.Add(dto);
                     }
                 }
@@ -110,13 +110,13 @@ namespace FileMonitor
 
             if (result == MessageBoxResult.Yes)
             {
-                SourceFileService service = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
+                using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
                 List<int> ids = new List<int>();
                 foreach (var item in selectedFiles)
                 {
                     ids.Add(item.Id);
                 }
-                service.Remove(ids);
+                sourceFileService.Remove(ids);
                 _viewModel.SourceFiles.RemoveRange<SourceFileDto>(selectedFiles);
             }
         }
@@ -173,10 +173,10 @@ namespace FileMonitor
         private void AddFullBackupPath_Click(object sender, RoutedEventArgs e)
         {
             string backupPath = FolderDialogWindow.GetPath();
-            using var service = new BackupPathService(RepositoryHelper.CreateFullBackupPathRepositoryInstance());
-            if (backupPath == "" || service.PathExists(backupPath)) return;
-            BackupPathDto backupDto = service.Add(backupPath);
-            _viewModel.BackupPaths.Add(backupDto);
+            using var backupPathService = new BackupPathService(RepositoryHelper.CreateBackupPathRepositoryInstance());
+            if (backupPath == "" || backupPathService.PathExists(backupPath)) return;
+            BackupPathDto backupPathDto = backupPathService.Add(backupPath);
+            _viewModel.BackupPaths.Add(backupPathDto);
         }
 
         private void AddSequentialBackupPath_Click(object sender, RoutedEventArgs e)
@@ -197,9 +197,9 @@ namespace FileMonitor
         private void FullBackupPathSelected_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Controls.CheckBox checkBox = (System.Windows.Controls.CheckBox)sender;
-            BackupPathDto fullBackupDto = (BackupPathDto)checkBox.DataContext;
-            using BackupPathService service = new BackupPathService(RepositoryHelper.CreateFullBackupPathRepositoryInstance());
-            service.Update(fullBackupDto);
+            BackupPathDto backupPathDto = (BackupPathDto)checkBox.DataContext;
+            using BackupPathService backupPathService = new BackupPathService(RepositoryHelper.CreateBackupPathRepositoryInstance());
+            backupPathService.Update(backupPathDto);
             _viewModel.BackupSelected = _viewModel.IsAnyBackupSelected();
         }
     }
