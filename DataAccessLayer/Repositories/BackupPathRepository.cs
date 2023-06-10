@@ -2,7 +2,7 @@
 
 namespace DataAccessLayer.Repositories
 {
-    public class BackupPathRepository: RepositoryBase<BackupPath>, IFullBackupPathRepository
+    public class BackupPathRepository: RepositoryBase<BackupPath>, IBackupPathRepository
     {
         public BackupPathRepository(FileMonitorDbContext db) : base(db)
         {
