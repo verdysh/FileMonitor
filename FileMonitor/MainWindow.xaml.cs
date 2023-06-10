@@ -28,7 +28,7 @@ namespace FileMonitor
             using var fullBackupService = new BackupPathService(RepositoryHelper.CreateFullBackupPathRepositoryInstance());
 
             _viewModel = new MainWindowViewModel(
-                new ObservableCollection<FullBackupDto>(fullBackupService.GetFullBackupRows()), 
+                new ObservableCollection<BackupPathDto>(fullBackupService.GetFullBackupRows()), 
                 new ObservableCollection<SourceFileDto>(sourceFileService.GetFiles())
             );
 
@@ -140,7 +140,7 @@ namespace FileMonitor
         /// </summary>
         private void CreateFullBackup_Click(object sender, RoutedEventArgs e)
         {
-            foreach(FullBackupDto dto in _viewModel.BackupPaths)
+            foreach(BackupPathDto dto in _viewModel.BackupPaths)
             {
                 if(dto.IsSelected)
                 {
@@ -175,7 +175,7 @@ namespace FileMonitor
             string backupPath = FolderDialogWindow.GetPath();
             using var service = new BackupPathService(RepositoryHelper.CreateFullBackupPathRepositoryInstance());
             if (backupPath == "" || service.PathExists(backupPath)) return;
-            FullBackupDto backupDto = service.Add(backupPath);
+            BackupPathDto backupDto = service.Add(backupPath);
             _viewModel.BackupPaths.Add(backupDto);
         }
 
@@ -197,7 +197,7 @@ namespace FileMonitor
         private void FullBackupPathSelected_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Controls.CheckBox checkBox = (System.Windows.Controls.CheckBox)sender;
-            FullBackupDto fullBackupDto = (FullBackupDto)checkBox.DataContext;
+            BackupPathDto fullBackupDto = (BackupPathDto)checkBox.DataContext;
             using BackupPathService service = new BackupPathService(RepositoryHelper.CreateFullBackupPathRepositoryInstance());
             service.Update(fullBackupDto);
             _viewModel.BackupSelected = _viewModel.IsAnyBackupSelected();

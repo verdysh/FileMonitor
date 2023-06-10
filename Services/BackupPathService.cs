@@ -12,9 +12,9 @@ namespace Services
             _repository = repository;
         }
 
-        public List<FullBackupDto> GetFullBackupRows()
+        public List<BackupPathDto> GetFullBackupRows()
         {
-            List<FullBackupDto> result = _repository.GetMany(f => true, f => new FullBackupDto
+            List<BackupPathDto> result = _repository.GetMany(f => true, f => new BackupPathDto
             {
                 Id = f.Id,
                 Path = f.Path,
@@ -24,7 +24,7 @@ namespace Services
             return result;
         }
 
-        public FullBackupDto Add(string path)
+        public BackupPathDto Add(string path)
         {
             BackupPath entity = new BackupPath
             {
@@ -34,7 +34,7 @@ namespace Services
             _repository.Add(entity);
             _repository.SaveChanges();
 
-            return new FullBackupDto
+            return new BackupPathDto
             {
                 Id = entity.Id,
                 Path = entity.Path
@@ -58,7 +58,7 @@ namespace Services
             return _repository.Exists(obj => obj.Path == path);
         }
 
-        public void Update(FullBackupDto dto)
+        public void Update(BackupPathDto dto)
         {
             BackupPath entity = _repository.FirstOrDefault(f => f.Id == dto.Id, asNoTracking: false);
             if (entity == null) return;

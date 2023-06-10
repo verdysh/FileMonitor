@@ -8,7 +8,7 @@ namespace FileMonitor.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<FullBackupDto> _backupPaths;
+        private ObservableCollection<BackupPathDto> _backupPaths;
         private ObservableCollection<SourceFileDto> _files;
         private bool _backupSelected;
         private int _backupWidth;
@@ -46,7 +46,7 @@ namespace FileMonitor.ViewModels
             }
         }
 
-        public ObservableCollection<FullBackupDto> BackupPaths
+        public ObservableCollection<BackupPathDto> BackupPaths
         {
             get { return _backupPaths; }
             set { _backupPaths = value; }
@@ -58,7 +58,7 @@ namespace FileMonitor.ViewModels
             set { _files = value; }
         }
 
-        public MainWindowViewModel(ObservableCollection<FullBackupDto> backups, ObservableCollection<SourceFileDto> sourceFiles)
+        public MainWindowViewModel(ObservableCollection<BackupPathDto> backups, ObservableCollection<SourceFileDto> sourceFiles)
         {
             _backupPaths = backups;
             _files = sourceFiles;
@@ -76,7 +76,7 @@ namespace FileMonitor.ViewModels
 
         public bool IsAnyBackupSelected()
         {
-            foreach (FullBackupDto dto in  _backupPaths)
+            foreach (BackupPathDto dto in  _backupPaths)
             {
                 if (dto.IsSelected == true) return true;
             }
