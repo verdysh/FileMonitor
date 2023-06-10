@@ -120,11 +120,23 @@
 
                             <ListView x:Name="UpdatedFiles" 
                                         Margin="0,90,0,0"
-                                        ItemsSource="{Binding UpdatedFiles}" 
+                                        ItemsSource="{Binding ModifiedSourceFiles}" 
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
                                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                        ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                                        ScrollViewer.VerticalScrollBarVisibility="Auto" >
+                                
+                                <ListView.View>
+                                    <GridView AllowsColumnReorder="False">
+                                        <GridView.ColumnHeaderContainerStyle>
+                                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </Style>
+                                        </GridView.ColumnHeaderContainerStyle>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Path}" Width="{Binding FileWidth}"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
                         </Grid>
                     </Border>
                     
