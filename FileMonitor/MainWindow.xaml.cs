@@ -28,8 +28,8 @@ namespace FileMonitor
             using var backupPathService = new BackupPathService(RepositoryHelper.CreateBackupPathRepositoryInstance());
 
             _viewModel = new MainWindowViewModel(
-                new ObservableCollection<BackupPathDto>(backupPathService.GetFullBackupRows()), 
-                new ObservableCollection<SourceFileDto>(sourceFileService.GetFiles())
+                new ObservableCollection<BackupPathDto>(backupPathService.GetFilePaths()), 
+                new ObservableCollection<SourceFileDto>(sourceFileService.GetFilePaths())
             );
 
             DataContext = _viewModel;

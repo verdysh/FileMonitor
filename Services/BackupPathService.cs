@@ -12,7 +12,7 @@ namespace Services
             _repository = repository;
         }
 
-        public List<BackupPathDto> GetFullBackupRows()
+        public List<BackupPathDto> GetFilePaths()
         {
             List<BackupPathDto> result = _repository.GetRange(f => true, f => new BackupPathDto
             {
