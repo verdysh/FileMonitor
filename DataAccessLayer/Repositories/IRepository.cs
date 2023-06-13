@@ -4,41 +4,53 @@ namespace DataAccessLayer.Repositories
 {
     public interface IRepository<TEntity> : IDisposable
     {
-        // Remove a single row from the database
+        /// <summary> 
+        /// Remove a single row from the database.
+        /// </summary>
+        /// <param name="row"> 
+        /// The row to remove, designated by the Id.
+        /// </param>
         void Remove(TEntity row);
 
-        // Remove multiple rows from the database
+        /// <summary>
+        /// Remove multiple rows from the database.
+        /// </summary>
+        /// <param name="rows"> A list of rows to remove, designated by the Ids. </param>
         void RemoveRange(List<TEntity> rows);
 
-        // Add a single row to the database
+        /// <summary>
+        /// Add a single row to the database.
+        /// </summary>
+        /// <param name="row"> The Entity to add. </param>
         void Add(TEntity row);
 
-        // Add multiple rows to the database
+        /// <summary>
+        /// Add multiple rows to the database.
+        /// </summary>
+        /// <param name="rows"> A list of Entities to add. </param>
         void AddRange(List<TEntity> rows);
 
-        // Save changes to the database
+        /// <summary>
+        /// Save any tracked changes to the database. Changes on the Entities are 
+        /// tracked by default unless "asNoTracking" is enabled, but changes are 
+        /// not saved until this method is called. 
+        /// </summary>
         void SaveChanges();
 
-        /// <summary> Retrieve multiple rows from the database. </summary>
-        /// <typeparam name="TResult"> 
-        ///     The return type of the query result, typically a data transfer object. 
-        /// </typeparam>
-        /// <typeparam name="TProperty"> 
-        ///     The Entity property type to order the query results by.
-        /// </typeparam>
+        /// <summary> 
+        /// Retrieve multiple rows from the database. 
+        /// </summary>
+        /// <typeparam name="TResult"> The return type of the query result, typically a data transfer object. </typeparam>
+        /// <typeparam name="TProperty"> The Entity property type to order the query results by. </typeparam>
         /// <param name="predicate"> 
-        ///     A lambda expression to be transformed into a conditional statement. Set the
-        ///     expression body to True to retrieve all values. Example: foo => True;
+        /// A lambda expression to be transformed into a conditional statement. Set the
+        /// expression body to True to retrieve all values. Example: foo => True;
         /// </param>
-        /// <param name="select"> 
-        ///     A lambda expression for selecting specified Entity properties.
-        /// </param>
-        /// <param name="order">
-        ///     An optional parameter for selecting the value to order the results by.
-        /// </param>
+        /// <param name="select"> A lambda expression for selecting specified Entity properties. </param>
+        /// <param name="order"> An optional parameter for selecting the value to order the results by. </param>
         /// <param name="distinct">
-        ///     Set to True to get distinct values from the query. If values are duplicated 
-        ///     in the database, they will be shown only once.
+        /// Set to True to get distinct values from the query. If values are duplicated 
+        /// in the database, they will be shown only once.
         /// </param>
         /// <returns> A list of the query results. </returns>
         List<TResult> GetRange<TResult, TProperty>(
@@ -48,7 +60,9 @@ namespace DataAccessLayer.Repositories
             bool distinct = false
         );
 
-        /// <summary> Retrieve multiple rows from the database. </summary>
+        /// <summary>
+        /// Retrieve multiple rows from the database. 
+        /// </summary>
         /// <param name="predicate"> 
         /// A lambda expression to be transformed into a conditional statement. Set the
         /// expression body to True to retrieve all values. Example: foo => True;
@@ -90,19 +104,13 @@ namespace DataAccessLayer.Repositories
         /// Retrieve the first value matching the predicate expression. If no match is 
         /// found then the default value is returned.
         /// </summary>
-        /// <typeparam name="TResult">
-        /// The return type of the query result, typically a data transfer object. 
-        /// </typeparam>
+        /// <typeparam name="TResult"> The return type of the query result, typically a data transfer object. </typeparam>
         /// <param name="predicate"> 
         /// A lambda expression to be transformed into a conditional statement. Set the
         /// expression body to True to retrieve all values. Example: foo => True;
         /// </param>
-        /// <param name="select"> 
-        /// A lambda expression for selecting specified Entity properties.
-        /// </param>
-        /// <returns> 
-        /// The first value that matches the query parameters or the default value.
-        /// </returns>
+        /// <param name="select"> A lambda expression for selecting specified Entity properties. </param>
+        /// <returns> The first value that matches the query parameters or the default value. </returns>
         TResult? FirstOrDefault<TResult>(
             Expression<Func<TEntity, bool>> predicate,
             Expression<Func<TEntity, TResult>> select
