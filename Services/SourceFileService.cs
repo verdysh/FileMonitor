@@ -17,12 +17,15 @@ namespace Services
 
         public List<SourceFileDto> GetFilePaths()
         {
-            List<SourceFileDto> result = _sourceFileRepository.GetRange(s => true, s => new SourceFileDto
-            {
-                Id = s.Id,
-                Path = s.Path
-            },
-            s => s.Id);
+            List<SourceFileDto> result = _sourceFileRepository.GetRange(
+                s => true, 
+                // Select all Entities where its properties match the Dto properties
+                s => new SourceFileDto
+                {
+                    Id = s.Id,
+                    Path = s.Path
+                },
+                s => s.Id);
             return result;
         }
 
