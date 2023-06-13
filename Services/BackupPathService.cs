@@ -14,13 +14,16 @@ namespace Services
 
         public List<BackupPathDto> GetFilePaths()
         {
-            List<BackupPathDto> result = _repository.GetRange(f => true, f => new BackupPathDto
-            {
-                Id = f.Id,
-                Path = f.Path,
-                IsSelected = f.IsSelected
-            },
-            f => f.Id);
+            List<BackupPathDto> result = _repository.GetRange(
+                f => true,
+                // Select all Entities where its properties match the Dto properties
+                f => new BackupPathDto
+                {
+                    Id = f.Id,
+                    Path = f.Path,
+                    IsSelected = f.IsSelected
+                },
+                f => f.Id);
             return result;
         }
 
