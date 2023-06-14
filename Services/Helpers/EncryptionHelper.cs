@@ -6,9 +6,9 @@ namespace Services.Helpers
     {
         public static string GetHash(string file)
         {
-            using var md5 = MD5.Create();
+            using var sha1 = SHA1.Create();
             using var stream = File.OpenRead(file);
-            var hash = md5.ComputeHash(stream);
+            var hash = sha1.ComputeHash(stream);
             return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
         }
     }
