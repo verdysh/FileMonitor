@@ -7,9 +7,7 @@ namespace DataAccessLayer.Repositories
         /// <summary> 
         /// Remove a single row from the database.
         /// </summary>
-        /// <param name="row"> 
-        /// The row to remove, designated by the Id.
-        /// </param>
+        /// <param name="row"> The row to remove, designated by the Id. </param>
         void Remove(TEntity row);
 
         /// <summary>
@@ -31,27 +29,36 @@ namespace DataAccessLayer.Repositories
         void AddRange(List<TEntity> rows);
 
         /// <summary>
-        /// Save any tracked changes to the database. Changes on the Entities are 
-        /// tracked by default unless "asNoTracking" is enabled, but changes are 
-        /// not saved until this method is called. 
+        /// Save any tracked changes to the database. Changes on the Entities are tracked by default unless "asNoTracking" is enabled, 
+        /// but changes are not saved until this method is called. 
         /// </summary>
         void SaveChanges();
 
         /// <summary> 
         /// Retrieve multiple rows from the database. 
         /// </summary>
-        /// <typeparam name="TResult"> The return type of the query result, typically a data transfer object. </typeparam>
+        /// <typeparam name="TResult"> 
+        /// The return type of the query result, typically a data transfer object. The <paramref name="select"/> lambda expression
+        /// transforms the Entity into the provided TResult type.
+        /// </typeparam>
         /// <typeparam name="TProperty"> The Entity property type to order the query results by. </typeparam>
         /// <param name="predicate"> 
-        /// A lambda expression to be transformed into a conditional statement. Set the
-        /// expression body to True to retrieve all values. Example: foo => True;
+        /// A lambda expression to be transformed into a conditional statement. Example: <code> foo => foo.Id > 100; </code>. 
+        /// Set the expression body to True to search through all values. Example: <code> foo => True; </code>. This expression is 
+        /// passed to <see cref="IQueryable{TEntity}.Where()"/> which returns an object of type <see cref="IQueryable{TEntity}"/>.
         /// </param>
-        /// <param name="select"> A lambda expression for selecting specified Entity properties. </param>
+        /// <param name="select"> 
+        /// A lambda expression for selecting specified Entity properties. Example:
+        /// <code>
+        /// foo => new FooDto
+        /// {
+        ///     Id = foo.Id,
+        ///     Value = foo.Value
+        /// }
+        /// </code>
+        /// </param>
         /// <param name="order"> An optional parameter for selecting the value to order the results by. </param>
-        /// <param name="distinct">
-        /// Set to True to get distinct values from the query. If values are duplicated 
-        /// in the database, they will be shown only once.
-        /// </param>
+        /// <param name="distinct"> Set to True to get distinct values from the query. If values are duplicated in the database, they will be shown only once. </param>
         /// <returns> A list of the query results. </returns>
         List<TResult> GetRange<TResult, TProperty>(
             Expression<Func<TEntity, bool>> predicate,
@@ -64,13 +71,11 @@ namespace DataAccessLayer.Repositories
         /// Retrieve multiple rows from the database. 
         /// </summary>
         /// <param name="predicate"> 
-        /// A lambda expression to be transformed into a conditional statement. Set the
-        /// expression body to True to retrieve all values. Example: foo => True;
+        /// A lambda expression to be transformed into a conditional statement. Example: <code> foo => foo.Id > 100; </code>. 
+        /// Set the expression body to True to search through all values. Example: <code> foo => True; </code>. This expression is 
+        /// passed to <see cref="IQueryable{TEntity}.Where()"/> which returns an object of type <see cref="IQueryable{TEntity}"/>.
         /// </param>
-        /// <param name="asNoTracking"> 
-        /// An optional parameter to stop Entity Framework from tracking changes on the Entity.
-        /// Use for read-only scenarios.
-        /// </param>
+        /// <param name="asNoTracking"> An optional parameter to stop Entity Framework from tracking changes on the Entity. Use for read-only scenarios. </param>
         /// <returns> A list of all specified Entities. </returns>
         List<TEntity> GetRange(
             Expression<Func<TEntity, bool>> predicate,
@@ -78,21 +83,15 @@ namespace DataAccessLayer.Repositories
         );
 
         /// <summary>
-        /// Retrieve the first value matching the predicate expression. If no match is 
-        /// found then the default value is returned.
+        /// Retrieve the first value matching the predicate expression. If no match is found then the default value is returned.
         /// </summary>
         /// <param name="predicate"> 
-        /// A lambda expression to be transformed into a conditional statement. Set the
-        /// expression body to True to retrieve all values. Example: foo => True;
+        /// A lambda expression to be transformed into a conditional statement. Example: <code> foo => foo.Id > 100; </code>. 
+        /// Set the expression body to True to search through all values. Example: <code> foo => True; </code>. This expression is 
+        /// passed to <see cref="IQueryable{TEntity}.FirstOrDefault()"/> which returns an object of type <see cref="IQueryable{TEntity}"/> or <see cref="null"/>.
         /// </param>
-        /// <param name="asNoTracking"> 
-        /// An optional parameter to stop Entity Framework from tracking changes on the Entity.
-        /// Use for read-only scenarios.
-        /// </param>
-        /// <param name="includeProperties">
-        /// An optional parameter to include any navigation properties (related Entities) with 
-        /// the result. 
-        /// </param>
+        /// <param name="asNoTracking"> An optional parameter to stop Entity Framework from tracking changes on the Entity. Use for read-only scenarios. </param>
+        /// <param name="includeProperties"> An optional parameter to include any navigation properties (related Entities) with the result. </param>
         /// <returns> The first matching value or the default value. </returns>
         TEntity? FirstOrDefault(
             Expression<Func<TEntity, bool>> predicate,
@@ -101,15 +100,26 @@ namespace DataAccessLayer.Repositories
         );
 
         /// <summary>
-        /// Retrieve the first value matching the predicate expression. If no match is 
-        /// found then the default value is returned.
+        /// Retrieve the first value matching the predicate expression. If no match is found then the default value is returned.
         /// </summary>
-        /// <typeparam name="TResult"> The return type of the query result, typically a data transfer object. </typeparam>
+        /// <typeparam name="TResult"> 
+        /// The return type of the query result, typically a data transfer object. The <paramref name="select"/> lambda expression
+        /// transforms the Entity into the provided TResult type.
+        /// </typeparam>
         /// <param name="predicate"> 
-        /// A lambda expression to be transformed into a conditional statement. Set the
-        /// expression body to True to retrieve all values. Example: foo => True;
+        /// A lambda expression to be transformed into a conditional statement. Example: <code> foo => foo.Id > 100; </code>. 
+        /// Set the expression body to True to search through all values. Example: <code> foo => True; </code>. This expression is 
+        /// passed to <see cref="IQueryable{TEntity}.FirstOrDefault()"/> which returns an object of type <see cref="IQueryable{TEntity}"/> or <see cref="null"/>.
         /// </param>
-        /// <param name="select"> A lambda expression for selecting specified Entity properties. </param>
+        /// <param name="select"> 
+        /// A lambda expression for selecting specified Entity properties. Example:
+        /// <code>
+        /// foo => new FooDto
+        /// {
+        ///     Id = foo.Id,
+        ///     Value = foo.Value
+        /// }
+        /// </code>
         /// <returns> The first value that matches the query parameters or the default value. </returns>
         TResult? FirstOrDefault<TResult>(
             Expression<Func<TEntity, bool>> predicate,
@@ -120,8 +130,9 @@ namespace DataAccessLayer.Repositories
         /// Return True if the Entity exists in the database, false otherwise.
         /// </summary>
         /// <param name="predicate"> 
-        /// A lambda expression to be transformed into a conditional statement. Set the
-        /// expression body to True to retrieve all values. Example: foo => True;
+        /// A lambda expression to be transformed into a conditional statement. Example: <code> foo => foo.Id > 100; </code>. 
+        /// Set the expression body to True to search through all values. Example: <code> foo => True; </code>. This expression is 
+        /// passed to <see cref="IQueryable{TEntity}.Any()"/> which returns True if the value exists in the database, false otherwise. />
         /// </param>
         bool Exists(Expression<Func<TEntity, bool>> predicate);
     }
