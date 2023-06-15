@@ -2,6 +2,10 @@
 
 namespace DataAccessLayer.Repositories
 {
+    /// <summary>
+    /// Public interface for the program Repository. Provides database access via the Entity Framework API.
+    /// </summary>
+    /// <typeparam name="TEntity"> The Entity type for this instance. </typeparam>
     public interface IRepository<TEntity> : IDisposable
     {
         /// <summary> 
@@ -109,7 +113,7 @@ namespace DataAccessLayer.Repositories
         /// <param name="predicate"> 
         /// A lambda expression to be transformed into a conditional statement. Example: <code> foo => foo.Id > 100; </code>. 
         /// Set the expression body to True to search through all values. Example: <code> foo => True; </code>. This expression is 
-        /// passed to <see cref="IQueryable{TEntity}.FirstOrDefault()"/> which returns an object of type <see cref="IQueryable{TEntity}"/> or <see cref="null"/>.
+        /// passed to <see cref="IQueryable{TEntity}.FirstOrDefault()"/> which returns an object of type <see cref="IQueryable{TEntity}"/> or <code>null</code>.
         /// </param>
         /// <param name="select"> 
         /// A lambda expression for selecting specified Entity properties. Example:

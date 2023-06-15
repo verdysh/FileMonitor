@@ -3,6 +3,10 @@ using System.Linq.Expressions;
 
 namespace DataAccessLayer.Repositories
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
     public abstract class RepositoryBase<TEntity>: IRepository<TEntity> 
         where TEntity : class
     {
