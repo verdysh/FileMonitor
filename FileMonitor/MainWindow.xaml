@@ -102,7 +102,7 @@
                                                 <Setter Property="Visibility" Value="Collapsed" />
                                             </Style>
                                         </GridView.ColumnHeaderContainerStyle>
-                                        <GridViewColumn DisplayMemberBinding="{Binding Path}" Width="{Binding FileWidth}"/>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Path}" Width="{Binding FilesDisplayed.Width}"/>
                                     </GridView>
                                 </ListView.View>
                             </ListView>
@@ -150,7 +150,7 @@
                                                 <Setter Property="Visibility" Value="Collapsed" />
                                             </Style>
                                         </GridView.ColumnHeaderContainerStyle>
-                                        <GridViewColumn DisplayMemberBinding="{Binding Path}" Width="{Binding FileWidth}"/>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Path}" Width="{Binding UpdatedFiles.Width}"/>
                                     </GridView>
                                 </ListView.View>
                             </ListView>
@@ -207,7 +207,7 @@
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn DisplayMemberBinding="{Binding Path}" Header="Path" Width="{Binding BackupWidth}"/>
+                                            <GridViewColumn DisplayMemberBinding="{Binding Path}" Header="Path" Width="{Binding BackupPaths.Width}"/>
                                         </GridView.Columns>
                                     </GridView>
                                 </ListView.View>
