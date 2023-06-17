@@ -135,9 +135,9 @@
                                     Height="25" 
                                     Margin="10,53,0,0"/>
 
-                            <ListView x:Name="UpdatedFiles" 
+                            <ListView x:Name="UpdatedFilesDisplayed" 
                                         Margin="0,90,0,0"
-                                        ItemsSource="{Binding ModifiedSourceFiles}" 
+                                        ItemsSource="{Binding UpdatedFiles}" 
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
                                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
