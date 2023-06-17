@@ -33,7 +33,6 @@ namespace FileMonitor
             );
 
             DataContext = _viewModel;
-            _viewModel.Init();
         }
 
         /// <summary>
