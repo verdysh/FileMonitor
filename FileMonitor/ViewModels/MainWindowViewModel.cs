@@ -43,13 +43,16 @@ namespace FileMonitor.ViewModels
             set { _updatedFiles = value; }
         }
 
-        public MainWindowViewModel(ObservableCollection<BackupPathDto> backupPaths, ObservableCollection<SourceFileDto> sourceFiles)
+        public MainWindowViewModel(
+            ObservableCollection<BackupPathDto> backupPaths, 
+            ObservableCollection<SourceFileDto> sourceFiles,
+            ObservableCollection<SourceFileDto> updatedFiles)
         {
             _backupPaths = backupPaths;
             _sourceFiles = sourceFiles;
+            _updatedFiles = updatedFiles;
             _sourceFiles.CollectionChanged += SourceFileCollectionChanged;
             _backupSelected = IsAnyBackupSelected();
-            _updatedFiles = new ObservableCollection<SourceFileDto>();
         }
 
         public void OnPropertyChanged(string propertyName) 
