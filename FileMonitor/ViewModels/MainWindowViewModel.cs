@@ -1,15 +1,16 @@
 ﻿using Services.Dto;
-using System;
+using System.Collections;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
-
 
 namespace FileMonitor.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         private ObservableCollection<BackupPathDto> _backupPaths;
-        private ObservableCollection<SourceFileDto> _files;
+        private ObservableCollection<SourceFileDto> _sourceFiles;
+        private ObservableCollection<UpdatedFile> _updatedFiles;
         private bool _backupSelected;
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -32,20 +33,42 @@ namespace FileMonitor.ViewModels
 
         public ObservableCollection<SourceFileDto> SourceFiles
         {
-            get { return _files; }
-            set { _files = value; }
+            get { return _sourceFiles; }
+            set { _sourceFiles = value; }
         }
 
-        public MainWindowViewModel(ObservableCollection<BackupPathDto> backups, ObservableCollection<SourceFileDto> sourceFiles)
+        public ObservableCollection<UpdatedFile> UpdatedFiles
         {
-            _backupPaths = backups;
-            _files = sourceFiles;
+            get { return _updatedFiles; }
+            set { _updatedFiles = value; }
+        }
+
+        public MainWindowViewModel(ObservableCollection<BackupPathDto> backupPaths, ObservableCollection<SourceFileDto> sourceFiles)
+        {
+            _backupPaths = backupPaths;
+            _sourceFiles = sourceFiles;
+            _sourceFiles.CollectionChanged += SourceFileCollectionChanged;
             _backupSelected = IsAnyBackupSelected();
+            _updatedFiles = new ObservableCollection<UpdatedFile>();
         }
 
         public void OnPropertyChanged(string propertyName) 
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void SourceFileCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if(e.Action == NotifyCollectionChangedAction.Add)
+            {
+                IEnumerable newSourceFiles = e.NewItems;
+                foreach(SourceFileDto sourceFile in newSourceFiles)
+                {
+                    UpdatedFile updatedFile = new UpdatedFile();
+                    updatedFile.Path = sourceFile.Path;
+                    _updatedFiles.Add(updatedFile);
+                }
+            }
         }
 
         public bool IsAnyBackupSelected()
