@@ -10,7 +10,7 @@ namespace FileMonitor.ViewModels
     {
         private ObservableCollection<BackupPathDto> _backupPaths;
         private ObservableCollection<SourceFileDto> _sourceFiles;
-        private ObservableCollection<UpdatedFile> _updatedFiles;
+        private ObservableCollection<SourceFileDto> _updatedFiles;
         private bool _backupSelected;
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -37,7 +37,7 @@ namespace FileMonitor.ViewModels
             set { _sourceFiles = value; }
         }
 
-        public ObservableCollection<UpdatedFile> UpdatedFiles
+        public ObservableCollection<SourceFileDto> UpdatedFiles
         {
             get { return _updatedFiles; }
             set { _updatedFiles = value; }
@@ -49,7 +49,7 @@ namespace FileMonitor.ViewModels
             _sourceFiles = sourceFiles;
             _sourceFiles.CollectionChanged += SourceFileCollectionChanged;
             _backupSelected = IsAnyBackupSelected();
-            _updatedFiles = new ObservableCollection<UpdatedFile>();
+            _updatedFiles = new ObservableCollection<SourceFileDto>();
         }
 
         public void OnPropertyChanged(string propertyName) 
@@ -62,12 +62,7 @@ namespace FileMonitor.ViewModels
             if(e.Action == NotifyCollectionChangedAction.Add)
             {
                 IEnumerable newSourceFiles = e.NewItems;
-                foreach(SourceFileDto sourceFile in newSourceFiles)
-                {
-                    UpdatedFile updatedFile = new UpdatedFile();
-                    updatedFile.Path = sourceFile.Path;
-                    _updatedFiles.Add(updatedFile);
-                }
+                foreach(SourceFileDto sourceFile in newSourceFiles) _updatedFiles.Add(sourceFile);
             }
         }
 
