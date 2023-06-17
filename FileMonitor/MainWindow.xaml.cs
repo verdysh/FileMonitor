@@ -65,7 +65,7 @@ namespace FileMonitor
                 }
                 catch(UnauthorizedAccessException ex)
                 {
-                    MessageBox.Show("Access to system files denied.\nRun program as administrator.");
+                    MessageBox.Show("Access to files denied.\nRun program as administrator.");
                     return;
                 }
                 int numberOfDirectories = Directory.GetDirectories(directory, "*", SearchOption.AllDirectories).Length;
@@ -74,8 +74,17 @@ namespace FileMonitor
                 {
                     foreach (string path in paths)
                     {
-                        SourceFileDto dto = sourceFileService.Add(path);
-                        _viewModel.SourceFiles.Add(dto);
+                        try
+                        {
+                            SourceFileDto dto = sourceFileService.Add(path);
+                            _viewModel.SourceFiles.Add(dto);
+                        }
+                        catch (UnauthorizedAccessException ex)
+                        {
+                            MessageBox.Show("Access to files denied.\nRun program as administrator.");
+                            return;
+                        }
+
                     }
                 }
             }
@@ -162,7 +171,8 @@ namespace FileMonitor
                 string backupFolder = FolderDialogWindow.GetPath();
                 if (backupFolder.Equals("")) return;
                 Backup backup = new Backup(backupFolder);
-                //backup.Run(viewModel.RecentlyChangedFiles);
+                backup.Run(_viewModel.UpdatedFiles.Select(f => f.Path));
+                _viewModel.UpdatedFiles.Clear();
             }
         }
 
