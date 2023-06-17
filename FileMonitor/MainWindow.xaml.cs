@@ -143,7 +143,7 @@ namespace FileMonitor
             {
                 if(dto.IsSelected)
                 {
-                    FullBackup backup = new FullBackup(dto.Path);
+                    Backup backup = new Backup(dto.Path);
                     backup.Run(_viewModel.SourceFiles.Select(f => f.Path));
                 }
             }
@@ -161,7 +161,7 @@ namespace FileMonitor
             {
                 string backupFolder = FolderDialogWindow.GetPath();
                 if (backupFolder.Equals("")) return;
-                FullBackup backup = new FullBackup(backupFolder);
+                Backup backup = new Backup(backupFolder);
                 //backup.Run(viewModel.RecentlyChangedFiles);
             }
         }

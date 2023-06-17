@@ -7,7 +7,7 @@ namespace FileMonitor.FileBackups
     /// <summary>
     /// Defines a class to handle backing up files that are monitored by the program
     /// </summary>
-    internal class FullBackup
+    internal class Backup
     {
         private string backupFolder;
 
@@ -15,7 +15,7 @@ namespace FileMonitor.FileBackups
         /// Class constructor 
         /// </summary>
         /// <param name="backupFolder"> User-specified location to place the copied files </param>
-        public FullBackup(string backupFolder)
+        public Backup(string backupFolder)
         {
             this.backupFolder = backupFolder;
         }
