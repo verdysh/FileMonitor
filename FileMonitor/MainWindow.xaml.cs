@@ -28,8 +28,9 @@ namespace FileMonitor
             using var backupPathService = new BackupPathService(RepositoryHelper.CreateBackupPathRepositoryInstance());
 
             _viewModel = new MainWindowViewModel(
-                new ObservableCollection<BackupPathDto>(backupPathService.GetFilePaths()), 
-                new ObservableCollection<SourceFileDto>(sourceFileService.GetFilePaths())
+                new ObservableCollection<BackupPathDto>(backupPathService.GetFilePaths()),
+                new ObservableCollection<SourceFileDto>(sourceFileService.GetFilePaths()),
+                new ObservableCollection<SourceFileDto>(sourceFileService.GetFilePaths().Where<SourceFileDto>(sf => sf.IsModified = true))
             );
 
             DataContext = _viewModel;
@@ -164,16 +165,15 @@ namespace FileMonitor
         /// </summary>
         private void CopyUpdatedFiles_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = ChooseBackupLocation();
-
-            if (result == MessageBoxResult.Yes)
+            foreach (BackupPathDto dto in _viewModel.BackupPaths)
             {
-                string backupFolder = FolderDialogWindow.GetPath();
-                if (backupFolder.Equals("")) return;
-                Backup backup = new Backup(backupFolder);
-                backup.Run(_viewModel.UpdatedFiles.Select(f => f.Path));
-                _viewModel.UpdatedFiles.Clear();
+                if (dto.IsSelected)
+                {
+                    Backup backup = new Backup(dto.Path);
+                    backup.Run(_viewModel.UpdatedFiles.Select(f => f.Path));
+                }
             }
+            _viewModel.UpdatedFiles.Clear();
         }
 
         /// <summary>
@@ -186,16 +186,6 @@ namespace FileMonitor
             if (backupPath == "" || backupPathService.PathExists(backupPath)) return;
             BackupPathDto backupPathDto = backupPathService.Add(backupPath);
             _viewModel.BackupPaths.Add(backupPathDto);
-        }
-
-        private MessageBoxResult ChooseBackupLocation()
-        {
-            MessageBoxButton messageBoxButton = MessageBoxButton.YesNo;
-            MessageBoxImage image = MessageBoxImage.Information;
-
-            string text = "You must choose a backup location. Do you wish to proceed?";
-            string caption = "Choose Backup Location";
-            return MessageBox.Show(text, caption, messageBoxButton, image);
         }
 
         /// <summary>
