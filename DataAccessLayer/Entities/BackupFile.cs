@@ -3,7 +3,7 @@
 namespace DataAccessLayer.Entities
 {
     /// <summary>
-    /// An Entity class for the backup_file table
+    /// An Entity class for the backup_file table.
     /// </summary>
     [Table("backup_file")]
     public class BackupFile

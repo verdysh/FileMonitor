@@ -11,8 +11,7 @@ namespace DataAccessLayer.Repositories
         /// Defines the class constructor.
         /// </summary>
         /// <param name="db"> 
-        /// The database context object of type <see cref="FileMonitorDbContext"/>. Provides access to the Entity Framework API. This parameter is passed
-        /// to the <code>base()</code> constructor of the <see cref="RepositoryBase{TEntity}"/> class.
+        /// The database context object of type <see cref="FileMonitorDbContext"/>. Provides access to the Entity Framework API. This parameter is passed to the <code>base()</code> constructor of the <see cref="RepositoryBase{TEntity}"/> class.
         /// </param>
         public SourceFileRepository(FileMonitorDbContext db) : base(db)
         {
