@@ -30,7 +30,7 @@ namespace FileMonitor
             _viewModel = new MainWindowViewModel(
                 new ObservableCollection<BackupPathDto>(backupPathService.GetFilePaths()),
                 new ObservableCollection<SourceFileDto>(sourceFileService.GetFilePaths()),
-                new ObservableCollection<SourceFileDto>(sourceFileService.GetFilePaths().Where<SourceFileDto>(sf => sf.IsModified = true))
+                new ObservableCollection<SourceFileDto>(sourceFileService.GetModifiedFilePaths())
             );
 
             DataContext = _viewModel;
@@ -173,7 +173,16 @@ namespace FileMonitor
                     backup.Run(_viewModel.UpdatedFiles.Select(f => f.Path));
                 }
             }
+            ResetUpdatedFiles();
+        }
+
+        private void ResetUpdatedFiles()
+        {
+            List<int> ids = new List<int>();
+            foreach (SourceFileDto dto in _viewModel.UpdatedFiles) ids.Add(dto.Id);
             _viewModel.UpdatedFiles.Clear();
+            using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
+            sourceFileService.ResetIsModifiedFlag(ids);
         }
 
         /// <summary>
