@@ -240,6 +240,27 @@ namespace DataAccessLayer.Repositories
             => _dbSet.Any(predicate);
 
         /// <summary>
+        /// Update Entity records in the database.
+        /// </summary>
+        /// <param name="predicate"> 
+        ///     <para>
+        ///         A lambda expression to be transformed into a conditional statement. Example: <c> foo => foo.Id > 100; </c>. The <paramref name="predicate"/> expression is passed to <c>IQueryable&lt;TEntity&gt;.Any()</c>, which returns true if the value exists in the database, false otherwise.
+        ///     </para>
+        ///     <remarks>
+        ///         Set the expression body to true to search through all values. Example: <c> foo => true; </c>.
+        ///     </remarks>
+        /// </param>
+        /// <param name="update"> A lambda expression of type <see cref="Action{TEntity}"/>. Specifies the action to be performed on the Entity or Entities. </param>
+        public void Update(
+            Expression<Func<TEntity, bool>> predicate,
+            Action<TEntity> update
+        )
+        {
+            IQueryable result = _dbSet.Where(predicate);
+            foreach(TEntity entity in result) update(entity);
+        }
+
+        /// <summary>
         /// Ensures that the database context is properly released.
         /// </summary>
         /// <param name="disposing"></param>
