@@ -25,7 +25,22 @@ namespace Services
                     Id = s.Id,
                     Path = s.Path
                 },
-                s => s.Id);
+                s => s.Id
+            );
+            return result;
+        }
+
+        public List<SourceFileDto> GetModifiedFilePaths()
+        {
+            List<SourceFileDto> result = _sourceFileRepository.GetRange(
+                s => s.IsModified == true,
+                s => new SourceFileDto
+                {
+                    Path = s.Path,
+                    Id = s.Id
+                },
+                s => s.Id
+            );
             return result;
         }
 
@@ -52,11 +67,21 @@ namespace Services
         {
             foreach (int id in ids)
             {
-                _sourceFileRepository.Remove(new SourceFile
-                {
-                    Id = id
-                });
+                _sourceFileRepository.Remove(
+                    new SourceFile
+                    {
+                        Id = id
+                    }
+                );
             }
+            _sourceFileRepository.SaveChanges();
+        }
+
+        public void ResetIsModifiedFlag(IEnumerable<int> ids)
+        {
+            _sourceFileRepository.Update(
+                s => ids.Contains(s.Id), 
+                s => s.IsModified = false); 
             _sourceFileRepository.SaveChanges();
         }
 
