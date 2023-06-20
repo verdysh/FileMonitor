@@ -368,7 +368,3 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/FileMonitorTests
-/FileMonitorTests/FileMonitorTests.csproj
-/FileMonitorTests/RegexTest.cs
-/FileMonitorTests/Usings.cs
