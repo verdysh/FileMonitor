@@ -154,7 +154,7 @@ namespace FileMonitor
                 if(dto.IsSelected)
                 {
                     Backup backup = new Backup(dto.Path);
-                    backup.Run(_viewModel.SourceFiles.Select(f => f.Path));
+                    backup.CopyAll(_viewModel.SourceFiles.Select(f => f.Path));
                 }
             }
             MessageBox.Show("Backup complete");
@@ -170,7 +170,7 @@ namespace FileMonitor
                 if (dto.IsSelected)
                 {
                     Backup backup = new Backup(dto.Path);
-                    backup.Run(_viewModel.UpdatedFiles.Select(f => f.Path));
+                    backup.CopyUpdated(_viewModel.UpdatedFiles.Select(f => f.Path));
                 }
             }
             ResetUpdatedFiles();
