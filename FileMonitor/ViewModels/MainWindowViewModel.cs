@@ -51,7 +51,7 @@ namespace FileMonitor.ViewModels
             _backupPaths = backupPaths;
             _sourceFiles = sourceFiles;
             _updatedFiles = updatedFiles;
-            _sourceFiles.CollectionChanged += SourceFileCollectionChanged;
+            //_sourceFiles.CollectionChanged += SourceFileCollectionChanged;
             _backupSelected = IsAnyBackupSelected();
         }
 
@@ -60,14 +60,14 @@ namespace FileMonitor.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void SourceFileCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            if(e.Action == NotifyCollectionChangedAction.Add)
-            {
-                IEnumerable newSourceFiles = e.NewItems;
-                foreach(SourceFileDto sourceFile in newSourceFiles) _updatedFiles.Add(sourceFile);
-            }
-        }
+        //private void SourceFileCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        //{
+        //    if(e.Action == NotifyCollectionChangedAction.Add)
+        //    {
+        //        IEnumerable newSourceFiles = e.NewItems;
+        //        foreach(SourceFileDto sourceFile in newSourceFiles) _updatedFiles.Add(sourceFile);
+        //    }
+        //}
 
         public bool IsAnyBackupSelected()
         {
