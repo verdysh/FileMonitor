@@ -11,6 +11,7 @@ using Services;
 using Services.Dto;
 using Services.Extensions;
 using Services.Helpers;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace FileMonitor
 {
@@ -48,6 +49,7 @@ namespace FileMonitor
                 if (newFile == "" || sourceFileService.PathExists(newFile)) continue;
                 SourceFileDto dto = sourceFileService.Add(newFile);
                 _viewModel.SourceFiles.Add(dto);
+                _viewModel.UpdatedFiles.Add(dto);
             }
         }
 
@@ -109,26 +111,34 @@ namespace FileMonitor
         /// </summary>
         private void DeleteFiles_Click(object sender, RoutedEventArgs e)
         {
-            List<SourceFileDto> selectedFiles = new List<SourceFileDto>();
-            foreach (object item in FilesDisplayed.SelectedItems)
-            {
-                selectedFiles.Add((SourceFileDto)item);
-            }
-
             MessageBoxResult result = ConfirmDeleteFiles();
-
             if (result == MessageBoxResult.Yes)
             {
                 using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
                 List<int> ids = new List<int>();
-                foreach (var item in selectedFiles)
+                List<SourceFileDto> selectedFiles = new List<SourceFileDto>();
+                foreach (object item in FilesDisplayed.SelectedItems)
                 {
-                    ids.Add(item.Id);
+                    SourceFileDto dto = (SourceFileDto)item;
+                    selectedFiles.Add(dto);
+                    ids.Add(dto.Id);
                 }
                 sourceFileService.Remove(ids);
-                _viewModel.SourceFiles.RemoveRange<SourceFileDto>(selectedFiles);
+                _viewModel.SourceFiles = new ObservableCollection<SourceFileDto>(sourceFileService.GetFilePaths());
+                _viewModel.UpdatedFiles = new ObservableCollection<SourceFileDto>(sourceFileService.GetModifiedFilePaths());
+                //_viewModel.UpdatedFiles = 
             }
         }
+
+        //private List<int> GetFileIndicesById(ObservableCollection<SourceFileDto> list, List<int> ids)
+        //{
+        //    List<int> result = new List<int>();
+        //    foreach (SourceFileDto item in list)
+        //    {
+        //        if(ids.Contains(item.Id)) result.Add(item.Id);
+        //    }
+        //    return result;
+        //}
 
         /// <summary>
         /// Confirm if the user wants to delete these files from the program
