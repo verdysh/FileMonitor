@@ -36,8 +36,8 @@ namespace Services
                 s => s.IsModified == true,
                 s => new SourceFileDto
                 {
-                    Path = s.Path,
-                    Id = s.Id
+                    Id = s.Id,
+                    Path = s.Path
                 },
                 s => s.Id
             );
