@@ -124,9 +124,8 @@ namespace FileMonitor
                     ids.Add(dto.Id);
                 }
                 sourceFileService.Remove(ids);
-                _viewModel.SourceFiles = new ObservableCollection<SourceFileDto>(sourceFileService.GetFilePaths());
-                _viewModel.UpdatedFiles = new ObservableCollection<SourceFileDto>(sourceFileService.GetModifiedFilePaths());
-                //_viewModel.UpdatedFiles = 
+                _viewModel.SourceFiles.RemoveRange<SourceFileDto>(selectedFiles);
+                _viewModel.UpdatedFiles.RemoveRange<SourceFileDto>(selectedFiles);
             }
         }
 
