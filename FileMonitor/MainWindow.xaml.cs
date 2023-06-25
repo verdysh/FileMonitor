@@ -42,16 +42,25 @@ namespace FileMonitor
         /// </summary>
         private void AddNewFile_Click(object sender, RoutedEventArgs e)
         {
-            string[] newFiles = FileDialogWindow.GetPath();
-            if (newFiles.Length == 0) return;
-            using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
-            foreach (string newFile in newFiles)
+            try
             {
-                if (newFile == "" || sourceFileService.PathExists(newFile)) continue;
-                SourceFileDto dto = sourceFileService.Add(newFile);
-                _viewModel.SourceFiles.Add(dto);
-                _viewModel.UpdatedFiles.Add(dto);
+                string[] newFiles = FileDialogWindow.GetPath();
+                if (newFiles.Length == 0) return;
+                using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
+                foreach (string newFile in newFiles)
+                {
+                    if (newFile == "" || sourceFileService.PathExists(newFile)) continue;
+                    SourceFileDto dto = sourceFileService.Add(newFile);
+                    _viewModel.SourceFiles.Add(dto);
+                    _viewModel.UpdatedFiles.Add(dto);
+                }
             }
+            catch(UnauthorizedAccessException)
+            {
+                MessageBox.Show("UnauthorizedAccessException\n Access to system files denied.");
+                return;
+            }
+
         }
 
         /// <summary>
@@ -59,39 +68,31 @@ namespace FileMonitor
         /// </summary>
         private void AddNewFolder_Click(object sender, RoutedEventArgs e)
         {
-            string directory = FolderDialogWindow.GetPath();
-            if (directory.Equals("")) return;
+            try
             {
-                using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
-                string[] paths = null;
-                try
+                string directory = FolderDialogWindow.GetPath();
+                if (directory.Equals("")) return;
                 {
+                    using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
+                    string[] paths = null;
                     paths = Directory.GetFileSystemEntries(directory, "*", SearchOption.AllDirectories);
-                }
-                catch(UnauthorizedAccessException ex)
-                {
-                    MessageBox.Show("Access to files denied.\nRun program as administrator.");
-                    return;
-                }
-                int numberOfDirectories = Directory.GetDirectories(directory, "*", SearchOption.AllDirectories).Length;
-                int numberOfFiles = paths.Length;
-                if (VerifyAddFiles(directory, numberOfDirectories, numberOfFiles))
-                {
-                    foreach (string path in paths)
+
+                    int numberOfDirectories = Directory.GetDirectories(directory, "*", SearchOption.AllDirectories).Length;
+                    int numberOfFiles = paths.Length;
+                    if (VerifyAddFiles(directory, numberOfDirectories, numberOfFiles))
                     {
-                        try
+                        foreach (string path in paths)
                         {
                             SourceFileDto dto = sourceFileService.Add(path);
                             _viewModel.SourceFiles.Add(dto);
                         }
-                        catch (UnauthorizedAccessException ex)
-                        {
-                            MessageBox.Show("Access to files denied.\nRun program as administrator.");
-                            return;
-                        }
-
                     }
                 }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("UnauthorizedAccessException\n Access to system files denied.");
+                return;
             }
         }
 
