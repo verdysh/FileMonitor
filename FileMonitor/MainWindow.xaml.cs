@@ -129,16 +129,6 @@ namespace FileMonitor
             }
         }
 
-        //private List<int> GetFileIndicesById(ObservableCollection<SourceFileDto> list, List<int> ids)
-        //{
-        //    List<int> result = new List<int>();
-        //    foreach (SourceFileDto item in list)
-        //    {
-        //        if(ids.Contains(item.Id)) result.Add(item.Id);
-        //    }
-        //    return result;
-        //}
-
         /// <summary>
         /// Confirm if the user wants to delete these files from the program
         /// </summary>
@@ -192,6 +182,7 @@ namespace FileMonitor
             _viewModel.UpdatedFiles.Clear();
             using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
             sourceFileService.ResetIsModifiedFlag(ids);
+            sourceFileService.UpdateHashesToCurrent(ids);
         }
 
         /// <summary>
@@ -225,7 +216,11 @@ namespace FileMonitor
         private void RefreshUpdatedFiles_Click(object sender, RoutedEventArgs e)
         {
             using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
-            sourceFileService.GetModifiedFilePaths();
+            List<SourceFileDto> sourceFileDtos = sourceFileService.GetModifiedFilePaths();
+            foreach(SourceFileDto sourceFileDto in sourceFileDtos)
+            {
+                _viewModel.UpdatedFiles.Add(sourceFileDto);
+            }
         }
     }
 }
