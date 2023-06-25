@@ -19,6 +19,8 @@ namespace DataAccessLayer.Repositories
         /// A <see cref="DbSet{TEntity}"/> object representing a set of the the specified Entity.
         /// </summary>
         protected readonly DbSet<TEntity> _dbSet;
+
+        // Signifies that the object has been disposed.
         private bool disposedValue;
 
         /// <summary>
@@ -244,7 +246,7 @@ namespace DataAccessLayer.Repositories
         /// </summary>
         /// <param name="predicate"> 
         ///     <para>
-        ///         A lambda expression to be transformed into a conditional statement. Example: <c> foo => foo.Id > 100; </c>. The <paramref name="predicate"/> expression is passed to <c>IQueryable&lt;TEntity&gt;.Any()</c>, which returns true if the value exists in the database, false otherwise.
+        ///         A lambda expression to be transformed into a conditional statement. Example: <c> foo => foo.Id > 100; </c>. The <paramref name="predicate"/> expression is passed to <c>IQueryable&lt;TEntity&gt;.Where()</c>, which returns an object of type <see cref="IQueryable{TEntity}" />
         ///     </para>
         ///     <remarks>
         ///         Set the expression body to true to search through all values. Example: <c> foo => true; </c>.
@@ -263,7 +265,7 @@ namespace DataAccessLayer.Repositories
         /// <summary>
         /// Ensures that the database context is properly released.
         /// </summary>
-        /// <param name="disposing"></param>
+        /// <param name="disposing"> Signifies that the object is not being disposed directly from the finalizer. </param>
         protected virtual void Dispose(bool disposing)
         {
             if(!disposedValue)

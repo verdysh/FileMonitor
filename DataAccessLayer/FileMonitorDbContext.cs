@@ -11,19 +11,14 @@ namespace DataAccessLayer
         private readonly string _connectionString;
 
         /// <summary>
-        /// Provides a <see cref="DbSet{TEntity}"/> for querying and saving changes to the <see cref="SourceFile"/> Entity. 
+        /// Provides a <see cref="DbSet{SourceFile}"/> for querying and saving changes to the <see cref="SourceFile"/> Entity. 
         /// </summary>
         public DbSet<SourceFile> SourceFiles { get; set; }
 
         /// <summary>
-        /// Provides a <see cref="DbSet{TEntity}"/> for querying and saving changes to the <see cref="BackupPath"/> Entity.
+        /// Provides a <see cref="DbSet{BackupPath}"/> for querying and saving changes to the <see cref="BackupPath"/> Entity.
         /// </summary>
         public DbSet<BackupPath> FullBackupPaths { get; set; }
-
-        /// <summary>
-        /// Provides a <see cref="DbSet{TEntity}"/> for querying and saving changes to the <see cref="BackupFile"/> Entity.
-        /// </summary>
-        public DbSet<BackupFile> BackupFiles { get; set; }
 
         /// <summary>
         /// The <see cref="FileMonitorDbContext"/> class constructor.

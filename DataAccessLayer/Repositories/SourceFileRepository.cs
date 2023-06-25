@@ -3,7 +3,7 @@
 namespace DataAccessLayer.Repositories
 {
     /// <summary>
-    /// A repository for the BackupPath Entity. This class inherits from <see cref="RepositoryBase{TEntity}"/> and <see cref="ISourceFileRepository"/>.
+    /// A repository for the SourceFile Entity. This class inherits from <see cref="RepositoryBase{TEntity}"/> and <see cref="ISourceFileRepository"/>.
     /// </summary>
     public class SourceFileRepository : RepositoryBase<SourceFile>, ISourceFileRepository
     {

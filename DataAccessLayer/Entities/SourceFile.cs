@@ -3,7 +3,7 @@
 namespace DataAccessLayer.Entities
 {
     /// <summary>
-    /// An Entity class for the source_file table.
+    /// An Entity class for the source_file table. These records store paths to all files being monitored by the program.
     /// </summary>
     [Table("source_file")]
     public class SourceFile
@@ -17,7 +17,7 @@ namespace DataAccessLayer.Entities
         public int Id { get; set; }
 
         /// <summary>
-        /// Full file path to where the backup directory location is stored.
+        /// A full path to where the file is stored.
         /// </summary>
         public string Path { get; set; }
 

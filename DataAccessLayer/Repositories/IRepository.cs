@@ -180,7 +180,7 @@ namespace DataAccessLayer.Repositories
         /// </summary>
         /// <param name="predicate"> 
         ///     <para>
-        ///         A lambda expression to be transformed into a conditional statement. Example: <c> foo => foo.Id > 100; </c>. The <paramref name="predicate"/> expression is passed to <c>IQueryable&lt;TEntity&gt;.Any()</c>, which returns true if the value exists in the database, false otherwise.
+        ///         A lambda expression to be transformed into a conditional statement. Example: <c> foo => foo.Id > 100; </c>. The <paramref name="predicate"/> expression is passed to <c>IQueryable&lt;TEntity&gt;.Where()</c>, which returns an object of type <see cref="IQueryable{TEntity}" />
         ///     </para>
         ///     <remarks>
         ///         Set the expression body to true to search through all values. Example: <c> foo => true; </c>.
