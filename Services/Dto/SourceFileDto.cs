@@ -7,10 +7,15 @@
 
         public override bool Equals(object? obj)
         {
-            if (obj == null) return false;
-            SourceFileDto cast = (SourceFileDto)obj;
-            if (Id == cast.Id && Path == cast.Path) return true;
-            return false;
+            if(ReferenceEquals(this, obj)) return true;
+            SourceFileDto? sourceFileDto = obj as SourceFileDto;
+            if (sourceFileDto == null) return false;
+            else return sourceFileDto.Id == Id && sourceFileDto.Path == Path;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
         }
     }
 }
