@@ -134,6 +134,15 @@
                                     Padding="3"
                                     Height="25" 
                                     Margin="10,53,0,0"/>
+                            
+                            <Button x:Name="RefreshUpdatedFiles" 
+                                    Content="Refresh" 
+                                    Click="RefreshUpdatedFiles_Click"
+                                    HorizontalAlignment="Left" 
+                                    VerticalAlignment="Top"
+                                    Padding="3"
+                                    Height="25" 
+                                    Margin="73,53,0,0"/>
 
                             <ListView x:Name="UpdatedFilesDisplayed" 
                                         Margin="0,90,0,0"

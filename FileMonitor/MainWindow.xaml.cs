@@ -11,7 +11,6 @@ using Services;
 using Services.Dto;
 using Services.Extensions;
 using Services.Helpers;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace FileMonitor
 {
@@ -33,7 +32,6 @@ namespace FileMonitor
                 new ObservableCollection<SourceFileDto>(sourceFileService.GetFilePaths()),
                 new ObservableCollection<SourceFileDto>(sourceFileService.GetModifiedFilePaths())
             );
-
             DataContext = _viewModel;
         }
 
@@ -60,7 +58,6 @@ namespace FileMonitor
                 MessageBox.Show("UnauthorizedAccessException\n Access to system files denied.");
                 return;
             }
-
         }
 
         /// <summary>
@@ -223,6 +220,12 @@ namespace FileMonitor
             using BackupPathService backupPathService = new BackupPathService(RepositoryHelper.CreateBackupPathRepositoryInstance());
             backupPathService.Update(backupPathDto);
             _viewModel.BackupSelected = _viewModel.IsAnyBackupSelected();
+        }
+
+        private void RefreshUpdatedFiles_Click(object sender, RoutedEventArgs e)
+        {
+            using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
+            sourceFileService.GetModifiedFilePaths();
         }
     }
 }
