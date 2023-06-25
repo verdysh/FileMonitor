@@ -32,6 +32,7 @@ namespace Services
 
         public List<SourceFileDto> GetModifiedFilePaths()
         {
+            RefreshModifiedFilePaths();
             List<SourceFileDto> result = _sourceFileRepository.GetRange(
                 s => s.IsModified == true,
                 s => new SourceFileDto
@@ -88,6 +89,28 @@ namespace Services
         public bool PathExists(string path)
         {
             return _sourceFileRepository.Exists(s => s.Path == path);
+        }
+
+        // If FileIsUpdated() returns true, then set IsModified to true, and call SaveChanges on the repository.
+        private void RefreshModifiedFilePaths()
+        {
+            List<SourceFile> files = _sourceFileRepository.GetRange(s => true);
+            foreach (SourceFile file in files) 
+            {
+                if (FileIsUpdated(file.Path))
+                {
+                    file.IsModified = true;
+                }
+            }
+            _sourceFileRepository.SaveChanges();
+        }
+
+        // Compare the stored hash code to the current hash code. If they are different, return true. Otherwise return false.
+        private bool FileIsUpdated(string path)
+        {
+            SourceFile? sourceFile = _sourceFileRepository.FirstOrDefault(s => s.Path == path);
+            if (sourceFile == null) return false;
+            return EncryptionHelper.GetHash(path) != sourceFile.Hash;
         }
 
         protected virtual void Dispose(bool disposing)
