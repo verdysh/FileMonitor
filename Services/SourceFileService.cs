@@ -113,6 +113,14 @@ namespace Services
             return EncryptionHelper.GetHash(path) != sourceFile.Hash;
         }
 
+        public void UpdateHashesToCurrent(List<int> ids)
+        {
+            _sourceFileRepository.Update(
+                s => ids.Contains(s.Id),
+                s => s.Hash = EncryptionHelper.GetHash(s.Path));
+            _sourceFileRepository.SaveChanges();
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
