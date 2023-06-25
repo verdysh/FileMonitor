@@ -43,6 +43,7 @@ namespace FileMonitor
         private void AddNewFile_Click(object sender, RoutedEventArgs e)
         {
             string[] newFiles = FileDialogWindow.GetPath();
+            if (newFiles.Length == 0) return;
             using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
             foreach (string newFile in newFiles)
             {
@@ -59,6 +60,7 @@ namespace FileMonitor
         private void AddNewFolder_Click(object sender, RoutedEventArgs e)
         {
             string directory = FolderDialogWindow.GetPath();
+            if (directory.Equals("")) return;
             {
                 using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
                 string[] paths = null;
