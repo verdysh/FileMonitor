@@ -9,7 +9,7 @@ namespace DataAccessLayer.Entities
     public class SourceFile
     {
         /// <summary>
-        /// Database primary key. 
+        /// The database primary key. 
         /// </summary>
         /// <remarks>
         /// Use to remove Entities from the database.
@@ -17,7 +17,7 @@ namespace DataAccessLayer.Entities
         public int Id { get; set; }
 
         /// <summary>
-        /// A full path to where the file is stored.
+        /// The full path to where the file is stored.
         /// </summary>
         public string Path { get; set; }
 
