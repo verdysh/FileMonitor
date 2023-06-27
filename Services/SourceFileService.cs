@@ -5,16 +5,26 @@ using Services.Helpers;
 
 namespace Services
 {
-    public class SourceFileService : IDisposable
+    /// <summary>
+    /// A service class offering database access to the SourceFile Entity. This class stores a repository, and offers data transfer objects for updating the ViewModel.
+    /// </summary>
+    public class SourceFileService : DisposableService
     {
         private ISourceFileRepository _sourceFileRepository;
         private bool disposedValue;
 
+        /// <summary>
+        /// The <see cref="SourceFileService"/> class constructor. 
+        /// </summary>
+        /// <param name="sourceFileRepository"> An instance of <see cref="ISourceFileRepository"/> which provides database access. </param>
         public SourceFileService(ISourceFileRepository sourceFileRepository)
         {
             _sourceFileRepository = sourceFileRepository;
         }
 
+        /// <summary>
+        /// Returns all source file paths from the database.
+        /// </summary>
         public List<SourceFileDto> GetFilePaths()
         {
             List<SourceFileDto> result = _sourceFileRepository.GetRange(
@@ -30,6 +40,9 @@ namespace Services
             return result;
         }
 
+        /// <summary>
+        /// Returns all source file paths from the database if the IsModified property is set to true.
+        /// </summary>
         public List<SourceFileDto> GetModifiedFilePaths()
         {
             RefreshModifiedFilePaths();
@@ -45,6 +58,11 @@ namespace Services
             return result;
         }
 
+        /// <summary>
+        /// Adds a source file path to the database.
+        /// </summary>
+        /// <param name="path"> The source file path to add to the database. </param>
+        /// <returns> A source file DTO object for updating the UI. </returns>
         public SourceFileDto Add(string path)
         {
             SourceFile entity = new SourceFile
@@ -64,6 +82,10 @@ namespace Services
             };
         }
 
+        /// <summary>
+        /// Remove a range of source file paths from the database.
+        /// </summary>
+        /// <param name="ids"> The Ids for each source file path to be removed. </param>
         public void Remove(IEnumerable<int> ids)
         {
             foreach (int id in ids)
@@ -78,6 +100,10 @@ namespace Services
             _sourceFileRepository.SaveChanges();
         }
 
+        /// <summary>
+        /// Set the <see cref="SourceFile.IsModified"/> property to false on all the specified files. This class should be called when the files are first copied to a backup location.
+        /// </summary>
+        /// <param name="ids"> The Ids for each file where the <see cref="SourceFile.IsModified"/> property should be set to false. </param>
         public void ResetIsModifiedFlag(IEnumerable<int> ids)
         {
             _sourceFileRepository.Update(
@@ -86,6 +112,9 @@ namespace Services
             _sourceFileRepository.SaveChanges();
         }
 
+        /// <summary>
+        /// Returns true if the path exists in the database, false otherwise.
+        /// </summary>
         public bool PathExists(string path)
         {
             return _sourceFileRepository.Exists(s => s.Path == path);
@@ -121,7 +150,7 @@ namespace Services
             _sourceFileRepository.SaveChanges();
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
