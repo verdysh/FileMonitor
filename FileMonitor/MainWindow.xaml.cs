@@ -28,7 +28,7 @@ namespace FileMonitor
             using var backupPathService = new BackupPathService(RepositoryHelper.CreateBackupPathRepositoryInstance());
 
             _viewModel = new MainWindowViewModel(
-                new ObservableCollection<BackupPathDto>(backupPathService.GetFilePaths()),
+                new ObservableCollection<BackupPathDto>(backupPathService.GetDirectoryPaths()),
                 new ObservableCollection<SourceFileDto>(sourceFileService.GetFilePaths()),
                 new ObservableCollection<SourceFileDto>(sourceFileService.GetModifiedFilePaths())
             );
@@ -209,7 +209,7 @@ namespace FileMonitor
             System.Windows.Controls.CheckBox checkBox = (System.Windows.Controls.CheckBox)sender;
             BackupPathDto backupPathDto = (BackupPathDto)checkBox.DataContext;
             using BackupPathService backupPathService = new BackupPathService(RepositoryHelper.CreateBackupPathRepositoryInstance());
-            backupPathService.Update(backupPathDto);
+            backupPathService.Update(backupPathDto, updatePath: false, updateIsSelected: true);
             _viewModel.BackupSelected = _viewModel.IsAnyBackupSelected();
         }
 
