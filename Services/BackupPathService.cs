@@ -5,7 +5,7 @@ using Services.Dto;
 namespace Services
 {
     /// <summary>
-    /// A service class offering database access to the BackupPath Entity. This class stores a repository, and offers functionality to update the ViewModel.
+    /// A service class offering database access to the BackupPath Entity. This class stores a repository, and offers data transfer objects for updating the ViewModel.
     /// </summary>
     public class BackupPathService : DisposableService
     {
@@ -100,7 +100,7 @@ namespace Services
         }
 
         /// <summary>
-        /// Ensures that the service object is properly released.
+        /// Ensures that the service object is properly disposed. Also calls <c>Dispose</c> on the repository object.
         /// </summary>
         /// <param name="disposing"> Signifies that the object is not being disposed directly from the finalizer. </param>
         protected override void Dispose(bool disposing)
