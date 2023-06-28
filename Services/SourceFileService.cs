@@ -134,7 +134,7 @@ namespace Services
             _sourceFileRepository.SaveChanges();
         }
 
-        // Compare the stored hash code to the current hash code. If they are different, return true. Otherwise return false.
+        // Return true if the stored hash different from the current hash. Otherwise return false.
         private bool FileIsUpdated(string path)
         {
             SourceFile? sourceFile = _sourceFileRepository.FirstOrDefault(s => s.Path == path);
@@ -142,6 +142,10 @@ namespace Services
             return EncryptionHelper.GetHash(path) != sourceFile.Hash;
         }
 
+        /// <summary>
+        /// Updates the hash for all source files based on their Ids.
+        /// </summary>
+        /// <param name="ids"> A list of Ids for each file requiring an updated hash. </param>
         public void UpdateHashesToCurrent(List<int> ids)
         {
             _sourceFileRepository.Update(
@@ -150,32 +154,14 @@ namespace Services
             _sourceFileRepository.SaveChanges();
         }
 
+        /// <summary>
+        /// Ensures that the service object is properly disposed. Also calls <c>Dispose</c> on the repository object.
+        /// </summary>
+        /// <param name="disposing"> Signifies that the object is not being disposed directly from the finalizer. </param>
         protected override void Dispose(bool disposing)
         {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    _sourceFileRepository.Dispose();
-                }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
-                disposedValue = true;
-            }
-        }
-
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~FileService()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
+            _sourceFileRepository.Dispose();
+            base.Dispose(disposing);
         }
     }
 }
