@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -70,26 +69,23 @@ namespace FileMonitor.FileBackups
         }
 
         // If the file already exists, append numbered text to the file name. Example: "someFile(Copy 3).txt"
-        private string IncrementFileName(string fileName)
+        private string IncrementFileName(string path)
         {
             int count = 2;
             while(true)
             {
-                if (File.Exists(fileName))
+                if (File.Exists(path)) // The method returns the path when this line evaluates to false
                 {
-                    string extension = Path.GetExtension(fileName);
-                    string fileNoExtension = Path.ChangeExtension(fileName, null);
+                    string extension = Path.GetExtension(path);
+                    string fileNoExtension = Path.ChangeExtension(path, null);
                     if (FileIsNumbered(fileNoExtension, out string matchToStrip))
                     {
-                        int charsToRemove = fileNoExtension.Length - matchToStrip.Length;
-                        Debug.WriteLine($"chars to remove: {charsToRemove}");
-                        fileNoExtension = fileNoExtension.Remove(charsToRemove);
-                        fileName = $"{fileNoExtension}(Copy {count}){extension}";
+                        path = ReplaceStringMatch(fileNoExtension, matchToStrip, extension, count);
                     }
-                    else fileName = $"{fileNoExtension}(Copy {count}){extension}";
+                    else path = $"{fileNoExtension}(Copy {count}){extension}";
                     count++;
                 }
-                else return fileName;
+                else return path;
             }
         }
 
@@ -103,7 +99,6 @@ namespace FileMonitor.FileBackups
             if (match.Success)
             {
                 matchToStrip = match.Value;
-                Debug.WriteLine($"match.Value: {match.Value}");
                 return true;
             }
             else
@@ -111,8 +106,15 @@ namespace FileMonitor.FileBackups
                 matchToStrip = "";
                 return false;
             }
+        }
 
-            
+        // Pass in a file name with no extension. Remove the string match, then replace it with the updated count 
+        // and the provided file extension.
+        private string ReplaceStringMatch(string fileNoExtension, string matchToStrip, string extension, int count)
+        {
+            int charsToRemove = fileNoExtension.Length - matchToStrip.Length;
+            fileNoExtension = fileNoExtension.Remove(charsToRemove);
+            return $"{fileNoExtension}(Copy {count}){extension}";
         }
     }
 }
