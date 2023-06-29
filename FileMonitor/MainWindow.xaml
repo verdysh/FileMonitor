@@ -191,7 +191,7 @@
                                     Height="25" 
                                     Margin="10,53,0,10"/>
 
-                            <ListView x:Name="BackupPaths" 
+                            <ListView x:Name="BackupPathsDisplayed" 
                                         Margin="0,90,0,0"
                                         ItemsSource="{Binding BackupPaths}" 
                                         HorizontalAlignment="Stretch"
@@ -216,7 +216,7 @@
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn DisplayMemberBinding="{Binding Path}" Header="Path" Width="{Binding BackupPaths.Width}"/>
+                                            <GridViewColumn DisplayMemberBinding="{Binding Path}" Header="Path" Width="{Binding BackupPathsDisplayed.Width}"/>
                                         </GridView.Columns>
                                     </GridView>
                                 </ListView.View>
