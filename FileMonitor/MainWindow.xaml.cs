@@ -21,6 +21,9 @@ namespace FileMonitor
     {
         private readonly MainWindowViewModel _viewModel;
 
+        /// <summary>
+        /// Defines the <see cref="MainWindow"/> class constructor. Uses <see cref="SourceFileService"/> and <see cref="BackupPathService"/> to initialize the data bindings in the view model. ALso sets the data context for the UI.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -35,9 +38,10 @@ namespace FileMonitor
             DataContext = _viewModel;
         }
 
-        /// <summary>
-        /// Add a file to be monitored by the program
-        /// </summary>
+
+        // A button click event handler for adding a file to be monitored by the program. Newly added files are also added
+        // to the MainWindowViewModel.UpdatedFiles collection. This assumes that the file must first be copied to a backup
+        // location. 
         private void AddNewFile_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -60,9 +64,10 @@ namespace FileMonitor
             }
         }
 
-        /// <summary>
-        /// Add a folder to be monitored by the program
-        /// </summary>
+
+        // A button click event handler for adding a folder, which effectively adds all files in any subfolders to the program.
+        // Newly added files are also added to the MainWindowViewModel.UpdatedFiles collection. This assumes that the file must
+        // first be copied to a backup location.
         private void AddNewFolder_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -76,7 +81,7 @@ namespace FileMonitor
 
                     int numberOfDirectories = Directory.GetDirectories(directory, "*", SearchOption.AllDirectories).Length;
                     int numberOfFiles = paths.Length;
-                    if (VerifyAddFiles(directory, numberOfDirectories, numberOfFiles))
+                    if (VerifyAddFolder(directory, numberOfDirectories, numberOfFiles))
                     {
                         foreach (string path in paths)
                         {
@@ -93,7 +98,8 @@ namespace FileMonitor
             }
         }
 
-        private bool VerifyAddFiles(string directory, int numberOfDirectories, int numberOfFiles)
+        // Verifies that the user wants to add an entire folder. Displays the number of files that will be added by doing so.
+        private bool VerifyAddFolder(string directory, int numberOfDirectories, int numberOfFiles)
         {
             string text = $@"Do you wish to add the folder {directory}? 
 
@@ -106,9 +112,8 @@ namespace FileMonitor
             return result == MessageBoxResult.Yes;
         }
 
-        /// <summary>
-        /// Remove a file from the collection of monitored files
-        /// </summary>
+        // A button click event handler to remove a file or files from the collection of monitored files. Deleted
+        // files are also removed from the MainWindowViewModel.UpdatedFiles collection.
         private void DeleteFiles_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = ConfirmDeleteFiles();
@@ -129,10 +134,7 @@ namespace FileMonitor
             }
         }
 
-        /// <summary>
-        /// Confirm if the user wants to delete these files from the program
-        /// </summary>
-        /// <returns> The user's message box selection </returns>
+        // Confirms that the user wants to delete the selected files, and informs the user that this cannot be undone.
         private MessageBoxResult ConfirmDeleteFiles()
         {
             string text = "Do you wish to delete the selected file(s) from the program? This cannot be undone.";
@@ -143,9 +145,9 @@ namespace FileMonitor
             return MessageBox.Show(text, caption, button, image);
         }
 
-        /// <summary>
-        /// Create a full backup of all files monitored by the program
-        /// </summary>
+        // A button click event handler to create a full backup of all files monitored by the program. The full backup
+        // copies every file to the backup location, and stores them in a unique directory. The name of the directory
+        // uses the current date and time.
         private void CopyAllFiles_Click(object sender, RoutedEventArgs e)
         {
             foreach(BackupPathDto dto in _viewModel.BackupPaths)
@@ -159,9 +161,7 @@ namespace FileMonitor
             MessageBox.Show("Backup complete");
         }
 
-        /// <summary>
-        /// Create a backup only for files that have been updated or changed
-        /// </summary>
+        // A button click event handler to copy only the files that have been updated or changed since the last backup.
         private void CopyUpdatedFiles_Click(object sender, RoutedEventArgs e)
         {
             foreach (BackupPathDto dto in _viewModel.BackupPaths)
@@ -175,6 +175,11 @@ namespace FileMonitor
             ResetUpdatedFiles();
         }
 
+        // The main goal here is to reset the collection of updated files, both in the UI and in the database. To do so, the 
+        // method retrieves a list of Ids for each file in the UpdatedFiles collection. Then it resets the IsModified checkbox 
+        // to be false. Doing so informs the program that the copied version of the files is effectively the most up-to-date
+        // version. Finally, it updates the hash for each file to the current hash. Doing so ensures that the next time hashes
+        // are compared, these files will be ignored because they represent the latest version of the file.
         private void ResetUpdatedFiles()
         {
             List<int> ids = new List<int>();
@@ -185,9 +190,7 @@ namespace FileMonitor
             sourceFileService.UpdateHashesToCurrent(ids);
         }
 
-        /// <summary>
-        /// Add a folder path for a full backup to be copied to
-        /// </summary>
+        // A button click event handler for adding a backup folder path. 
         private void AddBackupPath_Click(object sender, RoutedEventArgs e)
         {
             string backupPath = FolderDialogWindow.GetPath();
@@ -197,13 +200,8 @@ namespace FileMonitor
             _viewModel.BackupPaths.Add(backupPathDto);
         }
 
-        /// <summary>
-        /// Event handler to be called when the a BackupPathCheckBox is checked in the UI
-        /// </summary>
-        /// <remarks>
-        /// Update the IsSelected property in the database using a data transfer object. This ensures
-        /// that the CheckBox remains selected even after the program exits. 
-        /// </remarks>
+        // An event handler to be called when the BackupPathCheckBox is checked in the UI. This method updates the IsSelected property
+        // in the database using a data transfer object. This ensures that the CheckBox remains selected even after the program exits. 
         private void BackupPathCheckBox_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Controls.CheckBox checkBox = (System.Windows.Controls.CheckBox)sender;
@@ -213,6 +211,7 @@ namespace FileMonitor
             _viewModel.BackupSelected = _viewModel.IsAnyBackupSelected();
         }
 
+        // A button click event handler to refresh the UpdatedFilesDisplayed ListView in the UI.
         private void RefreshUpdatedFiles_Click(object sender, RoutedEventArgs e)
         {
             using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
