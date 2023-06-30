@@ -11,14 +11,24 @@ namespace DataAccessLayer
         private readonly string _connectionString;
 
         /// <summary>
-        /// Provides a <see cref="DbSet{SourceFile}"/> for querying and saving changes to the <see cref="SourceFile"/> Entity. 
+        /// Provides a <see cref="DbSet{TEntity}"/> for querying and saving changes to the <see cref="SourceFile"/> Entity. 
         /// </summary>
         public DbSet<SourceFile> SourceFiles { get; set; }
 
         /// <summary>
-        /// Provides a <see cref="DbSet{BackupPath}"/> for querying and saving changes to the <see cref="BackupPath"/> Entity.
+        /// Provides a <see cref="DbSet{TEntity}"/> for querying and saving changes to the <see cref="SourceFolder"/> Entity.
         /// </summary>
-        public DbSet<BackupPath> FullBackupPaths { get; set; }
+        public DbSet<SourceFolder> SourceFolders { get; set; }
+
+        /// <summary>
+        /// Provides a <see cref="DbSet{TEntity}"/> for querying and saving changes to the <see cref="FolderFileMapping"/> Entity.
+        /// </summary>
+        public DbSet<FolderFileMapping> FolderFileMappings { get; set; }
+
+        /// <summary>
+        /// Provides a <see cref="DbSet{TEntity}"/> for querying and saving changes to the <see cref="BackupPath"/> Entity.
+        /// </summary>
+        public DbSet<BackupPath> BackupPaths { get; set; }
 
         /// <summary>
         /// The <see cref="FileMonitorDbContext"/> class constructor.
@@ -45,8 +55,9 @@ namespace DataAccessLayer
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configure all Path columns to be indexed in the database
-            modelBuilder.Entity<SourceFile>().HasIndex(s => new { s.Path }).IsUnique();
-            modelBuilder.Entity<BackupPath>().HasIndex(s => new { s.Path }).IsUnique();
+            modelBuilder.Entity<SourceFile>().HasIndex(sf => new { sf.Path }).IsUnique();
+            modelBuilder.Entity<SourceFolder>().HasIndex(sf => new { sf.Path }).IsUnique();
+            modelBuilder.Entity<BackupPath>().HasIndex(bp => new { bp.Path }).IsUnique();
         }
     }
 }
