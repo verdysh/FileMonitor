@@ -11,7 +11,6 @@ namespace Services
     public class SourceFileService : DisposableService
     {
         private ISourceFileRepository _sourceFileRepository;
-        private bool disposedValue;
 
         /// <summary>
         /// The <see cref="SourceFileService"/> class constructor. 
