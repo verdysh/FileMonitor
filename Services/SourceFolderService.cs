@@ -74,9 +74,9 @@ namespace Services
         }
 
         /// <summary>
-        /// 
+        /// Remove a range of source folders from the database.
         /// </summary>
-        /// <param name="ids"></param>
+        /// <param name="ids"> The Ids for each source folder path to be removed. </param>
         public void Remove(IEnumerable<int> ids)
         {
             foreach (int id in ids)
@@ -88,6 +88,18 @@ namespace Services
             }
             _sourceFolderRepository.SaveChanges();
         }
+
+
+        public void CheckFoldersForNewFiles(IEnumerable<string> folders)
+        {
+            List<SourceFolder> sourceFolders = _sourceFolderRepository.GetRange(f => folders.Contains(f.Path));
+            foreach (SourceFolder folder in sourceFolders)
+            {
+
+            }
+        }
+
+        //private List<FolderFileMapping> GetFolderFileMappings() { }
 
         /// <summary>
         /// Ensures that the service objects are properly disposed. Also calls <c>Dispose</c> on the repository objects.
