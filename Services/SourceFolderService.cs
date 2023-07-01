@@ -10,16 +10,22 @@ namespace Services
     {
         ISourceFolderRepository _sourceFolderRepository;
         IFolderFileMappingRepository _folderFileMappingRepository;
+        ISourceFileRepository _sourceFileRepository;
 
         /// <summary>
         /// The <see cref="SourceFolderService"/> class constructor.
         /// </summary>
         /// <param name="sourceFolderRepository"> An instance of the <see cref="ISourceFolderRepository"/> which provides database access. </param>
         /// <param name="folderFileMappingRepository"> An instance of the <see cref="IFolderFileMappingRepository"/> which provides database access. </param>
-        public SourceFolderService(ISourceFolderRepository sourceFolderRepository, IFolderFileMappingRepository folderFileMappingRepository)
+        /// <param name="sourceFileRepository"> An instance of the <see cref="ISourceFileRepository"/> which provides database access. </param>
+        public SourceFolderService(
+            ISourceFolderRepository sourceFolderRepository, 
+            IFolderFileMappingRepository folderFileMappingRepository,
+            ISourceFileRepository sourceFileRepository)
         {
             _sourceFolderRepository = sourceFolderRepository;
             _folderFileMappingRepository = folderFileMappingRepository;
+            _sourceFileRepository = sourceFileRepository;
         }
 
         /// <summary>
@@ -36,6 +42,7 @@ namespace Services
             _sourceFolderRepository.SaveChanges();
         }
 
+        //
         private void AddFolderFileMapping(string[] filePaths)
         {
 
