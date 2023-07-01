@@ -216,7 +216,7 @@
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn DisplayMemberBinding="{Binding Path}" Header="Path" Width="{Binding BackupPathsDisplayed.Width}"/>
+                                            <GridViewColumn DisplayMemberBinding="{Binding Path}" Header="Path" Width="{Binding ActualWidth, ElementName=BackupPathsDisplayed}"/>
                                         </GridView.Columns>
                                     </GridView>
                                 </ListView.View>
