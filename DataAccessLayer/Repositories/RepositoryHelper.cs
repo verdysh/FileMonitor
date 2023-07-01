@@ -5,7 +5,7 @@ using System.Configuration;
 namespace Services.Helpers
 {
     /// <summary>
-    /// A helper class for instantiating the code repositories. Use this class to give the service
+    /// A helper class for instantiating the code repositories. Use this class to provide the service classes with the necessary repository.
     /// </summary>
     public class RepositoryHelper
     {
@@ -16,10 +16,22 @@ namespace Services.Helpers
             => new SourceFileRepository(CreateDbContextInstance());
 
         /// <summary>
-        /// Creates an instance of IBackupPathRepository
+        /// Creates an instance of IBackupPathRepository.
         /// </summary>
         public static IBackupPathRepository CreateBackupPathRepositoryInstance()
             => new BackupPathRepository(CreateDbContextInstance());
+
+        /// <summary>
+        /// Creates an instance of ISourceFolderRepository.
+        /// </summary>
+        public static ISourceFolderRepository CreateSourceFolderServiceInstance() 
+            => new SourceFolderRepository(CreateDbContextInstance());
+
+        /// <summary>
+        /// Creates an instance of IFolderFileMappingRepository.
+        /// </summary>
+        public static IFolderFileMappingRepository CreateFolderFileMappingInstance() 
+            => new FolderFileMappingRepository(CreateDbContextInstance());
 
         // A private method to create an instance of the program's database context.
         // The database context is required for construction of a repository instance.
