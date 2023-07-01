@@ -24,7 +24,7 @@ namespace Services.Helpers
         /// <summary>
         /// Creates an instance of ISourceFolderRepository.
         /// </summary>
-        public static ISourceFolderRepository CreateSourceFolderServiceInstance() 
+        public static ISourceFolderRepository CreateSourceFolderRepositoryInstance() 
             => new SourceFolderRepository(CreateDbContextInstance());
 
         /// <summary>
