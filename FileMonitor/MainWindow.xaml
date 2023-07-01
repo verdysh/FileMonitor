@@ -136,7 +136,7 @@
                                     Margin="10,53,0,0"/>
                             
                             <Button x:Name="RefreshUpdatedFiles" 
-                                    Content="Refresh" 
+                                    Content="Refresh View" 
                                     Click="RefreshUpdatedFiles_Click"
                                     HorizontalAlignment="Left" 
                                     VerticalAlignment="Top"
