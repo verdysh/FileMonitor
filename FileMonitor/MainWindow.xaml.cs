@@ -11,7 +11,6 @@ using Services;
 using Services.Dto;
 using Services.Extensions;
 using Services.Helpers;
-using DataAccessLayer.Entities;
 
 namespace FileMonitor
 {
@@ -83,7 +82,9 @@ namespace FileMonitor
                         using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
                         using var sourceFolderService = new SourceFolderService(
                             RepositoryHelper.CreateSourceFolderServiceInstance(),
-                            RepositoryHelper.CreateFolderFileMappingInstance());
+                            RepositoryHelper.CreateFolderFileMappingInstance(),
+                            RepositoryHelper.CreateSourceFileRepositoryInstance()
+                        );
 
                         foreach (string path in paths)
                         {
