@@ -27,10 +27,7 @@ namespace FileMonitor
         public MainWindow()
         {
             InitializeComponent();
-            using var sourceFileService = new SourceFileService(
-                RepositoryHelper.CreateSourceFileRepositoryInstance(),
-                RepositoryHelper.CreateSourceFolderRepositoryInstance()
-            );
+            using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
             using var backupPathService = new BackupPathService(RepositoryHelper.CreateBackupPathRepositoryInstance());
 
             _viewModel = new MainWindowViewModel(
@@ -89,7 +86,7 @@ namespace FileMonitor
                     if (VerifyAddFolder(directory, paths))
                     {
                         using var sourceFolderService = new SourceFolderService(
-                            RepositoryHelper.CreateSourceFolderServiceInstance(),
+                            RepositoryHelper.CreateSourceFolderRepositoryInstance(),
                             RepositoryHelper.CreateFolderFileMappingInstance(),
                             RepositoryHelper.CreateSourceFileRepositoryInstance()
                         );
