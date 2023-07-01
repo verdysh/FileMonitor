@@ -46,21 +46,27 @@ namespace FileMonitor
         {
             try
             {
-                string[] newFiles = FileDialogWindow.GetPath();
-                if (newFiles.Length == 0) return;
-                using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
-                foreach (string newFile in newFiles)
-                {
-                    if (newFile == "" || sourceFileService.PathExists(newFile)) continue;
-                    SourceFileDto dto = sourceFileService.Add(newFile);
-                    _viewModel.SourceFiles.Add(dto);
-                    _viewModel.UpdatedFiles.Add(dto);
-                }
+                string[] paths = FileDialogWindow.GetPath();
+                if (paths.Length == 0) return;
+                AddFiles(paths);
             }
             catch(UnauthorizedAccessException)
             {
                 MessageBox.Show("UnauthorizedAccessException\n Access to system files denied.");
                 return;
+            }
+        }
+
+        // This method adds all file paths to the database and updates the view models.
+        private void AddFiles(string[] paths)
+        {
+            using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
+            foreach (string path in paths)
+            {
+                if (path == "" || sourceFileService.PathExists(path)) continue;
+                SourceFileDto dto = sourceFileService.Add(path);
+                _viewModel.SourceFiles.Add(dto);
+                _viewModel.UpdatedFiles.Add(dto);
             }
         }
 
@@ -79,19 +85,13 @@ namespace FileMonitor
                     paths = Directory.GetFileSystemEntries(directory, "*", SearchOption.AllDirectories);
                     if (VerifyAddFolder(directory, paths))
                     {
-                        using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
                         using var sourceFolderService = new SourceFolderService(
                             RepositoryHelper.CreateSourceFolderServiceInstance(),
                             RepositoryHelper.CreateFolderFileMappingInstance(),
                             RepositoryHelper.CreateSourceFileRepositoryInstance()
                         );
-
-                        foreach (string path in paths)
-                        {
-                            SourceFileDto dto = sourceFileService.Add(path);
-                            _viewModel.SourceFiles.Add(dto);
-                        }
-                        sourceFolderService.Add(directory, paths); // Must be called after adding paths (see above)
+                        AddFiles(paths);
+                        sourceFolderService.Add(directory, paths); // Must be called after adding paths to avoid an exception.
                     }
                 }
             }
