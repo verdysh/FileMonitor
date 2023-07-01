@@ -39,14 +39,40 @@ namespace Services
             {
                 Path = directoryPath,
             });
+            AddFolderFileMapping(filePaths, GetDirectoryId(directoryPath));
             _sourceFolderRepository.SaveChanges();
         }
 
-        //
-        private void AddFolderFileMapping(string[] filePaths)
+        // This method adds the appropriate mapping. It stores the id of the monitored folder (directoryId).
+        // Then it stores the id for each file contained within that folder. The mapping can be used to know
+        // the exact files contained within a folder during its first addition to the database. So if files
+        // are added to that folder in the future then the program has a way to inform the user. 
+        private void AddFolderFileMapping(string[] filePaths, int directoryId)
         {
-
+            List<SourceFile> filesInMonitoredFolder = GetMonitoredFolderChildrenFiles(filePaths);
+            foreach(SourceFile file in filesInMonitoredFolder)
+            {
+                _folderFileMappingRepository.Add(
+                    new FolderFileMapping
+                    {
+                        SourceFileId = file.Id,
+                        SourceFolderId = directoryId
+                    }
+                );
+            }
+            _folderFileMappingRepository.SaveChanges();
         }
+
+        // Get all file paths from the database where the path matches the contents of "filePaths."
+        private List<SourceFile> GetMonitoredFolderChildrenFiles(string[] filePaths)
+            => _sourceFileRepository.GetRange(s => filePaths.Contains<string>(s.Path));
+
+        private int GetDirectoryId(string directoryPath)
+        {
+            List<SourceFolder> result = _sourceFolderRepository.GetRange(f => f.Path == directoryPath);
+            return result[0].Id;
+        }
+
 
         /// <summary>
         /// 
