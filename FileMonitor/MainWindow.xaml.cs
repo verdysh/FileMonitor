@@ -224,7 +224,8 @@ namespace FileMonitor
             List<SourceFileDto> sourceFileDtos = sourceFileService.GetModifiedFilePaths();
             foreach(SourceFileDto sourceFileDto in sourceFileDtos)
             {
-                _viewModel.UpdatedFiles.Add(sourceFileDto);
+                if (!_viewModel.UpdatedFiles.Contains(sourceFileDto))
+                    _viewModel.UpdatedFiles.Add(sourceFileDto);
             }
         }
     }
