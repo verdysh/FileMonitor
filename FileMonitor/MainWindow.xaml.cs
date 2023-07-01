@@ -11,6 +11,7 @@ using Services;
 using Services.Dto;
 using Services.Extensions;
 using Services.Helpers;
+using DataAccessLayer.Entities;
 
 namespace FileMonitor
 {
@@ -75,19 +76,21 @@ namespace FileMonitor
                 string directory = FolderDialogWindow.GetPath();
                 if (directory.Equals("")) return;
                 {
-                    using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
-                    string[] paths = null;
+                    string[]? paths = null;
                     paths = Directory.GetFileSystemEntries(directory, "*", SearchOption.AllDirectories);
-
-                    int numberOfDirectories = Directory.GetDirectories(directory, "*", SearchOption.AllDirectories).Length;
-                    int numberOfFiles = paths.Length;
-                    if (VerifyAddFolder(directory, numberOfDirectories, numberOfFiles))
+                    if (VerifyAddFolder(directory, paths))
                     {
+                        using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
+                        using var sourceFolderService = new SourceFolderService(
+                            RepositoryHelper.CreateSourceFolderServiceInstance(),
+                            RepositoryHelper.CreateFolderFileMappingInstance());
+
                         foreach (string path in paths)
                         {
                             SourceFileDto dto = sourceFileService.Add(path);
                             _viewModel.SourceFiles.Add(dto);
                         }
+                        sourceFolderService.Add(directory, paths); // Must be called after adding paths (see above)
                     }
                 }
             }
@@ -99,8 +102,10 @@ namespace FileMonitor
         }
 
         // Verifies that the user wants to add an entire folder. Displays the number of files that will be added by doing so.
-        private bool VerifyAddFolder(string directory, int numberOfDirectories, int numberOfFiles)
+        private bool VerifyAddFolder(string directory, string[] paths)
         {
+            int numberOfDirectories = Directory.GetDirectories(directory, "*", SearchOption.AllDirectories).Length;
+            int numberOfFiles = paths.Length;
             string text = $@"Do you wish to add the folder {directory}? 
 
 {numberOfFiles} file(s) from {numberOfDirectories} subfolders(s) will be monitored by the program.";
