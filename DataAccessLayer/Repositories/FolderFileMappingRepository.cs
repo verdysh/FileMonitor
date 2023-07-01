@@ -3,9 +3,9 @@
 namespace DataAccessLayer.Repositories
 {
     /// <summary>
-    /// A repository for the FolderFileMapping Entity. This class inherits from <see cref="RepositoryBase{TEntity}"/> and <see cref="IFolderFileMapping"/>.
+    /// A repository for the FolderFileMapping Entity. This class inherits from <see cref="RepositoryBase{TEntity}"/> and <see cref="IFolderFileMappingRepository"/>.
     /// </summary>
-    internal class FolderFileMappingRepository : RepositoryBase<FolderFileMapping>, IFolderFileMapping
+    internal class FolderFileMappingRepository : RepositoryBase<FolderFileMapping>, IFolderFileMappingRepository
     {
         /// <summary>
         /// Defines the <see cref="FolderFileMappingRepository"/> class constructor.
