@@ -73,7 +73,6 @@ namespace Services
             return result[0].Id;
         }
 
-
         /// <summary>
         /// 
         /// </summary>
@@ -88,6 +87,18 @@ namespace Services
                 });
             }
             _sourceFolderRepository.SaveChanges();
+        }
+
+        /// <summary>
+        /// Ensures that the service objects are properly disposed. Also calls <c>Dispose</c> on the repository objects.
+        /// </summary>
+        /// <param name="disposing"> Signifies that the object is not being disposed directly from the finalizer. </param>
+        protected override void Dispose(bool disposing)
+        {
+            _sourceFileRepository.Dispose();
+            _sourceFolderRepository.Dispose();
+            _folderFileMappingRepository.Dispose();
+            base.Dispose(disposing);
         }
     }
 }
