@@ -39,8 +39,8 @@ namespace Services
             {
                 Path = directoryPath,
             });
+            _sourceFolderRepository.SaveChanges(); 
             AddFolderFileMapping(filePaths, GetDirectoryId(directoryPath));
-            _sourceFolderRepository.SaveChanges();
         }
 
         // This method adds the appropriate mapping. It stores the id of the monitored folder (directoryId).
