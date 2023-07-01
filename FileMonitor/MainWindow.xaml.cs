@@ -27,7 +27,10 @@ namespace FileMonitor
         public MainWindow()
         {
             InitializeComponent();
-            using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
+            using var sourceFileService = new SourceFileService(
+                RepositoryHelper.CreateSourceFileRepositoryInstance(),
+                RepositoryHelper.CreateSourceFolderRepositoryInstance()
+                );
             using var backupPathService = new BackupPathService(RepositoryHelper.CreateBackupPathRepositoryInstance());
 
             _viewModel = new MainWindowViewModel(
