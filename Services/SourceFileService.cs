@@ -11,14 +11,17 @@ namespace Services
     public class SourceFileService : DisposableService
     {
         private ISourceFileRepository _sourceFileRepository;
+        private ISourceFolderRepository _sourceFolderRepository;
 
         /// <summary>
         /// The <see cref="SourceFileService"/> class constructor. 
         /// </summary>
         /// <param name="sourceFileRepository"> An instance of <see cref="ISourceFileRepository"/> which provides database access. </param>
-        public SourceFileService(ISourceFileRepository sourceFileRepository)
+        /// <param name="sourceFolderRepository"> An instance of <see cref="ISourceFolderRepository"/> which provides database access. </param>
+        public SourceFileService(ISourceFileRepository sourceFileRepository, ISourceFolderRepository sourceFolderRepository)
         {
             _sourceFileRepository = sourceFileRepository;
+            _sourceFolderRepository = sourceFolderRepository;
         }
 
         /// <summary>
@@ -45,6 +48,7 @@ namespace Services
         public List<SourceFileDto> GetModifiedFilePaths()
         {
             RefreshModifiedFilePaths();
+            CheckFoldersForNewFiles();
             List<SourceFileDto> result = _sourceFileRepository.GetRange(
                 s => s.IsModified == true,
                 s => new SourceFileDto
@@ -151,6 +155,11 @@ namespace Services
                 s => ids.Contains(s.Id),
                 s => s.Hash = EncryptionHelper.GetHash(s.Path));
             _sourceFileRepository.SaveChanges();
+        }
+
+        private void CheckFoldersForNewFiles()
+        {
+
         }
 
         /// <summary>
