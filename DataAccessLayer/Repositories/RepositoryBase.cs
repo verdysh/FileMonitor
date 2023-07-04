@@ -103,12 +103,12 @@ namespace DataAccessLayer.Repositories
             bool distinct = false
             )
         {
-            var query = _dbSet.Where(predicate);
+            IQueryable<TEntity> query = _dbSet.Where(predicate);
 
             if (order is not null)
                 query = query.OrderBy(order);
 
-            var projected = query.Select(select);
+            IQueryable<TResult> projected = query.Select(select);
 
             if (distinct)
                 projected = projected.Distinct();

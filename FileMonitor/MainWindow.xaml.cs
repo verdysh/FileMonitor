@@ -27,8 +27,10 @@ namespace FileMonitor
         public MainWindow()
         {
             InitializeComponent();
-            using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
-            using var backupPathService = new BackupPathService(RepositoryHelper.CreateBackupPathRepositoryInstance());
+            using SourceFileService sourceFileService = new SourceFileService(
+                RepositoryHelper.CreateSourceFileRepositoryInstance());
+            using BackupPathService backupPathService = new BackupPathService(
+                RepositoryHelper.CreateBackupPathRepositoryInstance());
 
             _viewModel = new MainWindowViewModel(
                 new ObservableCollection<BackupPathDto>(backupPathService.GetDirectoryPaths()),
@@ -60,7 +62,8 @@ namespace FileMonitor
         // This method adds all file paths to the database and updates the view models.
         private void AddFiles(string[] paths)
         {
-            using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
+            using SourceFileService sourceFileService = new SourceFileService(
+                RepositoryHelper.CreateSourceFileRepositoryInstance());
             foreach (string path in paths)
             {
                 if (path == "" || sourceFileService.PathExists(path)) continue;
@@ -85,7 +88,7 @@ namespace FileMonitor
                     paths = Directory.GetFileSystemEntries(directory, "*", SearchOption.AllDirectories);
                     if (VerifyAddFolder(directory, paths))
                     {
-                        using var sourceFolderService = new SourceFolderService(
+                        using SourceFolderService sourceFolderService = new SourceFolderService(
                             RepositoryHelper.CreateSourceFolderRepositoryInstance(),
                             RepositoryHelper.CreateFolderFileMappingInstance(),
                             RepositoryHelper.CreateSourceFileRepositoryInstance()
@@ -125,7 +128,7 @@ namespace FileMonitor
             MessageBoxResult result = ConfirmDeleteFiles();
             if (result == MessageBoxResult.Yes)
             {
-                using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
+                using SourceFileService sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
                 List<int> ids = new List<int>();
                 List<SourceFileDto> selectedFiles = new List<SourceFileDto>();
                 foreach (object item in FilesDisplayed.SelectedItems)
@@ -191,7 +194,8 @@ namespace FileMonitor
             List<int> ids = new List<int>();
             foreach (SourceFileDto dto in _viewModel.UpdatedFiles) ids.Add(dto.Id);
             _viewModel.UpdatedFiles.Clear();
-            using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
+            using SourceFileService sourceFileService = new SourceFileService(
+                RepositoryHelper.CreateSourceFileRepositoryInstance());
             sourceFileService.ResetIsModifiedFlag(ids);
             sourceFileService.UpdateHashesToCurrent(ids);
         }
@@ -200,7 +204,8 @@ namespace FileMonitor
         private void AddBackupPath_Click(object sender, RoutedEventArgs e)
         {
             string backupPath = FolderDialogWindow.GetPath();
-            using var backupPathService = new BackupPathService(RepositoryHelper.CreateBackupPathRepositoryInstance());
+            using BackupPathService backupPathService = new BackupPathService(
+                RepositoryHelper.CreateBackupPathRepositoryInstance());
             if (backupPath == "" || backupPathService.PathExists(backupPath)) return;
             BackupPathDto backupPathDto = backupPathService.Add(backupPath);
             _viewModel.BackupPaths.Add(backupPathDto);
@@ -220,7 +225,8 @@ namespace FileMonitor
         // A button click event handler to refresh the UpdatedFilesDisplayed ListView in the UI.
         private void RefreshUpdatedFiles_Click(object sender, RoutedEventArgs e)
         {
-            using var sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
+            using SourceFileService sourceFileService = new SourceFileService(
+                RepositoryHelper.CreateSourceFileRepositoryInstance());
             List<SourceFileDto> sourceFileDtos = sourceFileService.GetModifiedFilePaths();
             foreach(SourceFileDto sourceFileDto in sourceFileDtos)
             {

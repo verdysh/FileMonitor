@@ -14,7 +14,8 @@ namespace FileMonitor
         {
             if (!File.Exists(ConfigurationManager.AppSettings["DatabasePath"]))
             {
-                using var _db = new FileMonitorDbContext(ConfigurationManager.ConnectionStrings[nameof(FileMonitorDbContext)].ConnectionString);
+                using FileMonitorDbContext _db = new FileMonitorDbContext(
+                    ConfigurationManager.ConnectionStrings[nameof(FileMonitorDbContext)].ConnectionString);
                 _db.Database.EnsureCreated();
             }
             base.OnStartup(e);

@@ -18,9 +18,9 @@ namespace Services.Helpers
         /// <returns> A <see cref="SHA1"/> hash for the provided file. </returns>
         public static string GetHash(string file)
         {
-            using var sha1 = SHA1.Create();
-            using var stream = File.OpenRead(file);
-            var hash = sha1.ComputeHash(stream);
+            using SHA1 sha1 = SHA1.Create();
+            using FileStream stream = File.OpenRead(file);
+            byte[]? hash = sha1.ComputeHash(stream);
             return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
         }
     }

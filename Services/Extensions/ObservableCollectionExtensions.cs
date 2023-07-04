@@ -15,7 +15,7 @@ namespace Services.Extensions
         /// <param name="itemsToRemove"> An <see cref="IEnumerable{T}"/> collection of items to be removed. </param>
         public static void RemoveRange<T>(this ObservableCollection<T> collection, IEnumerable<T> itemsToRemove)
         {
-            foreach (var item in itemsToRemove)
+            foreach (T item in itemsToRemove)
             {
                 collection.Remove(item);
             }
