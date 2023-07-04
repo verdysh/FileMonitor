@@ -233,6 +233,13 @@ namespace FileMonitor
                 if (!_viewModel.UpdatedFiles.Contains(sourceFileDto))
                     _viewModel.UpdatedFiles.Add(sourceFileDto);
             }
+            //begin test code
+            using SourceFolderService sourceFolderService = new SourceFolderService(
+                RepositoryHelper.CreateSourceFolderRepositoryInstance(),
+                RepositoryHelper.CreateFolderFileMappingInstance(),
+                RepositoryHelper.CreateSourceFileRepositoryInstance());
+            sourceFolderService.FoldersAreUpdated(out _);
+            //end test code
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer.Entities;
 using DataAccessLayer.Repositories;
 using Services.Dto;
+using System.Diagnostics;
 
 namespace Services
 {
@@ -93,9 +94,9 @@ namespace Services
         /// <summary>
         /// Returns true if any monitored folder contains newly added files, false otherwise. 
         /// </summary>
-        /// <param name="newFilesFromMonitoredFolder"> A <see cref="Dictionary{TKey, TValue}"/> using <see cref="SourceFolderDto"/> objects for keys, and a list of strings for values. The values represent all files that have been added to the monitored folder. </param>
+        /// <param name="newFilesFromFolder"> A <see cref="Dictionary{TKey, TValue}"/> using <see cref="SourceFolderDto"/> objects for keys, and a list of strings for values. The values represent all files that have been added to the monitored folder. </param>
         public bool FoldersAreUpdated(
-            out Dictionary<SourceFolderDto, List<string>>? newFilesFromMonitoredFolder)
+            out Dictionary<SourceFolderDto, List<string>>? newFilesFromFolder)
         {
             List<SourceFolderDto> folders = _sourceFolderRepository.GetRange(
                 f => true,
@@ -107,7 +108,7 @@ namespace Services
                 f => f.Id);
 
             bool foldersAreUpdated = false;
-            newFilesFromMonitoredFolder = null;
+            newFilesFromFolder = null;
             foreach (SourceFolderDto folder in folders)
             {
                 string[] currentFiles = GetCurrentFiles(folder);
@@ -117,12 +118,31 @@ namespace Services
                     if (storedFiles.Contains(file)) continue;
                     else
                     {
-                        foldersAreUpdated = true;
-                        if(!newFilesFromMonitoredFolder.TryAdd(folder, new List<string>() { file }))
-                            newFilesFromMonitoredFolder[folder].Add(file);
+                        if(foldersAreUpdated == false) foldersAreUpdated = true;
+
+                        // Dictionary will be null on the first attempt.
+                        if (newFilesFromFolder == null)
+                            newFilesFromFolder = new Dictionary<SourceFolderDto, List<string>>();
+
+                        // If TryAdd returns true, add the key/value pair. Else, add the file to the currently existing key.
+                        if(!newFilesFromFolder.TryAdd(folder, new List<string>() { file }))
+                            newFilesFromFolder[folder].Add(file);
                     }
                 }
             }
+
+            //begin test code
+            if (newFilesFromFolder == null) return false;
+            foreach(KeyValuePair<SourceFolderDto, List<string>> kvp in newFilesFromFolder)
+            {
+                Debug.WriteLine("-----------------");
+                foreach (string file in kvp.Value)
+                {
+                    Debug.WriteLine($"key: {kvp.Key.Path}, value: {file}\n");
+                }
+                Debug.WriteLine("\n");
+            }
+            //end test code
             return foldersAreUpdated;
         }
 
@@ -139,7 +159,7 @@ namespace Services
             foreach (FolderFileMapping map in mapping)
             {
                 SourceFileDto? file = _sourceFileRepository.FirstOrDefault(
-                    f => f.Id == map.Id,
+                    f => f.Id == map.SourceFileId,
                     f => new SourceFileDto
                     {
                         Path = f.Path
