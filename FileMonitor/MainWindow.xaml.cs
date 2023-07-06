@@ -159,6 +159,11 @@ namespace FileMonitor
         // uses the current date and time.
         private void CopyAllFiles_Click(object sender, RoutedEventArgs e)
         {
+            if(!_viewModel.BackupSelected)
+            {
+                MessageBox.Show("Please add a backup path.");
+                return;
+            }
             foreach(BackupPathDto dto in _viewModel.BackupPaths)
             {
                 if(dto.IsSelected)
@@ -167,12 +172,17 @@ namespace FileMonitor
                     backup.CopyAll(_viewModel.SourceFiles.Select(f => f.Path));
                 }
             }
-            MessageBox.Show("Backup complete");
+            MessageBox.Show("Backup complete.");
         }
 
         // A button click event handler to copy only the files that have been updated or changed since the last backup.
         private void CopyUpdatedFiles_Click(object sender, RoutedEventArgs e)
         {
+            if (!_viewModel.BackupSelected)
+            {
+                MessageBox.Show("Please add a backup path.");
+                return;
+            }
             foreach (BackupPathDto dto in _viewModel.BackupPaths)
             {
                 if (dto.IsSelected)
@@ -182,6 +192,7 @@ namespace FileMonitor
                 }
             }
             ResetUpdatedFiles();
+            MessageBox.Show("Backup complete.");
         }
 
         // The main goal here is to reset the collection of updated files, both in the UI and in the database. To do so, the 
