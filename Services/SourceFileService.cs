@@ -27,8 +27,8 @@ namespace Services
         public List<SourceFileDto> GetFilePaths()
         {
             List<SourceFileDto> result = _sourceFileRepository.GetRange(
-                s => true, 
-                // Select all Entities where its properties match the Dto properties
+                s => true,
+                // Create a new Dto for each Entity, and assign the Dto property values from the Entity properties
                 s => new SourceFileDto
                 {
                     Id = s.Id,
