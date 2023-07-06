@@ -12,6 +12,7 @@ namespace FileMonitor.ViewModels
         private ObservableCollection<BackupPathDto> _backupPaths;
         private ObservableCollection<SourceFileDto> _sourceFiles;
         private ObservableCollection<SourceFileDto> _updatedFiles;
+        private ObservableCollection<SourceFolderDto> _sourceFolders;
         private bool _backupSelected;
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace FileMonitor.ViewModels
         public ObservableCollection<BackupPathDto> BackupPaths
         {
             get { return _backupPaths; }
-            set { _backupPaths = value; }
+            //set { _backupPaths = value; }
         }
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace FileMonitor.ViewModels
         public ObservableCollection<SourceFileDto> SourceFiles
         {
             get { return _sourceFiles; }
-            set { _sourceFiles = value; }
+            //set { _sourceFiles = value; }
         }
 
         /// <summary>
@@ -56,7 +57,16 @@ namespace FileMonitor.ViewModels
         public ObservableCollection<SourceFileDto> UpdatedFiles
         {
             get { return _updatedFiles; }
-            set { _updatedFiles = value; }
+            //set { _updatedFiles = value; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ObservableCollection<SourceFolderDto> SourceFolders 
+        {
+            get { return _sourceFolders; } 
+            //set { _sourceFolders = value; }
         }
 
         /// <summary>
@@ -65,14 +75,17 @@ namespace FileMonitor.ViewModels
         /// <param name="backupPaths"> All backup paths stored in the database, formatted as data transfer objects. </param>
         /// <param name="sourceFiles"> All files monitored by the program, formatted as data transfer objects. </param>
         /// <param name="updatedFiles"> Only the files that have been updated since the last time they were copied to a backup location, formatted as data transfer objects. </param>
+        /// <param name="sourceFolders"> All folders monitored by the program, formatted as data transfer objects. </param>
         public MainWindowViewModel(
             ObservableCollection<BackupPathDto> backupPaths, 
             ObservableCollection<SourceFileDto> sourceFiles,
-            ObservableCollection<SourceFileDto> updatedFiles)
+            ObservableCollection<SourceFileDto> updatedFiles,
+            ObservableCollection<SourceFolderDto> sourceFolders)
         {
             _backupPaths = backupPaths;
             _sourceFiles = sourceFiles;
             _updatedFiles = updatedFiles;
+            _sourceFolders = sourceFolders;
             _backupSelected = IsAnyBackupSelected();
         }
 
