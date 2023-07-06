@@ -23,6 +23,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
                     <Grid.RowDefinitions>
@@ -43,7 +44,7 @@
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Top">
 
-                                <TextBlock Text="All files:"
+                                <TextBlock Text="Monitored Files:"
                                            FontSize="16"/>
                             </Border>
 
@@ -67,10 +68,6 @@
                                         Content="Add File" 
                                         Click="AddNewFile_Click"/>
 
-                                <Button x:Name="AddNewFolder" 
-                                        Content="Add Folder" 
-                                        Click="AddNewFolder_Click"/>
-
                                 <Button x:Name="DeleteFiles" 
                                         Content="Delete File(s)" 
                                         Click="DeleteFiles_Click"
@@ -81,7 +78,7 @@
                                             IntToBoolValueConverter}}" />
                                 
                                 <Button x:Name="CopyAllFiles" 
-                                        Content="Copy All" 
+                                        Content="Copy All Files" 
                                         Click="CopyAllFiles_Click" 
                                         IsEnabled="{Binding BackupSelected}"/>
 
@@ -108,10 +105,79 @@
                             </ListView>
                         </Grid>
                     </Border>
-
+                    
                     <Border BorderBrush="Black" 
                             BorderThickness=".5" 
                             Grid.Column="1"
+                            Grid.Row="0"
+                            Grid.RowSpan="2">
+                        <Grid>
+                            <Border BorderBrush="Black" 
+                                    BorderThickness=".4" 
+                                    Background="Aquamarine" 
+                                    Padding="9" 
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Top">
+
+                                <TextBlock Text="Monitored Folders:"
+                                           FontSize="16"/>
+                            </Border>
+
+                            <!-- Horizontal stack panel for button layout -->
+                            <StackPanel Orientation="Horizontal" 
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Top"
+                                        Height="25" 
+                                        Margin="10,53,0,10">
+
+                                <StackPanel.Resources>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="Margin" 
+                                                Value="0,0,10,0"/>
+                                        <Setter Property="Padding"
+                                                Value="3"/>
+                                    </Style>
+                                </StackPanel.Resources>
+
+                                <Button x:Name="AddNewFolder" 
+                                        Content="Add Folder" 
+                                        Click="AddNewFolder_Click"/>
+
+                                <Button x:Name="DeleteFolders" 
+                                        Content="Delete Folder(s)" 
+                                        Click="DeleteFolders_Click"
+                                        IsEnabled="{
+                                            Binding ElementName=FilesDisplayed, 
+                                            Path=SelectedIndex, 
+                                            Converter={StaticResource 
+                                            IntToBoolValueConverter}}" />
+                            </StackPanel>
+
+                            <ListView x:Name="FoldersDisplayed"  
+                                      Margin="0,90,0,0"
+                                      ItemsSource="{Binding SourceFiles}" 
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                      ScrollViewer.VerticalScrollBarVisibility="Auto" >
+
+                                <ListView.View>
+                                    <GridView AllowsColumnReorder="False">
+                                        <GridView.ColumnHeaderContainerStyle>
+                                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </Style>
+                                        </GridView.ColumnHeaderContainerStyle>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Path}" Width="{Binding ActualWidth, ElementName=FoldersDisplayed}"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Grid>
+                    </Border>
+
+                    <Border BorderBrush="Black" 
+                            BorderThickness=".5" 
+                            Grid.Column="2"
                             Grid.Row="0">
 
                         <Grid>
@@ -126,23 +192,32 @@
                                            FontSize="16"/>
                             </Border>
                             
-                            <Button x:Name="CopyUpdatedFiles" 
-                                    Content="Copy All" 
-                                    Click="CopyUpdatedFiles_Click" 
-                                    HorizontalAlignment="Left" 
-                                    VerticalAlignment="Top"
-                                    Padding="3"
-                                    Height="25" 
-                                    Margin="10,53,0,0"/>
+                            <!-- Horizontal stack panel for button layout -->
+                            <StackPanel Orientation="Horizontal" 
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Top"
+                                        Height="25" 
+                                        Margin="10,53,0,10">
+
+                                <StackPanel.Resources>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="Margin" 
+                                                Value="0,0,10,0"/>
+                                        <Setter Property="Padding"
+                                                Value="3"/>
+                                    </Style>
+                                </StackPanel.Resources>
+
+                                <Button x:Name="CopyUpdatedFiles" 
+                                        Content="Copy Updated Files" 
+                                        Click="CopyUpdatedFiles_Click" />
                             
-                            <Button x:Name="RefreshUpdatedFiles" 
-                                    Content="Refresh View" 
-                                    Click="RefreshUpdatedFiles_Click"
-                                    HorizontalAlignment="Left" 
-                                    VerticalAlignment="Top"
-                                    Padding="3"
-                                    Height="25" 
-                                    Margin="73,53,0,0"/>
+                                <Button x:Name="RefreshUpdatedFiles" 
+                                        Content="Refresh View" 
+                                        Click="RefreshUpdatedFiles_Click"/>
+                            </StackPanel>
+                            
+
 
                             <ListView x:Name="UpdatedFilesDisplayed" 
                                         Margin="0,90,0,0"
@@ -168,7 +243,7 @@
 
                     <Border BorderBrush="Black" 
                             BorderThickness=".5" 
-                            Grid.Column="1"
+                            Grid.Column="2"
                             Grid.Row="1">
                         <Grid>
                             <Border BorderBrush="Black" 
