@@ -31,6 +31,23 @@ namespace Services
         }
 
         /// <summary>
+        /// Returns all monitored folders from the database.
+        /// </summary>
+        public List<SourceFolderDto> GetFolderPaths()
+        {
+            return _sourceFolderRepository.GetRange(
+                sf => true,
+                // Create a new Dto for each Entity, and assign the Dto property values from the Entity properties
+                sf => new SourceFolderDto
+                {
+                    Id = sf.Id,
+                    Path = sf.Path,
+                    SourceFiles = null // TODO. Add reference to SourceFiles?
+                },
+                sf => sf.Id);
+        }
+
+        /// <summary>
         /// Adds a monitored folder to the database. This method ensures appropriate mapping from the source folder to all child files contained within it. <see cref="SourceFileService.Add(string)"/> must be called first on all new file paths before this method is called. This ensures that the file IDs are created, allowing for the folders and files to be mapped appropriately.
         /// </summary>
         /// <param name="directoryPath"> The folder to add to the database. </param>
