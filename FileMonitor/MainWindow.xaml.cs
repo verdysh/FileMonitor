@@ -31,11 +31,16 @@ namespace FileMonitor
                 RepositoryHelper.CreateSourceFileRepositoryInstance());
             using BackupPathService backupPathService = new BackupPathService(
                 RepositoryHelper.CreateBackupPathRepositoryInstance());
+            using SourceFolderService sourceFolderService = new SourceFolderService(
+                RepositoryHelper.CreateSourceFolderRepositoryInstance(),
+                RepositoryHelper.CreateFolderFileMappingInstance(),
+                RepositoryHelper.CreateSourceFileRepositoryInstance());
 
             _viewModel = new MainWindowViewModel(
                 new ObservableCollection<BackupPathDto>(backupPathService.GetDirectoryPaths()),
                 new ObservableCollection<SourceFileDto>(sourceFileService.GetFilePaths()),
-                new ObservableCollection<SourceFileDto>(sourceFileService.GetModifiedFilePaths())
+                new ObservableCollection<SourceFileDto>(sourceFileService.GetModifiedFilePaths()),
+                new ObservableCollection<SourceFolderDto>(sourceFolderService.GetFolderPaths())
             );
             DataContext = _viewModel;
         }
