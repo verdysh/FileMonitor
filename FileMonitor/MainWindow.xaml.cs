@@ -252,6 +252,11 @@ namespace FileMonitor
             sourceFolderService.FoldersAreUpdated(out _);
             //end test code
         }
+
+        private void DeleteFolders_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
