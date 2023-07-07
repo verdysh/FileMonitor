@@ -45,7 +45,8 @@
                                     VerticalAlignment="Top">
 
                                 <TextBlock Text="Monitored Files:"
-                                           FontSize="16"/>
+                                           FontSize="16"
+                                           FontWeight="Bold"/>
                             </Border>
 
                             <!-- Horizontal stack panel for button layout -->
@@ -120,7 +121,8 @@
                                     VerticalAlignment="Top">
 
                                 <TextBlock Text="Monitored Folders:"
-                                           FontSize="16"/>
+                                           FontSize="16"
+                                           FontWeight="Bold"/>
                             </Border>
 
                             <!-- Horizontal stack panel for button layout -->
@@ -189,7 +191,8 @@
                                     VerticalAlignment="Top">
 
                                 <TextBlock Text="Updated files:"
-                                           FontSize="16"/>
+                                           FontSize="16"
+                                           FontWeight="Bold"/>
                             </Border>
                             
                             <!-- Horizontal stack panel for button layout -->
@@ -254,7 +257,8 @@
                                     VerticalAlignment="Top">
 
                                 <TextBlock Text="Backup Paths:"
-                                           FontSize="16"/>
+                                           FontSize="16"
+                                           FontWeight="Bold"/>
                             </Border>
 
                             <Button x:Name="AddBackupPath" 
@@ -305,6 +309,52 @@
             <TabItem Header="Settings">
                 <ScrollViewer>
                     <Grid Background="#FFE5E5E5">
+                        
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Border BorderBrush="Black" 
+                                BorderThickness=".5" 
+                                Grid.Column="0"
+                                Grid.Row="1">
+                            
+                            <Grid>
+                                <Border BorderBrush="Black" 
+                                        BorderThickness=".4" 
+                                        Background="MediumPurple" 
+                                        Padding="9" 
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Top">
+                                    
+                                    <TextBlock Text="User Settings"
+                                               FontSize="16"
+                                               FontWeight="Bold"/>
+                                </Border>
+                            
+                                <StackPanel Orientation="Vertical"
+                                            Grid.Column="0"
+                                            Margin="10,53,0,10">
+                                    <CheckBox Content="Overwrite updated files? (This will only keep the latest copy of a file.)"/>
+                                </StackPanel>
+                            
+                            </Grid>
+                        </Border>
+                        
+                        <Border BorderBrush="Black" 
+                               BorderThickness=".5" 
+                               Grid.Column="1"
+                               Grid.Row="1">
+                           
+                            <StackPanel 
+                                Orientation="Vertical"
+                                Grid.Column="0"
+                                Margin="20,20,0,20">
+                            </StackPanel>
+                            
+                        </Border>
+
                     </Grid>
                 </ScrollViewer>
             </TabItem>
