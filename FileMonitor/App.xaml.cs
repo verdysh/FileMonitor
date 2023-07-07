@@ -10,6 +10,9 @@ namespace FileMonitor
     /// </summary>
     public partial class App : Application
     {
+        /// <summary>
+        /// Override <see cref="App.OnStartup(StartupEventArgs)"/> to ensure the database file is created. Do so using <c>DbContext.EnsureCreated()</c>.
+        /// </summary>
         protected override void OnStartup(StartupEventArgs e)
         {
             if (!File.Exists(ConfigurationManager.AppSettings["DatabasePath"]))
