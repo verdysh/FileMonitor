@@ -1,6 +1,7 @@
 ﻿using Services.Dto;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Configuration;
 
 namespace FileMonitor.ViewModels
 {
@@ -14,6 +15,7 @@ namespace FileMonitor.ViewModels
         private ObservableCollection<SourceFileDto> _updatedFiles;
         private ObservableCollection<SourceFolderDto> _sourceFolders;
         private bool _backupSelected;
+        private bool _overwriteUpdatedFiles;
 
         /// <summary>
         /// A public event handler to notify any data bindings when a property has changed.
@@ -87,6 +89,7 @@ namespace FileMonitor.ViewModels
             _updatedFiles = updatedFiles;
             _sourceFolders = sourceFolders;
             _backupSelected = IsAnyBackupSelected();
+            //_overwriteUpdatedFiles = ConfigurationManager.AppSettings["OverwriteUpdatedFiles"];
         }
 
         /// <summary>
