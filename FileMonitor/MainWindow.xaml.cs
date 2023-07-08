@@ -71,7 +71,9 @@ namespace FileMonitor
                 RepositoryHelper.CreateSourceFileRepositoryInstance());
             foreach (string path in paths)
             {
-                if (path == "" || sourceFileService.PathExists(path)) continue;
+                FileAttributes attributes = File.GetAttributes(path);
+                // If the path is an empty string, if it exists in the database, or if it is a directory, then continue
+                if (path == "" || sourceFileService.PathExists(path) || attributes.HasFlag(FileAttributes.Directory)) continue;
                 SourceFileDto dto = sourceFileService.Add(path);
                 _viewModel.SourceFiles.Add(dto);
                 _viewModel.UpdatedFiles.Add(dto);
