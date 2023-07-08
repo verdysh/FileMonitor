@@ -119,7 +119,7 @@ namespace Services
         /// <summary>
         /// Returns true if any monitored folder contains newly added files, false otherwise. 
         /// </summary>
-        /// <param name="newFilesFromFolder"> A <see cref="Dictionary{TKey, TValue}"/> using <see cref="SourceFolderDto"/> objects for keys, and a list of strings for values. The values represent all files that have been added to the monitored folder. </param>
+        /// <param name="newFilesFromFolder"> An out parameter of type <see cref="Dictionary{TKey, TValue}"/> using <see cref="SourceFolderDto"/> objects for keys, and a list of strings for values. The values represent all files that have been added to the monitored folder. </param>
         public bool FoldersAreUpdated(
             out Dictionary<SourceFolderDto, List<string>>? newFilesFromFolder)
         {
@@ -130,10 +130,10 @@ namespace Services
             foreach (SourceFolderDto folder in folders)
             {
                 string[] currentFiles = GetCurrentFiles(folder);
-                List<SourceFileDto> storedFiles = folder.SourceFiles.ToList();
+                List<string> storedFiles = GetFileDtoPaths(folder.SourceFiles.ToList());
                 foreach(string file in currentFiles)
                 {
-                    if (storedFiles.Contains()) continue;
+                    if (storedFiles.Contains(file)) continue;
                     else
                     {
                         if(foldersAreUpdated == false) foldersAreUpdated = true;
@@ -172,6 +172,14 @@ namespace Services
                     });
                 if(file != null) result.Add(file);
             }
+            return result;
+        }
+
+        // Get a list of file paths from a SourceFileDto list.
+        private List<string> GetFileDtoPaths(List<SourceFileDto> files)
+        {
+            List<string> result = new List<string>();
+            foreach(SourceFileDto file in files) result.Add(file.Path);
             return result;
         }
 
