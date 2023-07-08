@@ -101,7 +101,8 @@ namespace FileMonitor
                             RepositoryHelper.CreateSourceFileRepositoryInstance()
                         );
                         AddFiles(paths);
-                        sourceFolderService.Add(directory, paths); // Must be called after adding paths to avoid an exception.
+                        SourceFolderDto dto = sourceFolderService.Add(directory, paths); // Must be called after adding paths to avoid an exception.
+                        _viewModel.SourceFolders.Add(dto);
                     }
                 }
             }
