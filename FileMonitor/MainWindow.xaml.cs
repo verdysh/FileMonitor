@@ -37,10 +37,10 @@ namespace FileMonitor
                 RepositoryHelper.CreateSourceFileRepositoryInstance());
 
             _viewModel = new MainWindowViewModel(
-                new ObservableCollection<BackupPathDto>(backupPathService.GetDirectoryPaths()),
-                new ObservableCollection<SourceFileDto>(sourceFileService.GetFilePaths()),
-                new ObservableCollection<SourceFileDto>(sourceFileService.GetModifiedFilePaths()),
-                new ObservableCollection<SourceFolderDto>(sourceFolderService.GetFolderPaths())
+                new ObservableCollection<BackupPathDto>(backupPathService.GetDirectories()),
+                new ObservableCollection<SourceFileDto>(sourceFileService.GetFiles()),
+                new ObservableCollection<SourceFileDto>(sourceFileService.GetModifiedFiles()),
+                new ObservableCollection<SourceFolderDto>(sourceFolderService.GetFolders())
             );
             DataContext = _viewModel;
         }
@@ -246,7 +246,7 @@ namespace FileMonitor
         {
             using SourceFileService sourceFileService = new SourceFileService(
                 RepositoryHelper.CreateSourceFileRepositoryInstance());
-            List<SourceFileDto> sourceFileDtos = sourceFileService.GetModifiedFilePaths();
+            List<SourceFileDto> sourceFileDtos = sourceFileService.GetModifiedFiles();
             foreach(SourceFileDto sourceFileDto in sourceFileDtos)
             {
                 if (!_viewModel.UpdatedFiles.Contains(sourceFileDto))

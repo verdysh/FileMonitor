@@ -23,7 +23,7 @@ namespace Services
         /// <summary>
         /// Returns all backup directory paths from the database.
         /// </summary>
-        public List<BackupPathDto> GetDirectoryPaths()
+        public List<BackupPathDto> GetDirectories()
         {
             List<BackupPathDto> result = _repository.GetRange(
                 f => true,

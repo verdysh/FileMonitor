@@ -24,7 +24,7 @@ namespace Services
         /// <summary>
         /// Returns all source file paths from the database.
         /// </summary>
-        public List<SourceFileDto> GetFilePaths()
+        public List<SourceFileDto> GetFiles()
         {
             List<SourceFileDto> result = _sourceFileRepository.GetRange(
                 s => true,
@@ -42,7 +42,7 @@ namespace Services
         /// <summary>
         /// Returns all source file paths from the database if the IsModified property is set to true.
         /// </summary>
-        public List<SourceFileDto> GetModifiedFilePaths()
+        public List<SourceFileDto> GetModifiedFiles()
         {
             RefreshModifiedFilePaths();
             List<SourceFileDto> result = _sourceFileRepository.GetRange(
