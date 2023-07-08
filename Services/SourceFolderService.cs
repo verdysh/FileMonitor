@@ -41,7 +41,6 @@ namespace Services
                 {
                     Id = sf.Id,
                     Path = sf.Path,
-                    SourceFiles = GetStoredFiles(sf.Id) // TODO. Use EF to track and retrieve a list of SourceFiles
                 },
                 sf => sf.Id);
         }
@@ -130,7 +129,7 @@ namespace Services
             foreach (SourceFolderDto folder in folders)
             {
                 string[] currentFiles = GetCurrentFiles(folder);
-                List<string> storedFiles = GetFileDtoPaths(folder.SourceFiles.ToList());
+                List<string> storedFiles = GetFileDtoPaths(GetStoredFiles(folder.Id));
                 foreach(string file in currentFiles)
                 {
                     if (storedFiles.Contains(file)) continue;
