@@ -104,6 +104,10 @@ namespace Services
         {
             foreach (int id in ids)
             {
+                List<SourceFile> filesToRemove = GetStoredFilesFromFolder(id);
+                _sourceFileRepository.RemoveRange(filesToRemove);
+                _sourceFileRepository.SaveChanges();
+
                 _sourceFolderRepository.Remove(new SourceFolder
                 { 
                     Id = id 
@@ -125,8 +129,8 @@ namespace Services
             newFilesFromFolder = null;
             foreach (SourceFolderDto folder in folders)
             {
-                string[] currentFiles = GetCurrentFiles(folder);
-                List<string> storedFiles = GetFileDtoPaths(GetStoredFiles(folder.Id));
+                string[] currentFiles = GetCurrentFilesFromFolder(folder);
+                List<string> storedFiles = GetFilePaths(GetStoredFilesFromFolder(folder.Id));
                 foreach(string file in currentFiles)
                 {
                     if (storedFiles.Contains(file)) continue;
@@ -148,34 +152,30 @@ namespace Services
         }
 
         // Get all current files and (including subdirectories) from the provided folder.
-        private string[] GetCurrentFiles(SourceFolderDto folder) 
+        private string[] GetCurrentFilesFromFolder(SourceFolderDto folder) 
             => Directory.GetFileSystemEntries(folder.Path, "*", SearchOption.AllDirectories);
 
         // Get all files stored in the database if they are mapped to a SourceFolder object. 
-        private List<SourceFileDto> GetStoredFiles(int folderId)
+        private List<SourceFile> GetStoredFilesFromFolder(int folderId)
         {
-            List<SourceFileDto> result = new List<SourceFileDto>();
+            List<SourceFile> result = new List<SourceFile>();
             List<FolderFileMapping> mapping = _folderFileMappingRepository.GetRange(
                 ffm => ffm.SourceFolderId == folderId);
             foreach (FolderFileMapping map in mapping)
             {
-                SourceFileDto? file = _sourceFileRepository.FirstOrDefault(
+                SourceFile? file = _sourceFileRepository.FirstOrDefault(
                     f => f.Id == map.SourceFileId,
-                    f => new SourceFileDto
-                    {
-                        Path = f.Path,
-                        Id = f.Id
-                    });
+                    asNoTracking: false);
                 if(file != null) result.Add(file);
             }
             return result;
         }
 
-        // Get a list of file paths from a SourceFileDto list.
-        private List<string> GetFileDtoPaths(List<SourceFileDto> files)
+        // Get a list of the specified file paths from a SourceFile list.
+        private List<string> GetFilePaths(List<SourceFile> files)
         {
             List<string> result = new List<string>();
-            foreach(SourceFileDto file in files) result.Add(file.Path);
+            foreach (SourceFile file in files) result.Add(file.Path);
             return result;
         }
 
