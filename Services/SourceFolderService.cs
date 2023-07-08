@@ -92,12 +92,9 @@ namespace Services
         private List<SourceFile> GetMonitoredFolderChildrenFiles(string[] filePaths)
             => _sourceFileRepository.GetRange(s => filePaths.Contains<string>(s.Path));
 
-        private int GetDirectoryId(string directoryPath)
-        {
-            // TODO, update to use first or default
-            List<SourceFolder> result = _sourceFolderRepository.GetRange(f => f.Path == directoryPath);
-            return result[0].Id;
-        }
+        private int GetDirectoryId(string directoryPath) 
+            => _sourceFolderRepository.FirstOrDefault(f => f.Path == directoryPath).Id;
+        
 
         /// <summary>
         /// Remove a range of source folders from the database. This method also removes any source files contained within that folder, as long as the files were not added individually.
