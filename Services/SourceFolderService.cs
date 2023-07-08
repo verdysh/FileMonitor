@@ -52,14 +52,22 @@ namespace Services
         /// </summary>
         /// <param name="directoryPath"> The folder to add to the database. </param>
         /// <param name="filePaths"> An array of all newly added file paths. </param>
-        public void Add(string directoryPath, string[] filePaths)
+        /// <returns> A source folder DTO object for updating the UI. </returns>
+        public SourceFolderDto Add(string directoryPath, string[] filePaths)
         {
-            _sourceFolderRepository.Add(new SourceFolder
+            SourceFolder entity = new SourceFolder
             {
-                Path = directoryPath,
-            });
+                Path = directoryPath
+            };
+            _sourceFolderRepository.Add(entity);
             _sourceFolderRepository.SaveChanges(); 
             AddFolderFileMapping(filePaths, GetDirectoryId(directoryPath));
+
+            return new SourceFolderDto
+            {
+                Path = entity.Path,
+                Id = entity.Id
+            };
         }
 
         // This method adds the appropriate mapping. It stores the id of the monitored folder (directoryId).
