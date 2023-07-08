@@ -1,7 +1,6 @@
 ﻿using DataAccessLayer.Entities;
 using DataAccessLayer.Repositories;
 using Services.Dto;
-using System.Diagnostics;
 
 namespace Services
 {
@@ -33,7 +32,7 @@ namespace Services
         /// <summary>
         /// Returns all monitored folders from the database.
         /// </summary>
-        public List<SourceFolderDto> GetFolderPaths()
+        public List<SourceFolderDto> GetFolders()
         {
             return _sourceFolderRepository.GetRange(
                 sf => true,
@@ -42,7 +41,7 @@ namespace Services
                 {
                     Id = sf.Id,
                     Path = sf.Path,
-                    SourceFiles = null // TODO. Add reference to SourceFiles?
+                    SourceFiles = GetStoredFiles(sf.Id) // TODO. Use EF to track and retrieve a list of SourceFiles
                 },
                 sf => sf.Id);
         }
@@ -96,12 +95,13 @@ namespace Services
 
         private int GetDirectoryId(string directoryPath)
         {
+            // TODO, update to use first or default
             List<SourceFolder> result = _sourceFolderRepository.GetRange(f => f.Path == directoryPath);
             return result[0].Id;
         }
 
         /// <summary>
-        /// Remove a range of source folders from the database.
+        /// Remove a range of source folders from the database. This method also removes any source files contained within that folder, as long as the files were not added individually.
         /// </summary>
         /// <param name="ids"> The Ids for each source folder path to be removed. </param>
         public void Remove(IEnumerable<int> ids)
@@ -123,24 +123,17 @@ namespace Services
         public bool FoldersAreUpdated(
             out Dictionary<SourceFolderDto, List<string>>? newFilesFromFolder)
         {
-            List<SourceFolderDto> folders = _sourceFolderRepository.GetRange(
-                f => true,
-                f => new SourceFolderDto
-                {
-                    Id = f.Id,
-                    Path = f.Path
-                },
-                f => f.Id);
+            List<SourceFolderDto> folders = GetFolders();
 
             bool foldersAreUpdated = false;
             newFilesFromFolder = null;
             foreach (SourceFolderDto folder in folders)
             {
                 string[] currentFiles = GetCurrentFiles(folder);
-                List<string> storedFiles = GetStoredFiles(folder);
+                List<SourceFileDto> storedFiles = folder.SourceFiles.ToList();
                 foreach(string file in currentFiles)
                 {
-                    if (storedFiles.Contains(file)) continue;
+                    if (storedFiles.Contains()) continue;
                     else
                     {
                         if(foldersAreUpdated == false) foldersAreUpdated = true;
@@ -155,19 +148,6 @@ namespace Services
                     }
                 }
             }
-
-            //begin test code
-            if (newFilesFromFolder == null) return false;
-            foreach(KeyValuePair<SourceFolderDto, List<string>> kvp in newFilesFromFolder)
-            {
-                Debug.WriteLine("-----------------");
-                foreach (string file in kvp.Value)
-                {
-                    Debug.WriteLine($"key: {kvp.Key.Path}, value: {file}\n");
-                }
-                Debug.WriteLine("\n");
-            }
-            //end test code
             return foldersAreUpdated;
         }
 
@@ -176,20 +156,21 @@ namespace Services
             => Directory.GetFileSystemEntries(folder.Path, "*", SearchOption.AllDirectories);
 
         // Get all files stored in the database if they are mapped to a SourceFolder object. 
-        private List<string> GetStoredFiles(SourceFolderDto folder)
+        private List<SourceFileDto> GetStoredFiles(int folderId)
         {
-            List<string> result = new List<string>();
+            List<SourceFileDto> result = new List<SourceFileDto>();
             List<FolderFileMapping> mapping = _folderFileMappingRepository.GetRange(
-                ffm => ffm.SourceFolderId == folder.Id);
+                ffm => ffm.SourceFolderId == folderId);
             foreach (FolderFileMapping map in mapping)
             {
                 SourceFileDto? file = _sourceFileRepository.FirstOrDefault(
                     f => f.Id == map.SourceFileId,
                     f => new SourceFileDto
                     {
-                        Path = f.Path
+                        Path = f.Path,
+                        Id = f.Id
                     });
-                if(file != null) result.Add(file.Path);
+                if(file != null) result.Add(file);
             }
             return result;
         }
