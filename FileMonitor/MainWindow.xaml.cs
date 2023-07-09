@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.IO;
 using System;
+using System.Threading.Tasks;
 using FileMonitor.Dialogs;
 using FileMonitor.FileBackups;
 using FileMonitor.ViewModels;
@@ -57,9 +58,13 @@ namespace FileMonitor
                 if (paths.Length == 0) return;
                 AddFiles(paths);
             }
-            catch(UnauthorizedAccessException)
+            catch (UnauthorizedAccessException ex)
             {
-                MessageBox.Show("UnauthorizedAccessException\n Access to system files denied.");
+                MessageBox.Show($@"{ex}
+Access to files denied. One or more of the following issues may have occurred:
+1. One of the files could be open or in use
+2. One of the files is read-only
+3. The program does not have administrative privileges (Try running as admin). ");
                 return;
             }
         }
@@ -84,7 +89,7 @@ namespace FileMonitor
         // A button click event handler for adding a folder, which effectively adds all files in any subfolders to the program.
         // Newly added files are also added to the MainWindowViewModel.UpdatedFiles collection. This assumes that the file must
         // first be copied to a backup location.
-        private void AddNewFolder_Click(object sender, RoutedEventArgs e)
+        private async void AddNewFolder_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -95,20 +100,32 @@ namespace FileMonitor
                     paths = Directory.GetFileSystemEntries(directory, "*", SearchOption.AllDirectories);
                     if (VerifyAddFolder(directory, paths))
                     {
-                        using SourceFolderService sourceFolderService = new SourceFolderService(
-                            RepositoryHelper.CreateSourceFolderRepositoryInstance(),
-                            RepositoryHelper.CreateFolderFileMappingInstance(),
-                            RepositoryHelper.CreateSourceFileRepositoryInstance()
-                        );
-                        AddFiles(paths);
-                        SourceFolderDto dto = sourceFolderService.Add(directory, paths); // Must be called after adding paths to avoid an exception.
-                        _viewModel.SourceFolders.Add(dto);
+                        MessageBox.Show("Adding folders. Please wait.\nDo not shut down the program.", "Adding Folders", MessageBoxButton.OK);
+                        await Task.Run(() =>
+                        {
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                using SourceFolderService sourceFolderService = new SourceFolderService(
+                                    RepositoryHelper.CreateSourceFolderRepositoryInstance(),
+                                    RepositoryHelper.CreateFolderFileMappingInstance(),
+                                    RepositoryHelper.CreateSourceFileRepositoryInstance()
+                                );
+                                AddFiles(paths);
+                                SourceFolderDto dto = sourceFolderService.Add(directory, paths); // Must be called after adding paths to avoid an exception.
+                                _viewModel.SourceFolders.Add(dto);
+                            });
+                        });
+                        MessageBox.Show("The selected folders and their files have been added. You may close this window.", "Task Complete", MessageBoxButton.OK);
                     }
                 }
             }
-            catch (UnauthorizedAccessException)
+            catch (UnauthorizedAccessException ex)
             {
-                MessageBox.Show("UnauthorizedAccessException\n Access to system files denied.");
+                MessageBox.Show($@"{ex}
+Access to files denied. One or more of the following issues may have occurred:
+1. One of the files could be open or in use
+2. One of the files is read-only
+3. The program does not have administrative privileges (Try running as admin). ");
                 return;
             }
         }
@@ -253,33 +270,41 @@ namespace FileMonitor
             }
         }
 
-        // A button click event handler to remove monitored folders from the program, along with any files contained within them.
-        private void DeleteFolders_Click(object sender, RoutedEventArgs e)
+        // An asynchronous button click event handler to remove monitored folders from the program, along with any files contained within them.
+        private async void DeleteFolders_Click(object sender, RoutedEventArgs e)
         {
             if (ConfirmDeleteFolders())
             {
-                using SourceFileService sourceFileService = new SourceFileService(
-                    RepositoryHelper.CreateSourceFileRepositoryInstance());
-                using SourceFolderService sourceFolderService = new SourceFolderService(
-                    RepositoryHelper.CreateSourceFolderRepositoryInstance(),
-                    RepositoryHelper.CreateFolderFileMappingInstance(),
-                    RepositoryHelper.CreateSourceFileRepositoryInstance()
-                );
-                List<SourceFolderDto> foldersToRemove = new List<SourceFolderDto>();
-                List<SourceFileDto> filesToRemove = new List<SourceFileDto>();
-                List<int> folderIds = new List<int>();
-
-                foreach (object item in FoldersDisplayed.SelectedItems)
+                MessageBox.Show("Removing folders. Please wait.\nDo not shut down the program.", "Removing Folders", MessageBoxButton.OK);
+                await Task.Run(() =>
                 {
-                    SourceFolderDto dto = (SourceFolderDto)item;
-                    foldersToRemove.Add(dto);
-                    folderIds.Add(dto.Id);
-                    filesToRemove = sourceFolderService.GetStoredFilesFromFolder(dto.Id);
-                    _viewModel.SourceFiles.RemoveRange<SourceFileDto>(filesToRemove);
-                    _viewModel.UpdatedFiles.RemoveRange<SourceFileDto>(filesToRemove);
-                }
-                sourceFolderService.Remove(folderIds);
-                _viewModel.SourceFolders.RemoveRange<SourceFolderDto>(foldersToRemove);
+                    using SourceFileService sourceFileService = new SourceFileService(
+                        RepositoryHelper.CreateSourceFileRepositoryInstance());
+                    using SourceFolderService sourceFolderService = new SourceFolderService(
+                        RepositoryHelper.CreateSourceFolderRepositoryInstance(),
+                        RepositoryHelper.CreateFolderFileMappingInstance(),
+                        RepositoryHelper.CreateSourceFileRepositoryInstance()
+                    );
+                    List<SourceFolderDto> foldersToRemove = new List<SourceFolderDto>();
+                    List<SourceFileDto> filesToRemove = new List<SourceFileDto>();
+                    List<int> folderIds = new List<int>();
+
+                    Application.Current.Dispatcher.Invoke(() => 
+                    {
+                        foreach (object item in FoldersDisplayed.SelectedItems)
+                        {
+                            SourceFolderDto dto = (SourceFolderDto)item;
+                            foldersToRemove.Add(dto);
+                            folderIds.Add(dto.Id);
+                            filesToRemove = sourceFolderService.GetStoredFilesFromFolder(dto.Id);
+                            _viewModel.SourceFiles.RemoveRange<SourceFileDto>(filesToRemove);
+                            _viewModel.UpdatedFiles.RemoveRange<SourceFileDto>(filesToRemove);
+                        }
+                        sourceFolderService.Remove(folderIds);
+                        _viewModel.SourceFolders.RemoveRange<SourceFolderDto>(foldersToRemove);
+                    });
+                    MessageBox.Show("The selected folders and their files have been removed. You may close this window.", "Task Complete", MessageBoxButton.OK);
+                });
             }
         }
 
@@ -301,7 +326,7 @@ namespace FileMonitor
                 numberOfFiles += sourceFolderService.GetStoredFilesFromFolder(dto.Id).Count();
             }
             
-            string text = $"Do you wish to delete the selected folder(s) from the program? This cannot be undone.\n Doing so will delete {numberOfFiles} file(s) from {numberOfFolders} monitored folder(s)";
+            string text = $"Do you wish to delete the selected folder(s) from the program? This cannot be undone.\nDoing so will delete {numberOfFiles} file(s) from {numberOfFolders} monitored folder(s)";
             string caption = "Delete SourceFolders";
 
             MessageBoxButton button = MessageBoxButton.YesNo;
