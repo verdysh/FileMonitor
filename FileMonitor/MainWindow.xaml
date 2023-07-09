@@ -149,7 +149,7 @@
                                         Content="Delete Folder(s)" 
                                         Click="DeleteFolders_Click"
                                         IsEnabled="{
-                                            Binding ElementName=FilesDisplayed, 
+                                            Binding ElementName=FoldersDisplayed, 
                                             Path=SelectedIndex, 
                                             Converter={StaticResource 
                                             IntToBoolValueConverter}}" />
