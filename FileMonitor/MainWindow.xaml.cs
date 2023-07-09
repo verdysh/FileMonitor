@@ -133,8 +133,7 @@ namespace FileMonitor
         // files are also removed from the MainWindowViewModel.UpdatedFiles collection.
         private void DeleteFiles_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = ConfirmDeleteFiles();
-            if (result == MessageBoxResult.Yes)
+            if (ConfirmDeleteFiles())
             {
                 using SourceFileService sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
                 List<int> ids = new List<int>();
@@ -152,14 +151,14 @@ namespace FileMonitor
         }
 
         // Confirms that the user wants to delete the selected files, and informs the user that this cannot be undone.
-        private MessageBoxResult ConfirmDeleteFiles()
+        private bool ConfirmDeleteFiles()
         {
             string text = "Do you wish to delete the selected file(s) from the program? This cannot be undone.";
             string caption = "Delete SourceFiles";
 
             MessageBoxButton button = MessageBoxButton.YesNo;
             MessageBoxImage image = MessageBoxImage.Warning;
-            return MessageBox.Show(text, caption, button, image);
+            return MessageBox.Show(text, caption, button, image) == MessageBoxResult.Yes;
         }
 
         // A button click event handler to create a full backup of all files monitored by the program. The full backup
@@ -254,9 +253,60 @@ namespace FileMonitor
             }
         }
 
+        // A button click event handler to remove monitored folders from the program, along with any files contained within them.
         private void DeleteFolders_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            if (ConfirmDeleteFolders())
+            {
+                using SourceFileService sourceFileService = new SourceFileService(
+                    RepositoryHelper.CreateSourceFileRepositoryInstance());
+                using SourceFolderService sourceFolderService = new SourceFolderService(
+                    RepositoryHelper.CreateSourceFolderRepositoryInstance(),
+                    RepositoryHelper.CreateFolderFileMappingInstance(),
+                    RepositoryHelper.CreateSourceFileRepositoryInstance()
+                );
+                List<SourceFolderDto> foldersToRemove = new List<SourceFolderDto>();
+                List<SourceFileDto> filesToRemove = new List<SourceFileDto>();
+                List<int> folderIds = new List<int>();
+
+                foreach (object item in FoldersDisplayed.SelectedItems)
+                {
+                    SourceFolderDto dto = (SourceFolderDto)item;
+                    foldersToRemove.Add(dto);
+                    folderIds.Add(dto.Id);
+                    filesToRemove = sourceFolderService.GetStoredFilesFromFolder(dto.Id);
+                    _viewModel.SourceFiles.RemoveRange<SourceFileDto>(filesToRemove);
+                    _viewModel.UpdatedFiles.RemoveRange<SourceFileDto>(filesToRemove);
+                }
+                sourceFolderService.Remove(folderIds);
+                _viewModel.SourceFolders.RemoveRange<SourceFolderDto>(foldersToRemove);
+            }
+        }
+
+        // Confirms that the user wants to delete the selected folders, and informs the user that this cannot be undone.
+        private bool ConfirmDeleteFolders()
+        {
+            using SourceFolderService sourceFolderService = new SourceFolderService(
+                RepositoryHelper.CreateSourceFolderRepositoryInstance(),
+                RepositoryHelper.CreateFolderFileMappingInstance(),
+                RepositoryHelper.CreateSourceFileRepositoryInstance()
+            );
+            List<SourceFolderDto> folders = new List<SourceFolderDto>();
+            int numberOfFiles = 0;
+            int numberOfFolders = FoldersDisplayed.SelectedItems.Count;
+            foreach (object item in FoldersDisplayed.SelectedItems)
+            {
+                SourceFolderDto dto = (SourceFolderDto)item;
+                folders.Add(dto);
+                numberOfFiles += sourceFolderService.GetStoredFilesFromFolder(dto.Id).Count();
+            }
+            
+            string text = $"Do you wish to delete the selected folder(s) from the program? This cannot be undone.\n Doing so will delete {numberOfFiles} file(s) from {numberOfFolders} monitored folder(s)";
+            string caption = "Delete SourceFolders";
+
+            MessageBoxButton button = MessageBoxButton.YesNo;
+            MessageBoxImage image = MessageBoxImage.Warning;
+            return MessageBox.Show(text, caption, button, image) == MessageBoxResult.Yes;
         }
     }
 }
