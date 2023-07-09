@@ -92,6 +92,7 @@ namespace Services
         private List<SourceFile> GetMonitoredFolderChildrenFiles(string[] filePaths)
             => _sourceFileRepository.GetRange(s => filePaths.Contains<string>(s.Path));
 
+        // Get the directory id (folder id) from the given directory path.
         private int GetDirectoryId(string directoryPath) 
             => _sourceFolderRepository.FirstOrDefault(f => f.Path == directoryPath).Id;
         
@@ -104,7 +105,7 @@ namespace Services
         {
             foreach (int id in ids)
             {
-                List<SourceFile> filesToRemove = GetStoredFilesFromFolder(id);
+                List<SourceFile> filesToRemove = GetFileEntitiesFromFolder(id);
                 _sourceFileRepository.RemoveRange(filesToRemove);
                 _sourceFileRepository.SaveChanges();
 
@@ -120,7 +121,7 @@ namespace Services
         /// Returns true if any monitored folder contains newly added files, false otherwise. 
         /// </summary>
         /// <param name="newFilesFromFolder"> An out parameter of type <see cref="Dictionary{TKey, TValue}"/> using <see cref="SourceFolderDto"/> objects for keys, and a list of strings for values. The values represent all files that have been added to the monitored folder. </param>
-        public bool FoldersAreUpdated(
+        public bool FoldersContainNewFiles(
             out Dictionary<SourceFolderDto, List<string>>? newFilesFromFolder)
         {
             List<SourceFolderDto> folders = GetFolders();
@@ -130,7 +131,7 @@ namespace Services
             foreach (SourceFolderDto folder in folders)
             {
                 string[] currentFiles = GetCurrentFilesFromFolder(folder);
-                List<string> storedFiles = GetFilePaths(GetStoredFilesFromFolder(folder.Id));
+                List<string> storedFiles = GetFilePaths(GetFileEntitiesFromFolder(folder.Id));
                 foreach(string file in currentFiles)
                 {
                     if (storedFiles.Contains(file)) continue;
@@ -155,8 +156,32 @@ namespace Services
         private string[] GetCurrentFilesFromFolder(SourceFolderDto folder) 
             => Directory.GetFileSystemEntries(folder.Path, "*", SearchOption.AllDirectories);
 
-        // Get all files stored in the database if they are mapped to a SourceFolder object. 
-        private List<SourceFile> GetStoredFilesFromFolder(int folderId)
+        /// <summary>
+        /// Get all files stored in the database if they are mapped to a SourceFolder object. 
+        /// </summary>
+        /// <param name="folderId"> The ID of the folder to search in. </param>
+        /// <returns> A list of source files as data transfer objects. </returns>
+        public List<SourceFileDto> GetStoredFilesFromFolder(int folderId)
+        {
+            List<SourceFileDto> result = new List<SourceFileDto>();
+            List<FolderFileMapping> mapping = _folderFileMappingRepository.GetRange(
+                ffm => ffm.SourceFolderId == folderId);
+            foreach (FolderFileMapping map in mapping)
+            {
+                SourceFileDto? file = _sourceFileRepository.FirstOrDefault(
+                    f => f.Id == map.SourceFileId,
+                    f => new SourceFileDto
+                    {
+                        Id = f.Id,
+                        Path = f.Path
+                    });
+                if (file != null) result.Add(file);
+            }
+            return result;
+        }
+
+        // Get all file Entities stored in the database if they are mapped to a SourceFolder object. 
+        private List<SourceFile> GetFileEntitiesFromFolder(int folderId)
         {
             List<SourceFile> result = new List<SourceFile>();
             List<FolderFileMapping> mapping = _folderFileMappingRepository.GetRange(
