@@ -60,11 +60,17 @@ namespace FileMonitor
             }
             catch (UnauthorizedAccessException ex)
             {
-                MessageBox.Show($@"{ex}
-Access to files denied. One or more of the following issues may have occurred:
-1. One of the files could be open or in use
-2. One of the files is read-only
-3. The program does not have administrative privileges (Try running as admin). ");
+                MessageBox.Show($@"Access to files denied. One of the following issues may have occurred:
+
+1. The program attempted to access files that are in use
+2. The program attempted to access files that are read-only
+3. The program does not have administrative privileges (Try running as admin) 
+4. A folder is being accessed as a file
+
+NOTE: Using this program to access critical system files is not recommended. Doing so may result in unintended consequences. This program is intended for use with the user's personal files.
+
+{ex}
+");
                 return;
             }
         }
@@ -121,11 +127,17 @@ Access to files denied. One or more of the following issues may have occurred:
             }
             catch (UnauthorizedAccessException ex)
             {
-                MessageBox.Show($@"{ex}
-Access to files denied. One or more of the following issues may have occurred:
-1. One of the files could be open or in use
-2. One of the files is read-only
-3. The program does not have administrative privileges (Try running as admin). ");
+                MessageBox.Show($@"Access to files denied. One of the following issues may have occurred:
+
+1. The program attempted to access files that are in use
+2. The program attempted to access files that are read-only
+3. The program does not have administrative privileges (Try running as admin) 
+4. A folder is being accessed as a file
+
+NOTE: Using this program to access critical system files is not recommended. Doing so may result in unintended consequences. This program is intended for use with the user's personal files.
+
+{ex}
+");
                 return;
             }
         }
