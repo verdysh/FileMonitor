@@ -41,7 +41,8 @@ namespace FileMonitor
                 new ObservableCollection<BackupPathDto>(backupPathService.GetDirectories()),
                 new ObservableCollection<SourceFileDto>(sourceFileService.GetFiles()),
                 new ObservableCollection<SourceFileDto>(sourceFileService.GetModifiedFiles()),
-                new ObservableCollection<SourceFolderDto>(sourceFolderService.GetFolders())
+                new ObservableCollection<SourceFolderDto>(sourceFolderService.GetFolders()),
+                new ObservableCollection<SourceFileDto>(sourceFileService.GetMovedOrRenamedFiles())
             );
             DataContext = _viewModel;
         }
@@ -274,11 +275,29 @@ NOTE: Using this program to access critical system files is not recommended. Doi
         {
             using SourceFileService sourceFileService = new SourceFileService(
                 RepositoryHelper.CreateSourceFileRepositoryInstance());
+            using SourceFolderService sourceFolderService = new SourceFolderService(
+                RepositoryHelper.CreateSourceFolderRepositoryInstance(),
+                RepositoryHelper.CreateFolderFileMappingInstance(),
+                RepositoryHelper.CreateSourceFileRepositoryInstance()
+            );
+            // Check for files that have changed since the last backup
             List<SourceFileDto> sourceFileDtos = sourceFileService.GetModifiedFiles();
             foreach(SourceFileDto sourceFileDto in sourceFileDtos)
             {
                 if (!_viewModel.UpdatedFiles.Contains(sourceFileDto))
                     _viewModel.UpdatedFiles.Add(sourceFileDto);
+            }
+            // Check for folders that have newly added files since the last backup
+            if(sourceFolderService.FilesAddedToFolders(
+                out List<SourceFileDto>? newFilesFromFolder))
+            {
+                foreach (SourceFileDto file in newFilesFromFolder)
+                {
+                    if (!_viewModel.SourceFiles.Contains(file))
+                        _viewModel.SourceFiles.Add(file);
+                    if (!_viewModel.UpdatedFiles.Contains(file))
+                        _viewModel.UpdatedFiles.Add(file);
+                }
             }
         }
 
