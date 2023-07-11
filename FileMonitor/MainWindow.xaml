@@ -351,6 +351,25 @@
                                 Orientation="Vertical"
                                 Grid.Column="0"
                                 Margin="20,20,0,20">
+                                <ListView x:Name="MovedOrRenamedFilesDisplayed"  
+                                          Margin="0,90,0,0"
+                                          ItemsSource="{Binding MovedOrRenamedFiles}" 
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                          ScrollViewer.VerticalScrollBarVisibility="Auto" >
+
+                                <ListView.View>
+                                    <GridView AllowsColumnReorder="False">
+                                        <GridView.ColumnHeaderContainerStyle>
+                                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </Style>
+                                        </GridView.ColumnHeaderContainerStyle>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Path}" Width="{Binding ActualWidth, ElementName=MovedOrRenamedFilesDisplayed}"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
                             </StackPanel>
                             
                         </Border>
