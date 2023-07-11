@@ -14,8 +14,8 @@ namespace FileMonitor.ViewModels
         private ObservableCollection<SourceFileDto> _sourceFiles;
         private ObservableCollection<SourceFileDto> _updatedFiles;
         private ObservableCollection<SourceFolderDto> _sourceFolders;
+        private ObservableCollection<SourceFileDto> _movedOrRenamedFiles;
         private bool _backupSelected;
-        private bool _overwriteUpdatedFiles;
 
         /// <summary>
         /// A public event handler to notify any data bindings when a property has changed.
@@ -38,38 +38,27 @@ namespace FileMonitor.ViewModels
         /// <summary>
         /// An observable collection of <see cref="BackupPathDto"/> objects. This collection displays all possible backup path locations for the user to select, add, or remove. This property is bound to the <see cref="MainWindow.BackupPathsDisplayed"/> list view in the UI.
         /// </summary>
-        public ObservableCollection<BackupPathDto> BackupPaths
-        {
-            get { return _backupPaths; }
-            //set { _backupPaths = value; }
-        }
+        public ObservableCollection<BackupPathDto> BackupPaths { get { return _backupPaths; } }
 
         /// <summary>
         /// An observable collection of <see cref="SourceFileDto"/> objects. This collection displays all files monitored by the program for the user to add or remove. This property is bound to the <see cref="MainWindow.FilesDisplayed"/> list view in the UI.
         /// </summary>
-        public ObservableCollection<SourceFileDto> SourceFiles
-        {
-            get { return _sourceFiles; }
-            //set { _sourceFiles = value; }
-        }
+        public ObservableCollection<SourceFileDto> SourceFiles { get { return _sourceFiles; } }
 
         /// <summary>
         /// An observable collection of <see cref="SourceFileDto"/> objects. This collection displays only the files that have been updated since the last time they were copied to a backup location. This property is bound to the <see cref="MainWindow.UpdatedFilesDisplayed"/> list view.
         /// </summary>
-        public ObservableCollection<SourceFileDto> UpdatedFiles
-        {
-            get { return _updatedFiles; }
-            //set { _updatedFiles = value; }
-        }
+        public ObservableCollection<SourceFileDto> UpdatedFiles { get { return _updatedFiles; } }
 
         /// <summary>
-        /// 
+        /// An observable collection of <see cref="SourceFolderDto"/> objects. This collection displays all folders monitored by the program. This property is bound to the <see cref="MainWindow.FoldersDisplayed"/> list view.
         /// </summary>
-        public ObservableCollection<SourceFolderDto> SourceFolders 
-        {
-            get { return _sourceFolders; } 
-            //set { _sourceFolders = value; }
-        }
+        public ObservableCollection<SourceFolderDto> SourceFolders { get { return _sourceFolders; } }
+
+        /// <summary>
+        /// An observable collection of <see cref="SourceFileDto"/> objects. This collection displays all files whose names or paths have been moved, renamed, or deleted since being monitored by the program. This property is bound to the <see cref="MainWindow.MovedOrRenamedFilesDisplayed"/> list view.
+        /// </summary>
+        public ObservableCollection<SourceFileDto> MovedOrRenamedFiles { get { return _movedOrRenamedFiles; } }
 
         /// <summary>
         /// Defines the <see cref="MainWindowViewModel"/> class constructor.
@@ -82,14 +71,15 @@ namespace FileMonitor.ViewModels
             ObservableCollection<BackupPathDto> backupPaths, 
             ObservableCollection<SourceFileDto> sourceFiles,
             ObservableCollection<SourceFileDto> updatedFiles,
-            ObservableCollection<SourceFolderDto> sourceFolders)
+            ObservableCollection<SourceFolderDto> sourceFolders,
+            ObservableCollection<SourceFileDto> movedOrRenamedFiles)
         {
             _backupPaths = backupPaths;
             _sourceFiles = sourceFiles;
             _updatedFiles = updatedFiles;
             _sourceFolders = sourceFolders;
+            _movedOrRenamedFiles = movedOrRenamedFiles;
             _backupSelected = IsAnyBackupSelected();
-            //_overwriteUpdatedFiles = ConfigurationManager.AppSettings["OverwriteUpdatedFiles"];
         }
 
         /// <summary>
