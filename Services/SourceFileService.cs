@@ -119,6 +119,32 @@ namespace Services
             return _sourceFileRepository.Exists(s => s.Path == path);
         }
 
+        /// <summary>
+        /// Updates the hash for all source files based on their Ids.
+        /// </summary>
+        /// <param name="ids"> A list of Ids for each file requiring an updated hash. </param>
+        public void UpdateHashesToCurrent(List<int> ids)
+        {
+            _sourceFileRepository.Update(
+                s => ids.Contains(s.Id),
+                s => s.Hash = EncryptionHelper.GetHash(s.Path));
+            _sourceFileRepository.SaveChanges();
+        }
+
+        /// <summary>
+        /// Get a list of all files that have been moved, deleted, or renamed since being added to the database.
+        /// </summary>
+        public List<SourceFileDto> GetMovedOrRenamedFiles()
+        {
+            List<SourceFileDto> files = GetFiles();
+            List<SourceFileDto> result = new List<SourceFileDto>();
+            foreach (SourceFileDto file in files)
+            {
+                if (!File.Exists(file.Path)) result.Add(file);
+            }
+            return result;
+        }
+
         // If FileIsUpdated() returns true, then set IsModified to true, and call SaveChanges on the repository.
         private void RefreshModifiedFilePaths()
         {
@@ -133,24 +159,15 @@ namespace Services
             _sourceFileRepository.SaveChanges();
         }
 
-        // Return true if the stored hash different from the current hash. Otherwise return false.
+        // Return true if the stored hash is different from the current hash. Otherwise return false.
         private bool FileIsUpdated(string path)
         {
             SourceFile? sourceFile = _sourceFileRepository.FirstOrDefault(s => s.Path == path);
             if (sourceFile == null) return false;
+            // If file does not exist, it has been moved or renamed. Return false in this instance
+            // because VerifyMovedOrRenamed() will find those files and add them to the UI.
+            if (!File.Exists(sourceFile.Path)) return false;
             return EncryptionHelper.GetHash(path) != sourceFile.Hash;
-        }
-
-        /// <summary>
-        /// Updates the hash for all source files based on their Ids.
-        /// </summary>
-        /// <param name="ids"> A list of Ids for each file requiring an updated hash. </param>
-        public void UpdateHashesToCurrent(List<int> ids)
-        {
-            _sourceFileRepository.Update(
-                s => ids.Contains(s.Id),
-                s => s.Hash = EncryptionHelper.GetHash(s.Path));
-            _sourceFileRepository.SaveChanges();
         }
 
         /// <summary>
