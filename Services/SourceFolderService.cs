@@ -2,6 +2,7 @@
 using DataAccessLayer.Repositories;
 using Services.Dto;
 using Services.Helpers;
+using System.IO;
 
 namespace Services
 {
@@ -125,8 +126,8 @@ namespace Services
             newFilesFromFolder = null;
             foreach (SourceFolderDto folder in folders)
             {
-                string[] currentFiles = GetCurrentFilesFromFolder(folder);
-                List<string> storedFiles = GetFilePaths(GetFileEntitiesFromFolder(folder.Id));
+                List<string> currentFiles = GetCurrentFilesFromFolder(folder);
+                List<string> storedFiles = GetPathsFromEntities(GetFileEntitiesFromFolder(folder.Id));
                 foreach (string file in currentFiles)
                 {
                     if (storedFiles.Contains(file)) continue;
@@ -150,7 +151,8 @@ namespace Services
                 {
                     Path = path,
                     Hash = EncryptionHelper.GetHash(path),
-                    IsModified = true
+                    IsModified = true,
+                    FromSourceFolder = true
                 });
             _sourceFileRepository.SaveChanges();
             // Return the file as a data transfer object.
@@ -209,11 +211,23 @@ namespace Services
         
 
         // Get all current files (including subdirectories) from the provided folder.
-        private string[] GetCurrentFilesFromFolder(SourceFolderDto folder)
-            => Directory.GetFileSystemEntries(folder.Path, "*", SearchOption.AllDirectories);
+        private List<string> GetCurrentFilesFromFolder(SourceFolderDto folder)
+        {
+            string[] fileSystemEntries = Directory.GetFileSystemEntries(folder.Path, "*", SearchOption.AllDirectories);
+            List<string> result = new List<string>();   
+            foreach (string path in fileSystemEntries)
+            {
+                FileAttributes attributes = File.GetAttributes(path);
+                // If the path is a directory, then continue
+                if (attributes.HasFlag(FileAttributes.Directory)) continue;
+                result.Add(path);
+            }
+            return result;
+        }
+
 
         // Get a list of the specified file paths from a SourceFile list.
-        private static List<string> GetFilePaths(List<SourceFile> files)
+        private static List<string> GetPathsFromEntities(List<SourceFile> files)
         {
             List<string> result = new List<string>();
             foreach (SourceFile file in files) result.Add(file.Path);
