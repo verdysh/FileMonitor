@@ -1,7 +1,7 @@
 ﻿namespace Services.Dto
 {
     /// <summary>
-    /// 
+    /// A data transfer object related to the SourceFolder Entity. Provides a full file path for any folder monitored by the program.
     /// </summary>
     public class SourceFolderDto
     {
