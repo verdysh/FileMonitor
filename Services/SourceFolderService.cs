@@ -132,6 +132,7 @@ namespace Services
                     if (storedFiles.Contains(file)) continue;
                     else
                     {
+                        newFilesFromFolder = new List<SourceFileDto>();
                         SourceFileDto? sourceFile = AddFile(file);
                         if (filesAddedToFolders == false) filesAddedToFolders = true;
                         newFilesFromFolder.Add(sourceFile);
