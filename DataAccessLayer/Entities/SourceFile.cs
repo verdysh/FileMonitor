@@ -33,5 +33,10 @@ namespace DataAccessLayer.Entities
         /// A boolean value to determine if the file has been changed or modified since the last backup.
         /// </summary>
         public bool IsModified { get; set; }
+
+        /// <summary>
+        /// If set to true, the file was added from a source folder. If set to false, the file was added to the program individually.
+        /// </summary>
+        public bool FromSourceFolder { get; set; }
     }
 }
