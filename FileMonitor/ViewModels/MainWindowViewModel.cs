@@ -1,7 +1,6 @@
 ﻿using Services.Dto;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Configuration;
 
 namespace FileMonitor.ViewModels
 {
@@ -79,6 +78,7 @@ namespace FileMonitor.ViewModels
             _updatedFiles = updatedFiles;
             _sourceFolders = sourceFolders;
             _movedOrRenamedFiles = movedOrRenamedFiles;
+            RemovePossibleRenamedFiles();
             _backupSelected = IsAnyBackupSelected();
         }
 
@@ -102,6 +102,17 @@ namespace FileMonitor.ViewModels
                 if (dto.IsSelected == true) return true;
             }
             return false;
+        }
+
+        // Ensures that any files that have been moved, renamed, or deleted do not display
+        // in the main UI.
+        private void RemovePossibleRenamedFiles()
+        {
+            foreach(SourceFileDto file in _movedOrRenamedFiles)
+            {
+                if (_sourceFiles.Contains(file)) _sourceFiles.Remove(file);
+                if (_updatedFiles.Contains(file)) _updatedFiles.Remove(file);
+            }
         }
     }
 }
