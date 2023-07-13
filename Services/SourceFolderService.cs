@@ -72,10 +72,10 @@ namespace Services
         }
 
         /// <summary>
-        /// Adds a monitored folder to the database. This method ensures appropriate mapping from the source folder to all child files contained within it. <see cref="SourceFileService.Add(string)"/> must be called first on all new file paths before this method is called. This ensures that the file IDs are created, allowing for the folders and files to be mapped appropriately.
+        /// Adds a monitored folder to the database. This method ensures appropriate mapping from the source folder to all children files contained within it. <see cref="SourceFileService.Add(string)"/> must be called first on all new file paths before this method is called. This ensures that the file IDs are created, allowing for the folders and files to be mapped appropriately.
         /// </summary>
         /// <param name="directoryPath"> The folder to add to the database. </param>
-        /// <param name="filePaths"> An array of all newly added file paths. </param>
+        /// <param name="filePaths"> An array of all children files. </param>
         /// <returns> A source folder DTO object for updating the UI. </returns>
         public SourceFolderDto Add(string directoryPath, string[] filePaths)
         {
@@ -135,6 +135,7 @@ namespace Services
                     {
                         newFilesFromFolder = new List<SourceFileDto>();
                         SourceFileDto? sourceFile = AddFile(file);
+                        AddFolderFileMapping(new string[] { file }, folder.Id);
                         if (filesAddedToFolders == false) filesAddedToFolders = true;
                         newFilesFromFolder.Add(sourceFile);
                     }
