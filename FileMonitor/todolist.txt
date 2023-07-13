@@ -1,5 +1,4 @@
 Todo:
-- Update UI when folders have had a newly added file.
 - Add option to exclude subfolders when monitoring a folder
 - Update UI to allow user to edit or delete and files that have been moved since being added 
 - If the user deletes a file that was added from a monitored folder, display a message informing them that the file will be removed from the monitored folder (Need a boolean value on SourceFile that 
@@ -8,7 +7,9 @@ determines if a file was added from a source folder. If it was, then search for 
 - No references to "RemoveRange()" in the Repository class. The service classes should use Remove for a single value, and RemoveRange for a range of values.
 
 Fixes:
-- "Unique constraint failed" when deleting a file and refreshing the UI 
+- When a file is deleted (from within Windows) and "refresh view" is selected, the UI does not correctly update.
+- Deleting a monitored file from the program (if it is a child file of a monitored folder) results in the file not being added back when the program boots. However, the files are added back when the user
+selects "refresh view"
 
 Features:
 - Offer setting for constant watch? Use the FileSystemWatcher class for this
@@ -16,9 +17,10 @@ Features:
 drive letters. Second, if the drive letter changes and breaks the path, offer the option to search the database for the user, i.e. "Backup path not found. Do you wish to search the database for the file(s)?". Third, there 
 needs to be an option to migrate paths from an old drive to a new drive.
 
-- Settings controls:
+- Possible settings controls:
 1. Create a zip file?
 2. Create a scheduled task in Windows?
 3. Choose whether or not to name the file paths
 4. Display paths as list or treeview
 5. Add Folder adds all files in all subdirectories (option to disable)
+6. Allow ignore files
