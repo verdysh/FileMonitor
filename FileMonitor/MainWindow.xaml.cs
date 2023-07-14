@@ -280,6 +280,7 @@ NOTE: Using this program to access critical system files is not recommended. Doi
                 RepositoryHelper.CreateFolderFileMappingInstance(),
                 RepositoryHelper.CreateSourceFileRepositoryInstance()
             );
+
             // Check for files that have changed since the last backup
             List<SourceFileDto> sourceFileDtos = sourceFileService.GetModifiedFiles();
             foreach(SourceFileDto sourceFileDto in sourceFileDtos)
@@ -287,6 +288,7 @@ NOTE: Using this program to access critical system files is not recommended. Doi
                 if (!_viewModel.UpdatedFiles.Contains(sourceFileDto))
                     _viewModel.UpdatedFiles.Add(sourceFileDto);
             }
+
             // Check for folders that have newly added files since the last backup
             if(sourceFolderService.FilesAddedToFolders(
                 out List<SourceFileDto>? newFilesFromFolder))
@@ -298,6 +300,17 @@ NOTE: Using this program to access critical system files is not recommended. Doi
                     if (!_viewModel.UpdatedFiles.Contains(file))
                         _viewModel.UpdatedFiles.Add(file);
                 }
+            }
+
+            // Check for files that have been moved, deleted, or renamed 
+            List<SourceFileDto> files = sourceFileService.GetMovedOrRenamedFiles();
+            foreach(SourceFileDto file in files)
+            {
+                _viewModel.MovedOrRenamedFiles.Add(file);
+                if (_viewModel.UpdatedFiles.Contains(file))
+                    _viewModel.UpdatedFiles.Remove(file);
+                if (_viewModel.SourceFiles.Contains(file))
+                    _viewModel.SourceFiles.Remove(file);
             }
         }
 
@@ -363,6 +376,18 @@ NOTE: Using this program to access critical system files is not recommended. Doi
             MessageBoxButton button = MessageBoxButton.YesNo;
             MessageBoxImage image = MessageBoxImage.Warning;
             return MessageBox.Show(text, caption, button, image) == MessageBoxResult.Yes;
+        }
+
+        // TODO
+        private void EditFilePath_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        // TODO
+        private void RemovePossibleDeletedPaths_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }
