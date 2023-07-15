@@ -61,16 +61,16 @@ namespace Services
         /// Adds a source file path to the database.
         /// </summary>
         /// <param name="path"> The source file path to add to the database. </param>
-        /// <param name="fromFolder"> Set to true if the file was added from a folder. Otherwise, set to false. </param>
+        /// <param name="fromSourceFolder"> Set to true if the file was added from a folder. Otherwise, set to false. </param>
         /// <returns> A source file DTO object for updating the UI. </returns>
-        public SourceFileDto Add(string path)
+        public SourceFileDto Add(string path, bool fromSourceFolder)
         {
             SourceFile entity = new SourceFile
             {
                 Path = path,
                 Hash = EncryptionHelper.GetHash(path),
                 IsModified = true,
-                FromSourceFolder = false
+                FromSourceFolder = fromSourceFolder
             };
 
             _sourceFileRepository.Add(entity);
