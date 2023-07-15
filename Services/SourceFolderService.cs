@@ -75,9 +75,9 @@ namespace Services
         /// Adds a monitored folder to the database. This method ensures appropriate mapping from the source folder to all children files contained within it. <see cref="SourceFileService.Add(string)"/> must be called first on all new file paths before this method is called. This ensures that the file IDs are created, allowing for the folders and files to be mapped appropriately.
         /// </summary>
         /// <param name="directoryPath"> The folder to add to the database. </param>
-        /// <param name="filePaths"> An array of all children files. </param>
+        /// <param name="filePaths"> A string list of all children files. </param>
         /// <returns> A source folder DTO object for updating the UI. </returns>
-        public SourceFolderDto Add(string directoryPath, string[] filePaths)
+        public SourceFolderDto Add(string directoryPath, List<string> filePaths)
         {
             SourceFolder entity = new SourceFolder
             {
@@ -128,6 +128,7 @@ namespace Services
             {
                 List<string> currentFiles = GetCurrentFilesFromFolder(folder);
                 List<string> storedFiles = GetPathsFromEntities(GetFileEntitiesFromFolder(folder.Id));
+                List<string> filesToMap = new List<string>();
                 foreach (string file in currentFiles)
                 {
                     if (storedFiles.Contains(file)) continue;
@@ -135,11 +136,12 @@ namespace Services
                     {
                         newFilesFromFolder = new List<SourceFileDto>();
                         SourceFileDto? sourceFile = AddFile(file, fromSourceFolder: true);
-                        AddFolderFileMapping(new string[] { file }, folder.Id);
+                        filesToMap.Add(file);
                         if (filesAddedToFolders == false) filesAddedToFolders = true;
                         newFilesFromFolder.Add(sourceFile);
                     }
                 }
+                AddFolderFileMapping(filesToMap, folder.Id);
             }
             return filesAddedToFolders;
         }
@@ -170,7 +172,7 @@ namespace Services
         // Then it stores the id for each file contained within that folder. The mapping can be used to know
         // the exact files contained within a folder during its first addition to the database. So if files
         // are added to that folder in the future then the program has a way to inform the user. 
-        private void AddFolderFileMapping(string[] filePaths, int directoryId)
+        private void AddFolderFileMapping(List<string> filePaths, int directoryId)
         {
             List<SourceFile> filesInMonitoredFolder = GetMonitoredFolderChildrenFiles(filePaths);
             foreach(SourceFile file in filesInMonitoredFolder)
@@ -203,7 +205,7 @@ namespace Services
         }
 
         // Get all file paths from the database where the path matches the contents of "filePaths."
-        private List<SourceFile> GetMonitoredFolderChildrenFiles(string[] filePaths)
+        private List<SourceFile> GetMonitoredFolderChildrenFiles(List<string> filePaths)
             => _sourceFileRepository.GetRange(s => filePaths.Contains<string>(s.Path));
 
         // Get the directory id (folder id) from the given directory path.

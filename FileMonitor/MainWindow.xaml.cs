@@ -55,8 +55,8 @@ namespace FileMonitor
         {
             try
             {
-                string[] paths = FileDialogWindow.GetPath();
-                if (paths.Length == 0) return;
+                List<string> paths = FileDialogWindow.GetPath().ToList();
+                if (paths.Count == 0) return;
                 AddFiles(paths, fromSourceFolder: false);
             }
             catch (UnauthorizedAccessException ex)
@@ -77,7 +77,7 @@ NOTE: Using this program to access critical system files is not recommended. Doi
         }
 
         // This method adds all file paths to the database and updates the view models.
-        private void AddFiles(string[] paths, bool fromSourceFolder)
+        private void AddFiles(List<string> paths, bool fromSourceFolder)
         {
             using SourceFileService sourceFileService = new SourceFileService(
                 RepositoryHelper.CreateSourceFileRepositoryInstance());
@@ -103,8 +103,8 @@ NOTE: Using this program to access critical system files is not recommended. Doi
                 string directory = FolderDialogWindow.GetPath();
                 if (directory.Equals("")) return;
                 {
-                    string[]? paths = null;
-                    paths = Directory.GetFileSystemEntries(directory, "*", SearchOption.AllDirectories);
+                    List<string>? paths = null;
+                    paths = Directory.GetFileSystemEntries(directory, "*", SearchOption.AllDirectories).ToList();
                     if (VerifyAddFolder(directory, paths))
                     {
                         MessageBox.Show("Adding folders. Please wait.\nDo not shut down the program.", "Adding Folders", MessageBoxButton.OK);
@@ -144,10 +144,10 @@ NOTE: Using this program to access critical system files is not recommended. Doi
         }
 
         // Verifies that the user wants to add an entire folder. Displays the number of files that will be added by doing so.
-        private bool VerifyAddFolder(string directory, string[] paths)
+        private bool VerifyAddFolder(string directory, List<string> paths)
         {
             int numberOfDirectories = Directory.GetDirectories(directory, "*", SearchOption.AllDirectories).Length;
-            int numberOfFiles = paths.Length;
+            int numberOfFiles = paths.Count;
             string text = $@"Do you wish to add the folder {directory}? 
 
 {numberOfFiles} file(s) from {numberOfDirectories} subfolders(s) will be monitored by the program.";
@@ -290,6 +290,7 @@ NOTE: Using this program to access critical system files is not recommended. Doi
             }
 
             // Check for folders that have newly added files since the last backup
+            // Also retrieves files that were removed from a monitored folder
             if(sourceFolderService.FilesAddedToFolders(
                 out List<SourceFileDto>? newFilesFromFolder))
             {
