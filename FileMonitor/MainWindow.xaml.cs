@@ -45,6 +45,7 @@ namespace FileMonitor
                 new ObservableCollection<SourceFileDto>(sourceFileService.GetMovedOrRenamedFiles())
             );
             DataContext = _viewModel;
+            RefreshMonitoredFolders();
         }
 
 
@@ -273,25 +274,36 @@ NOTE: Using this program to access critical system files is not recommended. Doi
         // A button click event handler to refresh all ListViews in the UI.
         private void RefreshView_Click(object sender, RoutedEventArgs e)
         {
+            RefreshUpdatedFilesView();
+            RefreshMonitoredFolders();
+            RefreshMovedOrRenamedFiles();
+        }
+
+        // Check for files that have changed since the last backup
+        private void RefreshUpdatedFilesView()
+        {
             using SourceFileService sourceFileService = new SourceFileService(
                 RepositoryHelper.CreateSourceFileRepositoryInstance());
+            
+            List<SourceFileDto> sourceFileDtos = sourceFileService.GetModifiedFiles();
+            foreach (SourceFileDto sourceFileDto in sourceFileDtos)
+            {
+                if (!_viewModel.UpdatedFiles.Contains(sourceFileDto))
+                    _viewModel.UpdatedFiles.Add(sourceFileDto);
+            }
+        }
+
+        // Check for folders that have newly added files since the last backup, and add them to the database
+        // Also retrieves files that were removed from a monitored folder
+        private void RefreshMonitoredFolders()
+        {
             using SourceFolderService sourceFolderService = new SourceFolderService(
                 RepositoryHelper.CreateSourceFolderRepositoryInstance(),
                 RepositoryHelper.CreateFolderFileMappingInstance(),
                 RepositoryHelper.CreateSourceFileRepositoryInstance()
             );
 
-            // Check for files that have changed since the last backup
-            List<SourceFileDto> sourceFileDtos = sourceFileService.GetModifiedFiles();
-            foreach(SourceFileDto sourceFileDto in sourceFileDtos)
-            {
-                if (!_viewModel.UpdatedFiles.Contains(sourceFileDto))
-                    _viewModel.UpdatedFiles.Add(sourceFileDto);
-            }
-
-            // Check for folders that have newly added files since the last backup, and add them to the database
-            // Also retrieves files that were removed from a monitored folder
-            if(sourceFolderService.FilesAddedToFolders(
+            if (sourceFolderService.FilesAddedToFolders(
                 out List<SourceFileDto>? newFilesFromFolder))
             {
                 foreach (SourceFileDto file in newFilesFromFolder)
@@ -301,13 +313,19 @@ NOTE: Using this program to access critical system files is not recommended. Doi
                     if (!_viewModel.UpdatedFiles.Contains(file))
                         _viewModel.UpdatedFiles.Add(file);
                 }
+                _viewModel.UpdatedFiles.
             }
+        }
 
-            // Check for files that have been moved, deleted, or renamed 
+        // Check for files that have been moved, deleted, or renamed 
+        private void RefreshMovedOrRenamedFiles()
+        {
+            using SourceFileService sourceFileService = new SourceFileService(
+                RepositoryHelper.CreateSourceFileRepositoryInstance());
             List<SourceFileDto> files = sourceFileService.GetMovedOrRenamedFiles();
-            foreach(SourceFileDto file in files)
+            foreach (SourceFileDto file in files)
             {
-                if(!_viewModel.MovedOrRenamedFiles.Contains(file))
+                if (!_viewModel.MovedOrRenamedFiles.Contains(file))
                     _viewModel.MovedOrRenamedFiles.Add(file);
                 if (_viewModel.UpdatedFiles.Contains(file))
                     _viewModel.UpdatedFiles.Remove(file);
