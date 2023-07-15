@@ -134,7 +134,7 @@ namespace Services
                     else
                     {
                         newFilesFromFolder = new List<SourceFileDto>();
-                        SourceFileDto? sourceFile = AddFile(file);
+                        SourceFileDto? sourceFile = AddFile(file, fromSourceFolder: true);
                         AddFolderFileMapping(new string[] { file }, folder.Id);
                         if (filesAddedToFolders == false) filesAddedToFolders = true;
                         newFilesFromFolder.Add(sourceFile);
@@ -144,7 +144,7 @@ namespace Services
             return filesAddedToFolders;
         }
 
-        private SourceFileDto? AddFile(string path)
+        private SourceFileDto? AddFile(string path, bool fromSourceFolder)
         {
             // Add the file Entity to the database.
             _sourceFileRepository.Add(
@@ -153,7 +153,7 @@ namespace Services
                     Path = path,
                     Hash = EncryptionHelper.GetHash(path),
                     IsModified = true,
-                    FromSourceFolder = true
+                    FromSourceFolder = fromSourceFolder
                 });
             _sourceFileRepository.SaveChanges();
             // Return the file as a data transfer object.
