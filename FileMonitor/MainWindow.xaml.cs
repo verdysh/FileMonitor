@@ -313,7 +313,6 @@ NOTE: Using this program to access critical system files is not recommended. Doi
                     if (!_viewModel.UpdatedFiles.Contains(file))
                         _viewModel.UpdatedFiles.Add(file);
                 }
-                _viewModel.UpdatedFiles.
             }
         }
 
