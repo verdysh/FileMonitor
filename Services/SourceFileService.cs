@@ -34,7 +34,7 @@ namespace Services
                     Id = s.Id,
                     Path = s.Path
                 },
-                s => s.Id
+                s => s.Path
             );
             return result;
         }
@@ -52,7 +52,7 @@ namespace Services
                     Id = s.Id,
                     Path = s.Path
                 },
-                s => s.Id
+                s => s.Path
             );
             return result;
         }

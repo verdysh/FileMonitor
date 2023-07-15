@@ -44,7 +44,7 @@ namespace Services
                     Id = sf.Id,
                     Path = sf.Path,
                 },
-                sf => sf.Id);
+                sf => sf.Path);
         }
 
         /// <summary>
