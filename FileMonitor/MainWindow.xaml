@@ -334,13 +334,21 @@
                                                FontSize="16"
                                                FontWeight="Bold"/>
                                 </Border>
-                            
-                                <StackPanel Orientation="Vertical"
+                                <ScrollViewer
+                                    VerticalScrollBarVisibility="Auto" 
+                                    HorizontalScrollBarVisibility="Auto">
+                                    <StackPanel Orientation="Vertical"
                                             Grid.Column="0"
                                             Margin="10,53,0,10">
-                                    <CheckBox Content="Overwrite updated files? (This will only keep the latest copy of a file.)"/>
-                                </StackPanel>
-                            
+                                            <StackPanel.Resources>
+                                                <Style TargetType="{x:Type CheckBox}">
+                                                    <Setter Property="Margin" Value="0,10,0,0"/>
+                                                </Style>
+                                            </StackPanel.Resources>
+                                        <CheckBox x:Name="OverwriteUpdatedFiles" Content="Overwrite updated files?"/>
+                                        <CheckBox x:Name="IncludeAllSubfolders"  Content="Include all subfolders when monitoring a folder?"/>
+                                    </StackPanel>
+                                </ScrollViewer>                            
                             </Grid>
                         </Border>
                         
