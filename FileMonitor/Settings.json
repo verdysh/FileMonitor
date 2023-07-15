@@ -1,4 +1,8 @@
 {
+  "settings": {
+    "overwriteUpdatedFiles": false,
+    "includeAllSubfolders": false
+  },
   "exclude": [
     "**/bin",
     "**/bower_components",
