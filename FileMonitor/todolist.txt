@@ -5,12 +5,9 @@ Todo:
 determines if a file was added from a source folder. If it was, then search for the monitored folder ID to remove it from the folder mapping)
 - Adding a folder should add new files when they are added to that folder / subfolders
 - No references to "RemoveRange()" in the Repository class. The service classes should use Remove for a single value, and RemoveRange for a range of values.
+- Set database IDs to reuse unused IDs?
 
 Fixes:
-- Deleting a monitored file from the program (if it is a child file of a monitored folder) results in the file not being added back when the program boots. However, the files are added back when the user
-selects "refresh view"
-- Refresh view is inconsistent in its results. Delete multiple files from a monitored folder from within the program. Select refresh view, not all 
-files are added back to the UI.
 
 Features:
 - Offer setting for constant watch? Use the FileSystemWatcher class for this
