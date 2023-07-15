@@ -123,7 +123,7 @@ namespace Services
         {
             List<SourceFolderDto> folders = GetFolders();
             bool filesAddedToFolders = false;
-            newFilesFromFolder = null;
+            newFilesFromFolder = new List<SourceFileDto>();
             foreach (SourceFolderDto folder in folders)
             {
                 List<string> currentFiles = GetCurrentFilesFromFolder(folder);
@@ -134,7 +134,6 @@ namespace Services
                     if (storedFiles.Contains(file)) continue;
                     else
                     {
-                        newFilesFromFolder = new List<SourceFileDto>();
                         SourceFileDto? sourceFile = AddFile(file, fromSourceFolder: true);
                         filesToMap.Add(file);
                         if (filesAddedToFolders == false) filesAddedToFolders = true;
