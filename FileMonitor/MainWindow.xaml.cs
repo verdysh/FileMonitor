@@ -57,7 +57,7 @@ namespace FileMonitor
             {
                 string[] paths = FileDialogWindow.GetPath();
                 if (paths.Length == 0) return;
-                AddFiles(paths);
+                AddFiles(paths, fromSourceFolder: false);
             }
             catch (UnauthorizedAccessException ex)
             {
@@ -77,7 +77,7 @@ NOTE: Using this program to access critical system files is not recommended. Doi
         }
 
         // This method adds all file paths to the database and updates the view models.
-        private void AddFiles(string[] paths)
+        private void AddFiles(string[] paths, bool fromSourceFolder)
         {
             using SourceFileService sourceFileService = new SourceFileService(
                 RepositoryHelper.CreateSourceFileRepositoryInstance());
@@ -86,7 +86,7 @@ NOTE: Using this program to access critical system files is not recommended. Doi
                 FileAttributes attributes = File.GetAttributes(path);
                 // If the path is an empty string, if it exists in the database, or if it is a directory, then continue
                 if (path == "" || sourceFileService.PathExists(path) || attributes.HasFlag(FileAttributes.Directory)) continue;
-                SourceFileDto dto = sourceFileService.Add(path);
+                SourceFileDto dto = sourceFileService.Add(path, fromSourceFolder);
                 _viewModel.SourceFiles.Add(dto);
                 _viewModel.UpdatedFiles.Add(dto);
             }
@@ -117,7 +117,7 @@ NOTE: Using this program to access critical system files is not recommended. Doi
                                     RepositoryHelper.CreateFolderFileMappingInstance(),
                                     RepositoryHelper.CreateSourceFileRepositoryInstance()
                                 );
-                                AddFiles(paths);
+                                AddFiles(paths, fromSourceFolder: true);
                                 SourceFolderDto dto = sourceFolderService.Add(directory, paths); // Must be called after adding paths to avoid an exception.
                                 _viewModel.SourceFolders.Add(dto);
                             });
