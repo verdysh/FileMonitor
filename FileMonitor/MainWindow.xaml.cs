@@ -12,6 +12,7 @@ using Services;
 using Services.Dto;
 using Services.Extensions;
 using Services.Helpers;
+using System.Windows.Controls;
 
 namespace FileMonitor
 {
@@ -42,7 +43,9 @@ namespace FileMonitor
                 new ObservableCollection<SourceFileDto>(sourceFileService.GetFiles()),
                 new ObservableCollection<SourceFileDto>(sourceFileService.GetModifiedFiles()),
                 new ObservableCollection<SourceFolderDto>(sourceFolderService.GetFolders()),
-                new ObservableCollection<SourceFileDto>(sourceFileService.GetMovedOrRenamedFiles())
+                new ObservableCollection<SourceFileDto>(sourceFileService.GetMovedOrRenamedFiles()),
+                JsonSettingsHelper.OverwriteUpdatedFiles,
+                JsonSettingsHelper.IncludeAllSubFolders
             );
             DataContext = _viewModel;
             RefreshMonitoredFolders();
@@ -407,6 +410,18 @@ NOTE: Using this program to access critical system files is not recommended. Doi
         private void RemovePossibleDeletedPaths_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
+        }
+
+        private void OverwriteUpdatedFilesCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)sender;
+            JsonSettingsHelper.OverwriteUpdatedFiles = (bool)checkBox.IsChecked;
+        }
+
+        private void IncludeAllSubfoldersCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)sender;
+            JsonSettingsHelper.IncludeAllSubFolders = (bool)checkBox.IsChecked;
         }
     }
 }
