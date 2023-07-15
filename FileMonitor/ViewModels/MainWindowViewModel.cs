@@ -60,18 +60,33 @@ namespace FileMonitor.ViewModels
         public ObservableCollection<SourceFileDto> MovedOrRenamedFiles { get { return _movedOrRenamedFiles; } }
 
         /// <summary>
+        /// If false, the program will make copies of updated files whenever they are backed up. If true, the program will overwrite the previously copied file.
+        /// </summary>
+        public bool OverwriteUpdatedFiles { get; set; }
+
+        /// <summary>
+        /// If false, the program will only monitor files contained within the monitored folder. If true, the program will monitor all files an sub-files contained within the monitored folder. 
+        /// </summary>
+        public bool IncludeAllSubfolders { get; set; }
+
+        /// <summary>
         /// Defines the <see cref="MainWindowViewModel"/> class constructor.
         /// </summary>
         /// <param name="backupPaths"> All backup paths stored in the database, formatted as data transfer objects. </param>
         /// <param name="sourceFiles"> All files monitored by the program, formatted as data transfer objects. </param>
         /// <param name="updatedFiles"> Only the files that have been updated since the last time they were copied to a backup location, formatted as data transfer objects. </param>
         /// <param name="sourceFolders"> All folders monitored by the program, formatted as data transfer objects. </param>
+        /// <param name="movedOrRenamedFiles"> All files that have been moved, renamed, or deleted in Windows since being added to the program. </param>
+        /// <param name="overwriteUpdatedFiles"> Value from Settings.json, bound to a CheckBox. </param>
+        /// <param name="includeAllSubfolders"> Value from Settings.json, bound to a CheckBox. </param>
         public MainWindowViewModel(
             ObservableCollection<BackupPathDto> backupPaths, 
             ObservableCollection<SourceFileDto> sourceFiles,
             ObservableCollection<SourceFileDto> updatedFiles,
             ObservableCollection<SourceFolderDto> sourceFolders,
-            ObservableCollection<SourceFileDto> movedOrRenamedFiles)
+            ObservableCollection<SourceFileDto> movedOrRenamedFiles,
+            bool overwriteUpdatedFiles,
+            bool includeAllSubfolders)
         {
             _backupPaths = backupPaths;
             _sourceFiles = sourceFiles;
@@ -80,6 +95,8 @@ namespace FileMonitor.ViewModels
             _movedOrRenamedFiles = movedOrRenamedFiles;
             RemovePossibleRenamedFiles();
             _backupSelected = IsAnyBackupSelected();
+            OverwriteUpdatedFiles = overwriteUpdatedFiles;
+            IncludeAllSubfolders = includeAllSubfolders;
         }
 
         /// <summary>
