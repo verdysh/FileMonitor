@@ -306,7 +306,8 @@ NOTE: Using this program to access critical system files is not recommended. Doi
             List<SourceFileDto> files = sourceFileService.GetMovedOrRenamedFiles();
             foreach(SourceFileDto file in files)
             {
-                _viewModel.MovedOrRenamedFiles.Add(file);
+                if(!_viewModel.MovedOrRenamedFiles.Contains(file))
+                    _viewModel.MovedOrRenamedFiles.Add(file);
                 if (_viewModel.UpdatedFiles.Contains(file))
                     _viewModel.UpdatedFiles.Remove(file);
                 if (_viewModel.SourceFiles.Contains(file))
