@@ -215,9 +215,9 @@
                                         Content="Copy Updated Files" 
                                         Click="CopyUpdatedFiles_Click" />
                             
-                                <Button x:Name="RefreshUpdatedFiles" 
+                                <Button x:Name="RefreshView" 
                                         Content="Refresh View" 
-                                        Click="RefreshUpdatedFiles_Click"/>
+                                        Click="RefreshView_Click"/>
                             </StackPanel>
                             
 

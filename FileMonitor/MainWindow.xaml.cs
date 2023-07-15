@@ -270,8 +270,8 @@ NOTE: Using this program to access critical system files is not recommended. Doi
             _viewModel.BackupSelected = _viewModel.IsAnyBackupSelected();
         }
 
-        // A button click event handler to refresh the UpdatedFilesDisplayed ListView in the UI.
-        private void RefreshUpdatedFiles_Click(object sender, RoutedEventArgs e)
+        // A button click event handler to refresh all ListViews in the UI.
+        private void RefreshView_Click(object sender, RoutedEventArgs e)
         {
             using SourceFileService sourceFileService = new SourceFileService(
                 RepositoryHelper.CreateSourceFileRepositoryInstance());
