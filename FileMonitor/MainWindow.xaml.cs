@@ -289,7 +289,7 @@ NOTE: Using this program to access critical system files is not recommended. Doi
                     _viewModel.UpdatedFiles.Add(sourceFileDto);
             }
 
-            // Check for folders that have newly added files since the last backup
+            // Check for folders that have newly added files since the last backup, and add them to the database
             // Also retrieves files that were removed from a monitored folder
             if(sourceFolderService.FilesAddedToFolders(
                 out List<SourceFileDto>? newFilesFromFolder))
