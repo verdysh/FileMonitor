@@ -345,8 +345,16 @@
                                                     <Setter Property="Margin" Value="0,10,0,0"/>
                                                 </Style>
                                             </StackPanel.Resources>
-                                        <CheckBox x:Name="OverwriteUpdatedFiles" Content="Overwrite updated files?"/>
-                                        <CheckBox x:Name="IncludeAllSubfolders"  Content="Include all subfolders when monitoring a folder?"/>
+                                        <CheckBox 
+                                            x:Name="OverwriteUpdatedFilesCheckBox" 
+                                            Content="Overwrite updated files?" 
+                                            IsChecked="{Binding Mode=TwoWay, Path=OverwriteUpdatedFiles}"
+                                            Click="OverwriteUpdatedFilesCheckBox_Click"/>
+                                        <CheckBox 
+                                            x:Name="IncludeAllSubfoldersCheckBox"  
+                                            Content="Include all subfolders when monitoring a folder?"
+                                            IsChecked="{Binding Mode=TwoWay, Path=IncludeAllSubfolders}"
+                                            Click="IncludeAllSubfoldersCheckBox_Click"/>
                                     </StackPanel>
                                 </ScrollViewer>                            
                             </Grid>
