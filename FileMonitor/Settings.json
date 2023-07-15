@@ -1,14 +1,4 @@
 {
-  "settings": {
-    "overwriteUpdatedFiles": false,
-    "includeAllSubfolders": false
-  },
-  "exclude": [
-    "**/bin",
-    "**/bower_components",
-    "**/jspm_packages",
-    "**/node_modules",
-    "**/obj",
-    "**/platforms"
-  ]
+  "overwriteUpdatedFiles": false,
+  "includeAllSubfolders": false
 }
