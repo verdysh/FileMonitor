@@ -162,9 +162,9 @@ NOTE: Using this program to access critical system files is not recommended. Doi
 
         // A button click event handler to remove a file or files from the collection of monitored files. Deleted
         // files are also removed from the MainWindowViewModel.UpdatedFiles collection.
-        private void DeleteFiles_Click(object sender, RoutedEventArgs e)
+        private void RemoveFiles_Click(object sender, RoutedEventArgs e)
         {
-            if (ConfirmDeleteFiles())
+            if (ConfirmRemoveFiles())
             {
                 using SourceFileService sourceFileService = new SourceFileService(RepositoryHelper.CreateSourceFileRepositoryInstance());
                 List<int> ids = new List<int>();
@@ -181,11 +181,11 @@ NOTE: Using this program to access critical system files is not recommended. Doi
             }
         }
 
-        // Confirms that the user wants to delete the selected files, and informs the user that this cannot be undone.
-        private bool ConfirmDeleteFiles()
+        // Confirms that the user wants to remove the selected files, and informs the user that this cannot be undone.
+        private bool ConfirmRemoveFiles()
         {
-            string text = "Do you wish to delete the selected file(s) from the program? This cannot be undone.";
-            string caption = "Delete SourceFiles";
+            string text = "Do you wish to remove the selected file(s) from the program? This cannot be undone.";
+            string caption = "Remove SourceFiles";
 
             MessageBoxButton button = MessageBoxButton.YesNo;
             MessageBoxImage image = MessageBoxImage.Warning;
@@ -334,9 +334,9 @@ NOTE: Using this program to access critical system files is not recommended. Doi
         }
 
         // An asynchronous button click event handler to remove monitored folders from the program, along with any files contained within them.
-        private async void DeleteFolders_Click(object sender, RoutedEventArgs e)
+        private async void RemoveFolders_Click(object sender, RoutedEventArgs e)
         {
-            if (ConfirmDeleteFolders())
+            if (ConfirmRemoveFolders())
             {
                 MessageBox.Show("Removing folders. Please wait.\nDo not shut down the program.", "Removing Folders", MessageBoxButton.OK);
                 await Task.Run(() =>
@@ -372,7 +372,7 @@ NOTE: Using this program to access critical system files is not recommended. Doi
         }
 
         // Confirms that the user wants to delete the selected folders, and informs the user that this cannot be undone.
-        private bool ConfirmDeleteFolders()
+        private bool ConfirmRemoveFolders()
         {
             using SourceFolderService sourceFolderService = new SourceFolderService(
                 RepositoryHelper.CreateSourceFolderRepositoryInstance(),

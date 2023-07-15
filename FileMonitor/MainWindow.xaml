@@ -69,9 +69,9 @@
                                         Content="Add File" 
                                         Click="AddNewFile_Click"/>
 
-                                <Button x:Name="DeleteFiles" 
-                                        Content="Delete File(s)" 
-                                        Click="DeleteFiles_Click"
+                                <Button x:Name="RemoveFiles" 
+                                        Content="Remove File(s)" 
+                                        Click="RemoveFiles_Click"
                                         IsEnabled="{
                                             Binding ElementName=FilesDisplayed, 
                                             Path=SelectedIndex, 
@@ -82,6 +82,10 @@
                                         Content="Copy All Files" 
                                         Click="CopyAllFiles_Click" 
                                         IsEnabled="{Binding BackupSelected}"/>
+                                
+                                <Button x:Name="RefreshView" 
+                                        Content="Refresh View" 
+                                        Click="RefreshView_Click"/>
 
                             </StackPanel>
 
@@ -145,9 +149,9 @@
                                         Content="Add Folder" 
                                         Click="AddNewFolder_Click"/>
 
-                                <Button x:Name="DeleteFolders" 
-                                        Content="Delete Folder(s)" 
-                                        Click="DeleteFolders_Click"
+                                <Button x:Name="RemoveFolders" 
+                                        Content="Remove Folder(s)" 
+                                        Click="RemoveFolders_Click"
                                         IsEnabled="{
                                             Binding ElementName=FoldersDisplayed, 
                                             Path=SelectedIndex, 
@@ -213,11 +217,9 @@
 
                                 <Button x:Name="CopyUpdatedFiles" 
                                         Content="Copy Updated Files" 
-                                        Click="CopyUpdatedFiles_Click" />
+                                        Click="CopyUpdatedFiles_Click" 
+                                        IsEnabled="{Binding BackupSelected}"/>
                             
-                                <Button x:Name="RefreshView" 
-                                        Content="Refresh View" 
-                                        Click="RefreshView_Click"/>
                             </StackPanel>
                             
 
@@ -385,7 +387,7 @@
                                             IntToBoolValueConverter}}" />
 
                                 <Button x:Name="RemovePossibleDeletedPaths" 
-                                        Content="Delete"
+                                        Content="Remove"
                                         Click="RemovePossibleDeletedPaths_Click"
                                         IsEnabled="{
                                             Binding ElementName=MovedOrRenamedFilesDisplayed, 
