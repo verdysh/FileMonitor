@@ -3,9 +3,9 @@
 namespace DataAccessLayer.Repositories
 {
     /// <summary>
-    /// A repository interface for the SourceFile Entity.
+    /// A repository interface for the BackupPath Entity.
     /// </summary>
-    public interface ISourceFileRepository: IRepository<SourceFile>
+    public interface IBackupPathRepository: IRepository<BackupPath>
     {
     }
 }

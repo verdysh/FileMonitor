@@ -9,7 +9,6 @@
 *.user
 *.userosscache
 *.sln.docstates
-todolist.txt
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -19,6 +18,7 @@ database-model.ods
 FileMonitor/References/
 FileMonitor/FileMonitorTests/
 FileMonitor/Tests/
+UnitTests/
 
 # Mono auto generated files
 mono_crash.*

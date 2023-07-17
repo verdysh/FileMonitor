@@ -9,7 +9,7 @@
         MinHeight="600" 
         MinWidth="800" 
         WindowState="Maximized" >
-    
+
     <Window.Resources>
         <valueConverters:IntToBoolValueConverter x:Key="IntToBoolValueConverter" />
     </Window.Resources>
@@ -23,17 +23,19 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    
+
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    
+
                     <Border BorderBrush="Black" 
                             BorderThickness=".5" 
                             Grid.Column="0"
-                            Grid.Row="0">
+                            Grid.Row="0"
+                            Grid.RowSpan="2">
                         <Grid>
                             <Border BorderBrush="Black" 
                                     BorderThickness=".4" 
@@ -42,8 +44,9 @@
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Top">
 
-                                <TextBlock Text="All files:"
-                                           FontSize="16"/>
+                                <TextBlock Text="Monitored Files:"
+                                           FontSize="16"
+                                           FontWeight="Bold"/>
                             </Border>
 
                             <!-- Horizontal stack panel for button layout -->
@@ -56,7 +59,9 @@
                                 <StackPanel.Resources>
                                     <Style TargetType="{x:Type Button}">
                                         <Setter Property="Margin" 
-                                                    Value="0,0,10,0"/>
+                                                Value="0,0,10,0"/>
+                                        <Setter Property="Padding"
+                                                Value="3"/>
                                     </Style>
                                 </StackPanel.Resources>
 
@@ -64,37 +69,112 @@
                                         Content="Add File" 
                                         Click="AddNewFile_Click"/>
 
-                                <Button x:Name="AddNewFolder" 
-                                        Content="Add Folder" 
-                                        Click="AddNewFolder_Click"/>
-
-                                <Button x:Name="DeleteFiles" 
-                                        Content="Delete File(s)" 
-                                        Click="DeleteFiles_Click"
+                                <Button x:Name="RemoveFiles" 
+                                        Content="Remove File(s)" 
+                                        Click="RemoveFiles_Click"
                                         IsEnabled="{
                                             Binding ElementName=FilesDisplayed, 
                                             Path=SelectedIndex, 
                                             Converter={StaticResource 
                                             IntToBoolValueConverter}}" />
+                                
+                                <Button x:Name="CopyAllFiles" 
+                                        Content="Copy All Files" 
+                                        Click="CopyAllFiles_Click" 
+                                        IsEnabled="{Binding BackupSelected}"/>
+                                
+                                <Button x:Name="RefreshView" 
+                                        Content="Refresh View" 
+                                        Click="RefreshView_Click"/>
 
                             </StackPanel>
 
                             <ListView x:Name="FilesDisplayed"  
                                       Margin="0,90,0,0"
-                                      ItemsSource="{Binding Files}" 
+                                      ItemsSource="{Binding SourceFiles}" 
                                       HorizontalAlignment="Stretch"
                                       VerticalAlignment="Stretch"
                                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                       ScrollViewer.VerticalScrollBarVisibility="Auto" >
-                                
+
                                 <ListView.View>
                                     <GridView AllowsColumnReorder="False">
-                                        <!--<GridView.ColumnHeaderContainerStyle>
+                                        <GridView.ColumnHeaderContainerStyle>
                                             <Style TargetType="{x:Type GridViewColumnHeader}">
                                                 <Setter Property="Visibility" Value="Collapsed" />
                                             </Style>
-                                        </GridView.ColumnHeaderContainerStyle>-->
-                                        <GridViewColumn DisplayMemberBinding="{Binding Path}" Width="{Binding FileWidth}"/>
+                                        </GridView.ColumnHeaderContainerStyle>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Path}" Width="{Binding ActualWidth, ElementName=FilesDisplayed}"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Grid>
+                    </Border>
+                    
+                    <Border BorderBrush="Black" 
+                            BorderThickness=".5" 
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            Grid.RowSpan="2">
+                        <Grid>
+                            <Border BorderBrush="Black" 
+                                    BorderThickness=".4" 
+                                    Background="Aquamarine" 
+                                    Padding="9" 
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Top">
+
+                                <TextBlock Text="Monitored Folders:"
+                                           FontSize="16"
+                                           FontWeight="Bold"/>
+                            </Border>
+
+                            <!-- Horizontal stack panel for button layout -->
+                            <StackPanel Orientation="Horizontal" 
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Top"
+                                        Height="25" 
+                                        Margin="10,53,0,10">
+
+                                <StackPanel.Resources>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="Margin" 
+                                                Value="0,0,10,0"/>
+                                        <Setter Property="Padding"
+                                                Value="3"/>
+                                    </Style>
+                                </StackPanel.Resources>
+
+                                <Button x:Name="AddNewFolder" 
+                                        Content="Add Folder" 
+                                        Click="AddNewFolder_Click"/>
+
+                                <Button x:Name="RemoveFolders" 
+                                        Content="Remove Folder(s)" 
+                                        Click="RemoveFolders_Click"
+                                        IsEnabled="{
+                                            Binding ElementName=FoldersDisplayed, 
+                                            Path=SelectedIndex, 
+                                            Converter={StaticResource 
+                                            IntToBoolValueConverter}}" />
+                            </StackPanel>
+
+                            <ListView x:Name="FoldersDisplayed"  
+                                      Margin="0,90,0,0"
+                                      ItemsSource="{Binding SourceFolders}" 
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                      ScrollViewer.VerticalScrollBarVisibility="Auto" >
+
+                                <ListView.View>
+                                    <GridView AllowsColumnReorder="False">
+                                        <GridView.ColumnHeaderContainerStyle>
+                                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </Style>
+                                        </GridView.ColumnHeaderContainerStyle>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Path}" Width="{Binding ActualWidth, ElementName=FoldersDisplayed}"/>
                                     </GridView>
                                 </ListView.View>
                             </ListView>
@@ -103,7 +183,7 @@
 
                     <Border BorderBrush="Black" 
                             BorderThickness=".5" 
-                            Grid.Column="1"
+                            Grid.Column="2"
                             Grid.Row="0">
 
                         <Grid>
@@ -114,24 +194,61 @@
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Top">
 
-                                <TextBlock Text="Updated files:"
-                                           FontSize="16"/>
+                                <TextBlock Text="Updated Files:"
+                                           FontSize="16"
+                                           FontWeight="Bold"/>
                             </Border>
+                            
+                            <!-- Horizontal stack panel for button layout -->
+                            <StackPanel Orientation="Horizontal" 
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Top"
+                                        Height="25" 
+                                        Margin="10,53,0,10">
 
-                            <ListView x:Name="UpdatedFiles" 
+                                <StackPanel.Resources>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="Margin" 
+                                                Value="0,0,10,0"/>
+                                        <Setter Property="Padding"
+                                                Value="3"/>
+                                    </Style>
+                                </StackPanel.Resources>
+
+                                <Button x:Name="CopyUpdatedFiles" 
+                                        Content="Copy Updated Files" 
+                                        Click="CopyUpdatedFiles_Click" 
+                                        IsEnabled="{Binding BackupSelected}"/>
+                            
+                            </StackPanel>
+                            
+
+
+                            <ListView x:Name="UpdatedFilesDisplayed" 
                                         Margin="0,90,0,0"
-                                        ItemsSource="{Binding CheckedBackupFolders}" 
+                                        ItemsSource="{Binding UpdatedFiles}" 
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
                                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                        ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                                        ScrollViewer.VerticalScrollBarVisibility="Auto" >
+
+                                <ListView.View>
+                                    <GridView AllowsColumnReorder="False">
+                                        <GridView.ColumnHeaderContainerStyle>
+                                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </Style>
+                                        </GridView.ColumnHeaderContainerStyle>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Path}" Width="{Binding ActualWidth, ElementName=UpdatedFilesDisplayed}"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
                         </Grid>
                     </Border>
-                    
-                    
+
                     <Border BorderBrush="Black" 
                             BorderThickness=".5" 
-                            Grid.Column="0"
+                            Grid.Column="2"
                             Grid.Row="1">
                         <Grid>
                             <Border BorderBrush="Black" 
@@ -141,35 +258,28 @@
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Top">
 
-                                <TextBlock Text="Full Backup Paths:"
-                                           FontSize="16"/>
+                                <TextBlock Text="Backup Paths:"
+                                           FontSize="16"
+                                           FontWeight="Bold"/>
                             </Border>
-                           
-                            <Button x:Name="AddFullBackupPath" 
+
+                            <Button x:Name="AddBackupPath" 
                                     Content="Add Path" 
-                                    Click="AddFullBackupPath_Click" 
+                                    Click="AddBackupPath_Click" 
                                     HorizontalAlignment="Left" 
                                     VerticalAlignment="Top"
+                                    Padding="3"
                                     Height="25" 
                                     Margin="10,53,0,10"/>
-                            
-                            <Button x:Name="CreateFullBackup" 
-                                    Content="Run Backup" 
-                                    Click="CreateFullBackup_Click" 
-                                    HorizontalAlignment="Left" 
-                                    VerticalAlignment="Top"
-                                    Height="25" 
-                                    Margin="75,53,0,10"
-                                    IsEnabled="{Binding BackupSelected}"/>
 
-                            <ListView x:Name="FullBackupPaths" 
+                            <ListView x:Name="BackupPathsDisplayed" 
                                         Margin="0,90,0,0"
                                         ItemsSource="{Binding BackupPaths}" 
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
                                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                         ScrollViewer.VerticalScrollBarVisibility="Auto" >
-                                
+
                                 <ListView.View>
                                     <GridView AllowsColumnReorder="False">
                                         <GridView.ColumnHeaderContainerStyle>
@@ -181,20 +291,75 @@
                                             <GridViewColumn>
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
-                                                        <CheckBox Name="FullBackupPathSelected" 
+                                                        <CheckBox Name="BackupPathCheckBox" 
                                                                   IsChecked="{Binding Mode=TwoWay, Path=IsSelected}" 
-                                                                  Click="FullBackupPathSelected_Click"/>
+                                                                  Click="BackupPathCheckBox_Click"/>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn DisplayMemberBinding="{Binding Path}" Header="Path" Width="{Binding BackupWidth}"/>
+                                            <GridViewColumn DisplayMemberBinding="{Binding Path}" Header="Path" Width="{Binding ActualWidth, ElementName=BackupPathsDisplayed}"/>
                                         </GridView.Columns>
                                     </GridView>
                                 </ListView.View>
-                            </ListView>  
+                            </ListView>
                         </Grid>
                     </Border>
-                    
+
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Settings">
+                <ScrollViewer>
+                    <Grid Background="#FFE5E5E5">
+                        
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Border BorderBrush="Black" 
+                                BorderThickness=".5" 
+                                Grid.Column="0"
+                                Grid.Row="1">
+                            
+                            <Grid>
+                                <Border BorderBrush="Black" 
+                                        BorderThickness=".4" 
+                                        Background="MediumPurple" 
+                                        Padding="9" 
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Top">
+                                    
+                                    <TextBlock Text="User Settings:"
+                                               FontSize="16"
+                                               FontWeight="Bold"/>
+                                </Border>
+                                <ScrollViewer
+                                    VerticalScrollBarVisibility="Auto" 
+                                    HorizontalScrollBarVisibility="Auto">
+                                    <StackPanel Orientation="Vertical"
+                                            Grid.Column="0"
+                                            Margin="10,53,0,10">
+                                            <StackPanel.Resources>
+                                                <Style TargetType="{x:Type CheckBox}">
+                                                    <Setter Property="Margin" Value="0,10,0,0"/>
+                                                </Style>
+                                            </StackPanel.Resources>
+                                        <CheckBox 
+                                            x:Name="OverwriteUpdatedFilesCheckBox" 
+                                            Content="Overwrite updated files?" 
+                                            IsChecked="{Binding Mode=TwoWay, Path=OverwriteUpdatedFiles}"
+                                            Click="OverwriteUpdatedFilesCheckBox_Click"/>
+                                        <CheckBox 
+                                            x:Name="IncludeAllSubfoldersCheckBox"  
+                                            Content="Include all subfolders when monitoring a folder?"
+                                            IsChecked="{Binding Mode=TwoWay, Path=IncludeAllSubfolders}"
+                                            Click="IncludeAllSubfoldersCheckBox_Click"/>
+                                    </StackPanel>
+                                </ScrollViewer>                            
+                            </Grid>
+                        </Border>
+                        
                     <Border BorderBrush="Black" 
                             BorderThickness=".5" 
                             Grid.Column="1"
@@ -202,53 +367,76 @@
                         <Grid>
                             <Border BorderBrush="Black" 
                                     BorderThickness=".4" 
-                                    Background="Orange" 
+                                    Background="MediumPurple" 
                                     Padding="9" 
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Top">
 
-                                <TextBlock Text="Sequential Backup Paths:"
-                                           FontSize="16"/>
+                                <TextBlock Text="Moved, Deleted, or Renamed Files:"
+                                           FontSize="16"
+                                           FontWeight="Bold"/>
                             </Border>
                             
-                            <Button x:Name="AddSequentialBackupPath" 
-                                    Content="Add Path" 
-                                    Click="AddSequentialBackupPath_Click"
-                                    HorizontalAlignment="Left" 
-                                    VerticalAlignment="Top"
-                                    Height="25" 
-                                    Margin="10,53,0,10"/>
-                            
-                            <Button x:Name="CreateSequentialBackup" 
-                                    Content="Run Backup" 
-                                    Click="CreateSequentialBackup_Click" 
-                                    HorizontalAlignment="Left" 
-                                    VerticalAlignment="Top"
-                                    Height="25" 
-                                    Margin="75,53,0,10"/>
-                            
-                            <ListView x:Name="SequentialBackupPaths" 
-                                        Margin="0,90,0,0"
-                                        ItemsSource="{Binding RecentlyChangedFiles}" 
+                            <!-- Horizontal stack panel for button layout -->
+                            <StackPanel Orientation="Horizontal" 
                                         HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Stretch"
-                                        ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                        ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                                        VerticalAlignment="Top"
+                                        Height="25" 
+                                        Margin="10,53,0,10">
+
+                                <StackPanel.Resources>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="Margin" 
+                                                Value="0,0,10,0"/>
+                                        <Setter Property="Padding"
+                                                Value="3"/>
+                                    </Style>
+                                </StackPanel.Resources>
+
+                                <Button x:Name="EditFilePath" 
+                                        Content="Edit File Path" 
+                                        Click="EditFilePath_Click"
+                                        IsEnabled="{
+                                            Binding ElementName=MovedOrRenamedFilesDisplayed, 
+                                            Path=SelectedIndex, 
+                                            Converter={StaticResource 
+                                            IntToBoolValueConverter}}" />
+
+                                <Button x:Name="RemovePossibleDeletedPaths" 
+                                        Content="Remove"
+                                        Click="RemovePossibleDeletedPaths_Click"
+                                        IsEnabled="{
+                                            Binding ElementName=MovedOrRenamedFilesDisplayed, 
+                                            Path=SelectedIndex, 
+                                            Converter={StaticResource 
+                                            IntToBoolValueConverter}}" />
+                            </StackPanel>
+                           
+                            <ListView x:Name="MovedOrRenamedFilesDisplayed"  
+                                      Margin="0,90,0,0"
+                                      ItemsSource="{Binding MovedOrRenamedFiles}" 
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                      ScrollViewer.VerticalScrollBarVisibility="Auto" >
+
+                                <ListView.View>
+                                    <GridView AllowsColumnReorder="False">
+                                        <GridView.ColumnHeaderContainerStyle>
+                                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </Style>
+                                        </GridView.ColumnHeaderContainerStyle>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Path}" Width="{Binding ActualWidth, ElementName=MovedOrRenamedFilesDisplayed}"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
                         </Grid>
                     </Border>
-                    
-                </Grid>
-            </TabItem>
-
-            <TabItem Header="Settings">
-                <ScrollViewer>
-                    <Grid Background="#FFE5E5E5">
                     </Grid>
                 </ScrollViewer>
             </TabItem>
-
         </TabControl>
-
     </Grid>
 </Window>
     

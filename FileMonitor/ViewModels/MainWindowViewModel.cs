@@ -1,31 +1,29 @@
 ﻿using Services.Dto;
-using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows.Data;
 
 namespace FileMonitor.ViewModels
 {
+    /// <summary>
+    /// Provides a view model for binding to the UI. 
+    /// </summary>
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<FullBackupDto> _backupPaths;
-        private ObservableCollection<SourceFileDto> _files;
-        private CollectionViewSource _checkedBackupFolders;
-
+        private ObservableCollection<BackupPathDto> _backupPaths;
+        private ObservableCollection<SourceFileDto> _sourceFiles;
+        private ObservableCollection<SourceFileDto> _updatedFiles;
+        private ObservableCollection<SourceFolderDto> _sourceFolders;
+        private ObservableCollection<SourceFileDto> _movedOrRenamedFiles;
         private bool _backupSelected;
-        private int _backupWidth;
-        private int _fileWidth;
 
+        /// <summary>
+        /// A public event handler to notify any data bindings when a property has changed.
+        /// </summary>
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public ICollectionView CheckedBackupFolders
-        {
-            get
-            {
-                return _checkedBackupFolders.View;
-            }
-        }
-
+        /// <summary>
+        /// Determines whether or not a backup path is selected in the UI. If a path is selected, the "Copy All" button is clickable. If not, the button is greyed out. This property is bound to the <see cref="MainWindow.CopyAllFiles"/> button in the UI.
+        /// </summary>
         public bool BackupSelected
         {
             get { return _backupSelected; }
@@ -36,101 +34,102 @@ namespace FileMonitor.ViewModels
             }
         }
 
-        public int BackupWidth
-        {
-            get { return _backupWidth; }
-            set
-            {
-                _backupWidth = value * 7;
-                OnPropertyChanged(nameof(BackupWidth));
-            }
-        }
+        /// <summary>
+        /// An observable collection of <see cref="BackupPathDto"/> objects. This collection displays all possible backup path locations for the user to select, add, or remove. This property is bound to the <see cref="MainWindow.BackupPathsDisplayed"/> list view in the UI.
+        /// </summary>
+        public ObservableCollection<BackupPathDto> BackupPaths { get { return _backupPaths; } }
 
-        public ObservableCollection<FullBackupDto> BackupPaths
-        {
-            get { return _backupPaths; }
-            set
-            {
-                _backupPaths = value;
-            }
-        }
+        /// <summary>
+        /// An observable collection of <see cref="SourceFileDto"/> objects. This collection displays all files monitored by the program for the user to add or remove. This property is bound to the <see cref="MainWindow.FilesDisplayed"/> list view in the UI.
+        /// </summary>
+        public ObservableCollection<SourceFileDto> SourceFiles { get { return _sourceFiles; } }
 
-        public ObservableCollection<SourceFileDto> Files
-        {
-            get { return _files; }
-            set
-            {
-                _files = value;
-            }
-        }
+        /// <summary>
+        /// An observable collection of <see cref="SourceFileDto"/> objects. This collection displays only the files that have been updated since the last time they were copied to a backup location. This property is bound to the <see cref="MainWindow.UpdatedFilesDisplayed"/> list view.
+        /// </summary>
+        public ObservableCollection<SourceFileDto> UpdatedFiles { get { return _updatedFiles; } }
 
-        public int FileWidth
-        {
-            get { return _fileWidth; }
-            set
-            {
-                _fileWidth = value;
+        /// <summary>
+        /// An observable collection of <see cref="SourceFolderDto"/> objects. This collection displays all folders monitored by the program. This property is bound to the <see cref="MainWindow.FoldersDisplayed"/> list view.
+        /// </summary>
+        public ObservableCollection<SourceFolderDto> SourceFolders { get { return _sourceFolders; } }
 
-            }
-        }
+        /// <summary>
+        /// An observable collection of <see cref="SourceFileDto"/> objects. This collection displays all files whose names or paths have been moved, renamed, or deleted since being monitored by the program. This property is bound to the <see cref="MainWindow.MovedOrRenamedFilesDisplayed"/> list view.
+        /// </summary>
+        public ObservableCollection<SourceFileDto> MovedOrRenamedFiles { get { return _movedOrRenamedFiles; } }
 
-        public MainWindowViewModel(ObservableCollection<FullBackupDto> backups, ObservableCollection<SourceFileDto> sourceFiles)
+        /// <summary>
+        /// If false, the program will make copies of updated files whenever they are backed up. If true, the program will overwrite the previously copied file.
+        /// </summary>
+        public bool OverwriteUpdatedFiles { get; set; }
+
+        /// <summary>
+        /// If false, the program will only monitor files contained within the monitored folder. If true, the program will monitor all files an sub-files contained within the monitored folder. 
+        /// </summary>
+        public bool IncludeAllSubfolders { get; set; }
+
+        /// <summary>
+        /// Defines the <see cref="MainWindowViewModel"/> class constructor.
+        /// </summary>
+        /// <param name="backupPaths"> All backup paths stored in the database, formatted as data transfer objects. </param>
+        /// <param name="sourceFiles"> All files monitored by the program, formatted as data transfer objects. </param>
+        /// <param name="updatedFiles"> Only the files that have been updated since the last time they were copied to a backup location, formatted as data transfer objects. </param>
+        /// <param name="sourceFolders"> All folders monitored by the program, formatted as data transfer objects. </param>
+        /// <param name="movedOrRenamedFiles"> All files that have been moved, renamed, or deleted in Windows since being added to the program. </param>
+        /// <param name="overwriteUpdatedFiles"> Value from Settings.json, bound to a CheckBox. </param>
+        /// <param name="includeAllSubfolders"> Value from Settings.json, bound to a CheckBox. </param>
+        public MainWindowViewModel(
+            ObservableCollection<BackupPathDto> backupPaths, 
+            ObservableCollection<SourceFileDto> sourceFiles,
+            ObservableCollection<SourceFileDto> updatedFiles,
+            ObservableCollection<SourceFolderDto> sourceFolders,
+            ObservableCollection<SourceFileDto> movedOrRenamedFiles,
+            bool overwriteUpdatedFiles,
+            bool includeAllSubfolders)
         {
-            _backupPaths = backups;
-            _files = sourceFiles;
+            _backupPaths = backupPaths;
+            _sourceFiles = sourceFiles;
+            _updatedFiles = updatedFiles;
+            _sourceFolders = sourceFolders;
+            _movedOrRenamedFiles = movedOrRenamedFiles;
+            RemovePossibleRenamedFiles();
             _backupSelected = IsAnyBackupSelected();
-
-            _checkedBackupFolders = new CollectionViewSource
-            {
-                Source = _backupPaths,
-            };
-            _checkedBackupFolders.Filter += (sender, e) => e.Accepted = (e.Item as FullBackupDto).IsSelected;
-
-            BackupPaths.CollectionChanged += (sender, e) => BackupPathsOnChange("CollectionChanged");
-
-            Files.CollectionChanged += (sender, e) => FileWidth = GetColumnWidth(_files);
+            OverwriteUpdatedFiles = overwriteUpdatedFiles;
+            IncludeAllSubfolders = includeAllSubfolders;
         }
 
-        // "action" parameter type "string" is not the best choice, I use string type for simplicity
-        public void BackupPathsOnChange(string action)
-        {
-            if(action == "CollectionChanged")
-            {
-                BackupWidth = GetColumnWidth(_backupPaths);
-            }                
-            else if(action == "CheckboxClicked")
-            {
-                BackupSelected = IsAnyBackupSelected();
-                _checkedBackupFolders.View.Refresh();
-            }
-        }
-
+        /// <summary>
+        /// A public method to invoke the <see cref="PropertyChanged"/> delegate.
+        /// </summary>
+        /// <param name="propertyName"> The name of the property from which the method is called. </param>
         public void OnPropertyChanged(string propertyName) 
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private bool IsAnyBackupSelected()
+
+        /// <summary>
+        /// If at least one backup path is selected in the UI, return true. If none are selected, return false.
+        /// </summary>
+        public bool IsAnyBackupSelected()
         {
-            foreach (FullBackupDto dto in  _backupPaths)
+            foreach (BackupPathDto dto in  _backupPaths)
             {
                 if (dto.IsSelected == true) return true;
             }
             return false;
         }
 
-        private int GetColumnWidth<T>(ObservableCollection<T> collection) where T : IHasPath
+        // Ensures that any files that have been moved, renamed, or deleted do not display
+        // in the main UI.
+        private void RemovePossibleRenamedFiles()
         {
-            int maxWidth = 1;
-            foreach (T dto in collection)
-                maxWidth = Math.Max(maxWidth, dto.Path.Length);
-            return maxWidth;
-        }
-
-        public void Init()
-        {
-            BackupWidth = GetColumnWidth(_backupPaths);
-            FileWidth = GetColumnWidth(_files);
+            foreach(SourceFileDto file in _movedOrRenamedFiles)
+            {
+                if (_sourceFiles.Contains(file)) _sourceFiles.Remove(file);
+                if (_updatedFiles.Contains(file)) _updatedFiles.Remove(file);
+            }
         }
     }
 }
